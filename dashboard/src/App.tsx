@@ -8,6 +8,7 @@ import { MemberPanel } from './components/MemberPanel';
 import { TimeControls } from './components/TimeControls';
 import { StatusFooter } from './components/StatusFooter';
 import { ZoomControls } from './components/ZoomControls';
+import { FileDropZone } from './components/FileDropZone';
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import './index.css';
 
@@ -21,7 +22,6 @@ function Dashboard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showLinks, setShowLinks] = useState(true);
 
-
   // Zoom handlers (placeholder - actual implementation needs ref to D3 zoom)
   const handleZoomIn = useCallback(() => {
     // TODO: Wire to D3 zoom
@@ -34,6 +34,14 @@ function Dashboard() {
     console.log('Fit to screen');
   }, []);
 
+  const handleUploadSuccess = useCallback(() => {
+    // Refetch all queries to update the UI
+    client.refetchQueries({
+        include: [FEDERATION_QUERY, SNAPSHOTS_QUERY]
+    });
+    // Also trigger a drill down reset if needed
+    selectAtom(null);
+  }, [selectAtom]);
 
   // GraphQL queries based on current navigation level
   const { data: federationData, loading: fedLoading } = useQuery(FEDERATION_QUERY, {
@@ -254,10 +262,7 @@ function Dashboard() {
             </div>
           ) : graphData.nodes.length === 0 ? (
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center text-slate-400">
-                <p className="text-lg">No data available</p>
-                <p className="text-sm">Start the API and load a federated snapshot</p>
-              </div>
+              <FileDropZone onSuccess={handleUploadSuccess} />
             </div>
           ) : (
             <ForceGraph
@@ -532,11 +537,11 @@ function Dashboard() {
             
             {/* Code level - show member panel */}
             {level === 'code' && atomData?.atom && (
-               <MemberPanel 
-                  atomName={atomData.atom.name}
-                  members={atomData.atom.members || []}
-                  onClose={() => selectAtom(null)}
-               />
+              <MemberPanel 
+                 atomName={atomData.atom.name}
+                 members={atomData.atom.members || []}
+                 onClose={() => selectAtom(null)}
+              />
             )}
           </aside>
         )}

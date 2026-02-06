@@ -226,7 +226,7 @@ public class Program
             Log($"   Running governance check...", "⚖️");
             var governance = new GovernanceEngine(governancePath);
             // Only check CodeAtoms for now
-            var atomMap = allCodeAtoms.ToDictionary(a => a.Id);
+            var atomMap = allCodeAtoms.DistinctBy(a => a.Id).ToDictionary(a => a.Id);
             
             foreach (var link in finalLinks)
             {

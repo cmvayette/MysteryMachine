@@ -27,9 +27,11 @@ public partial class SemanticLinker
         var existingLinkList = existingLinks?.ToList() ?? [];
 
         // Build lookup tables
-        var tables = sqlList.Where(a => a.Type == SqlAtomType.Table).ToDictionary(t => t.Name.ToLowerInvariant(), t => t);
+        var tables = sqlList.Where(a => a.Type == SqlAtomType.Table)
+            .DistinctBy(t => t.Name.ToLowerInvariant())
+            .ToDictionary(t => t.Name.ToLowerInvariant(), t => t);
         var columns = sqlList.Where(a => a.Type == SqlAtomType.Column).ToList();
-        var codeById = codeList.ToDictionary(c => c.Id, c => c);
+        var codeById = codeList.DistinctBy(c => c.Id).ToDictionary(c => c.Id, c => c);
 
         // Process attribute bindings from existing links (from scanner)
         var attributeLinkedAtoms = ProcessAttributeBindings(existingLinkList, tables, result);

@@ -48,7 +48,19 @@ flowchart TD
 
 ---
 
-## 📦 Quick Start
+## 📦 Installation
+
+System Cartographer can be installed as a global CLI tool or run via Docker.
+
+- **[Packaging & Distribution Guide](docs/packaging_guide.md)**: Detailed instructions for building binaries, NuGet packages, and Docker images.
+
+### Quick Install (CLI)
+
+```bash
+dotnet tool install --global SystemCartographer.Cli
+```
+
+## 🚀 Quick Start
 
 ### Prerequisites
 
