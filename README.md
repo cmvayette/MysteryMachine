@@ -1,68 +1,148 @@
-# Mystery Machine
+# System Cartographer (Mystery Machine)
 
-> Atomic-level codebase intelligence for enterprise legacy modernization
+> **Atomic-level intelligence for enterprise legacy modernization.**
 
-Mystery Machine scans .NET and SQL codebases to extract **atomic elements** (DTOs, interfaces, tables, stored procedures), **link them semantically**, and provide **risk scoring** for safe evolution.
+System Cartographer scans your codebase, reconstructs its architectural DNA, and provides interactive visualizations to help you navigate, refactor, and govern complex systems.
 
-## Quick Start
+## 🚀 Key Features
+
+- **Autonomy-Level Scanning**: Parses C# (Roslyn) and SQL (T-SQL DOM) into atomic units (Classes, Properties, Methods, Tables, Procs).
+- **Semantic Linking**: Infers relationships that compilers miss (e.g., EF Core Column mappings, Dapper inline SQL).
+- **Interactive Dashboard**: A React/D3.js visualization suite enabling "Time Travel" through commit history and deep-dive architectural exploration.
+- **Active Governance**: Enforce architectural rules (Layering, Forbidden Dependencies, Visibility) via a simple `governance.yaml`.
+- **CI/CD Ready**: Zero-config CLI compliant with automated pipelines (`--ci` mode).
+
+---
+
+## 🏛️ Architecture: The C4 Model
+
+System Cartographer aligns with the **C4 Model** for software architecture:
+
+```mermaid
+graph TD
+    User -->|Uses| Dashboard
+    Dashboard -->|Loads| Snapshot[Snapshot.json]
+    CLI -->|Scans| Repo[Your Repository]
+    CLI -->|Generates| Snapshot
+    Repo -->|Contains| governance.yaml
+    CLI -->|Reads| governance.yaml
+```
+
+- **Level 1 (System)**: The Federation view (Multi-repo).
+- **Level 2 (Container)**: Projects and Namespaces.
+- **Level 3 (Component)**: Classes and Services.
+- **Level 4 (Code)**: Methods, Properties, and Inline SQL.
+
+---
+
+## 📦 Quick Start
+
+### Prerequisites
+
+- .NET 9 SDK (Backend)
+- Node.js 20+ (Frontend)
+
+### 1. Build the System
 
 ```bash
-# Build the solution
-dotnet build
+# Build the CLI and Core libraries
+dotnet build SystemCartographer.slnx
 
-# Run tests
-dotnet test
-
-# Run the CLI
-dotnet run --project src/SystemCartographer.Cli -- --help
+# Build the Dashboard
+cd dashboard
+npm install
+npm run build
+cd ..
 ```
 
-## CLI Commands
+### 2. Scan a Repository
 
 ```bash
-# Scan a repository
-cartographer scan --repo ./src --output ./snapshot.json
-
-# Compare snapshots for breaking changes
-cartographer diff --baseline main.json --snapshot current.json
-
-# Update central database (post-merge)
-cartographer update --snapshot ./snapshot.json --connection "Server=..."
+# Run the scanner
+dotnet run --project src/SystemCartographer.Cli -- scan --repo /path/to/your/repo --output snapshot.json
 ```
 
-## Project Structure
+### 3. Launch the Dashboard
 
-```
-src/
-├── SystemCartographer.Core           # Atomic model types, interfaces
-├── SystemCartographer.Scanner.CSharp # Roslyn-based C# scanner
-├── SystemCartographer.Scanner.Sql    # ScriptDOM T-SQL scanner
-├── SystemCartographer.Linker         # Semantic linking engine
-├── SystemCartographer.Risk           # Risk scoring calculator
-├── SystemCartographer.Federation     # Multi-repo merge engine
-└── SystemCartographer.Cli            # Command-line tool
-tests/
-└── SystemCartographer.Tests          # Unit tests
+Serve the dashboard (using any static file server) or run it in dev mode:
+
+```bash
+cd dashboard
+npm run dev
+# Open http://localhost:5173
 ```
 
-## Target Framework
+_Note: In production (Docker), the CLI and Dashboard are packaged together._
 
-The solution currently targets **net10.0** for local development.
+---
 
-To deploy for .NET 8 environments:
+## 🛡️ Governance & Rules
 
-1. Edit `Directory.Build.props`
-2. Change `<TargetFramework>net10.0</TargetFramework>` to `<TargetFramework>net8.0</TargetFramework>`
-3. Rebuild: `dotnet build`
+Enforce architecture as code by placing a `governance.yaml` file in your repository root.
 
-## Dependencies
+**Example `governance.yaml`:**
 
-| Package                                   | Purpose                       |
-| ----------------------------------------- | ----------------------------- |
-| Microsoft.CodeAnalysis.CSharp             | Roslyn AST for C# parsing     |
-| Microsoft.SqlServer.TransactSql.ScriptDom | T-SQL parsing                 |
-| Humanizer.Core                            | Name matching (pluralization) |
-| Microsoft.Data.SqlClient                  | SQL Server connectivity       |
-| xUnit                                     | Unit testing                  |
+```yaml
+version: 1.0
+definitions:
+  web:
+    namespace: "MyApp.Web.*"
+  data:
+    namespace: "MyApp.Data.*"
 
+rules:
+  # Layering: Web -> Data is valid. Data -> Web is FORBIDDEN.
+  - type: layering
+    mode: strict
+    layers:
+      - "@web"
+      - "@data"
 
+  # Visibility: Only specific consumers can touch 'Internal'
+  - type: visibility
+    target: "@internal_core"
+    allowed_consumers:
+      - "@admin_utils"
+```
+
+_See [docs/governance_rules.md](docs/governance_rules.md) for full documentation._
+
+---
+
+## 🛠️ CLI Reference
+
+### `scan`
+
+Generates a snapshot of a repository.
+
+```bash
+cartographer scan --repo <path> --output <file.json> [--ci]
+```
+
+- `--repo`: Path to the root of the code to scan.
+- `--output`: Where to save the JSON snapshot.
+- `--ci`: Disables interactive emojis/colors for log files.
+
+### `diff`
+
+Compares two snapshots to find regression or drift.
+
+```bash
+cartographer diff --baseline main.snapshot.json --current feature.snapshot.json
+```
+
+---
+
+## 🏗️ Project Structure
+
+- `src/SystemCartographer.Core`: Foundational data models (CodeAtom, Link).
+- `src/SystemCartographer.Scanner.*`: Language-specific parsers.
+- `src/SystemCartographer.Cli`: The command-line orchestration tool.
+- `dashboard/`: The React + D3.js frontend visualization.
+- `MassiveRepo/`: A synthetic 1,000-class repository for stress testing.
+
+---
+
+## 📜 License
+
+Internal Enterprise Use.
