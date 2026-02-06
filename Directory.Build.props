@@ -9,7 +9,7 @@
       To switch frameworks, change the value below. The solution will rebuild
       automatically with the new target.
     -->
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

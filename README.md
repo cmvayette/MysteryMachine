@@ -1,8 +1,8 @@
-# System Cartographer (Mystery Machine)
+# Mystery Machine
 
 > **Atomic-level intelligence for enterprise legacy modernization.**
 
-System Cartographer scans your codebase, reconstructs its architectural DNA, and provides interactive visualizations to help you navigate, refactor, and govern complex systems.
+Mystery Machine scans your codebase, reconstructs its architectural DNA, and provides interactive visualizations to help you navigate, refactor, and govern complex systems.
 
 ## 🚀 Key Features
 
@@ -39,7 +39,7 @@ graph TD
 
 ### Prerequisites
 
-- .NET 9 SDK (Backend)
+- .NET 8 SDK (Backend)
 - Node.js 20+ (Frontend)
 
 ### 1. Build the System
