@@ -16,6 +16,7 @@ COPY ["src/SystemCartographer.Linker/SystemCartographer.Linker.csproj", "SystemC
 COPY ["src/SystemCartographer.Risk/SystemCartographer.Risk.csproj", "SystemCartographer.Risk/"]
 COPY ["src/SystemCartographer.Scanner.CSharp/SystemCartographer.Scanner.CSharp.csproj", "SystemCartographer.Scanner.CSharp/"]
 COPY ["src/SystemCartographer.Scanner.Sql/SystemCartographer.Scanner.Sql.csproj", "SystemCartographer.Scanner.Sql/"]
+COPY Directory.Build.props .
 
 # Restore dependencies
 RUN dotnet restore "SystemCartographer.Api/SystemCartographer.Api.csproj"
