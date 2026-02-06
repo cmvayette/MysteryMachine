@@ -1,8 +1,8 @@
-# System Cartographer
+# Mystery Machine
 
 > Atomic-level codebase intelligence for enterprise legacy modernization
 
-System Cartographer scans .NET and SQL codebases to extract **atomic elements** (DTOs, interfaces, tables, stored procedures), **link them semantically**, and provide **risk scoring** for safe evolution.
+Mystery Machine scans .NET and SQL codebases to extract **atomic elements** (DTOs, interfaces, tables, stored procedures), **link them semantically**, and provide **risk scoring** for safe evolution.
 
 ## Quick Start
 
