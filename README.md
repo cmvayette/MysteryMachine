@@ -65,6 +65,4 @@ To deploy for .NET 8 environments:
 | Microsoft.Data.SqlClient                  | SQL Server connectivity       |
 | xUnit                                     | Unit testing                  |
 
-## Architecture
 
-See [system_cartographer_design.md](../.gemini/antigravity/brain/f92de9e1-f5f4-42cb-bea2-e4d5bf88f409/system_cartographer_design.md) for the full design document.
