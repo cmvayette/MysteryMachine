@@ -2,7 +2,7 @@
 FROM node:20 AS frontend
 WORKDIR /app
 COPY dashboard/package*.json ./
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 COPY dashboard/ ./
 RUN npm run build
 
