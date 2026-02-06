@@ -19,13 +19,34 @@ Mystery Machine scans your codebase, reconstructs its architectural DNA, and pro
 System Cartographer aligns with the **C4 Model** for software architecture:
 
 ```mermaid
-graph TD
-    User -->|Uses| Dashboard
-    Dashboard -->|Loads| Snapshot[Snapshot.json]
-    CLI -->|Scans| Repo[Your Repository]
-    CLI -->|Generates| Snapshot
-    Repo -->|Contains| governance.yaml
-    CLI -->|Reads| governance.yaml
+flowchart TD
+    %% Actors
+    User([User])
+
+    %% System Boundary
+    subgraph SystemCartographer [System Cartographer]
+        direction TB
+
+        %% Containers
+        CLI[SystemCartographer CLI]
+        Dashboard[Web Dashboard]
+
+        %% Artifacts
+        Config[(governance.yaml)]
+        Snapshot[(snapshot.json)]
+
+        %% Relationships
+        CLI -->|Scans| Codebase[Source Code]
+        CLI -->|Reads| Config
+        CLI -->|Generates| Snapshot
+
+        Dashboard -->|Loads| Snapshot
+        Dashboard -->|Visualizes| Codebase
+    end
+
+    %% Interactions
+    User -->|Runs Commands| CLI
+    User -->|Explores| Dashboard
 ```
 
 - **Level 1 (System)**: The Federation view (Multi-repo).
@@ -139,7 +160,7 @@ cartographer diff --baseline main.snapshot.json --current feature.snapshot.json
 - `src/SystemCartographer.Scanner.*`: Language-specific parsers.
 - `src/SystemCartographer.Cli`: The command-line orchestration tool.
 - `dashboard/`: The React + D3.js frontend visualization.
-- `MassiveRepo/`: A synthetic 1,000-class repository for stress testing.
+- `MassiveRepo/`: (Generated) A synthetic 1,000-class repository for stress testing (Local only).
 
 ---
 
