@@ -20,22 +20,15 @@ System Cartographer aligns with the **C4 Model** for software architecture:
 
 ```mermaid
 flowchart TD
-    %% Actors
     User([User])
 
-    %% System Boundary
     subgraph SystemCartographer [System Cartographer]
-        direction TB
-
-        %% Containers
         CLI[SystemCartographer CLI]
         Dashboard[Web Dashboard]
 
-        %% Artifacts
         Config[(governance.yaml)]
         Snapshot[(snapshot.json)]
 
-        %% Relationships
         CLI -->|Scans| Codebase[Source Code]
         CLI -->|Reads| Config
         CLI -->|Generates| Snapshot
@@ -44,7 +37,6 @@ flowchart TD
         Dashboard -->|Visualizes| Codebase
     end
 
-    %% Interactions
     User -->|Runs Commands| CLI
     User -->|Explores| Dashboard
 ```
