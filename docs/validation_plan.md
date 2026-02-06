@@ -1,74 +1,117 @@
-# Validation Plan
+# System Validation Plan & Rubric
 
-To verify the accuracy, performance, and governance capabilities of System Cartographer, we recommend testing against these open-source industry standards.
+This document outlines the standard operating procedure for validating the **System Cartographer** against industry-standard architectures. Use this guide to verify correctness, performance, and user experience.
 
-## 1. Microservices & Federation: [dotnet/eShop](https://github.com/dotnet/eShop)
+## 📋 Prerequisites
 
-**Scenario**: Validating the scanner's ability to handle multiple loosely coupled services and the Dashboard's ability to visualize distributed systems.
+1.  **System Cartographer CLI**: Built and available on `PATH` (or run via `dotnet run`).
+2.  **Git**: For cloning validation repositories.
+3.  **Docker** (Optional): For testing containerized deployments.
 
-- **Setup**: Clone the repo.
-- **Scan Goal**: Run a scan on the root directory to see if the "Federation" view correctly clusters the specialized microservices (Identity, Catalog, Basket, Ordering).
-- **Key Check**: Verify that `Http` calls between services are detected as links (if using Refit/HttpClient patterns that the scanner supports).
+---
 
-## 2. Stress Test & Monolith: [nopCommerce](https://github.com/nopSolutions/nopCommerce)
+## 🏗️ Validation Targets
 
-**Scenario**: Performance benchmarking on a massive, real-world Codebase.
+| ID     | Repository          | Architecture     | Validation Focus                               |
+| ------ | ------------------- | ---------------- | ---------------------------------------------- |
+| **V1** | `dotnet/eShop`      | Microservices    | Federation, Service Links, Distributed Systems |
+| **V2** | `nopCommerce`       | Monolith (Large) | Performance, Stress Testing, Time Travel       |
+| **V3** | `CleanArchitecture` | Layered          | Governance Rules, Zero-False-Positives         |
 
-- **Stats**: 10+ years of history, thousands of classes, heavy plugin architecture.
-- **Scan Goal**:
-  - Measure `scan` time (Target: < 30 seconds for non-linked scan).
-  - Stress test the D3.js dashboard with thousands of nodes.
-- **Key Check**: Does the dashboard remain responsive? Do the "Clusters" correctly identify the plugin architecture boundaries?
+---
 
-## 3. Governance Compliance: [CleanArchitecture](https://github.com/jasontaylordev/CleanArchitecture)
+## 📝 Execution Implementation Plan
 
-**Scenario**: Verifying the `governance.yaml` enforcement engine. This repo adheres to strict architectural layers.
+### V1: Federation Validation (`eShop`)
 
-- **Setup**: Clone the repo and add the following `governance.yaml` to the root:
+_Goal: Ensure multiple microservices are correctly identified and linked._
 
-```yaml
-version: 1.0
-definitions:
-  domain:
-    namespace: "CleanArchitecture.Domain.*"
-  application:
-    namespace: "CleanArchitecture.Application.*"
-  infrastructure:
-    namespace: "CleanArchitecture.Infrastructure.*"
-  api:
-    namespace: "CleanArchitecture.WebUI.*"
+1.  **Clone**: `git clone https://github.com/dotnet/eShop.git validation/eShop`
+2.  **Scan**:
+    ```bash
+    cartographer scan --repo validation/eShop --output v1_eshop.json
+    ```
+3.  **Verify**:
+    - Open `v1_eshop.json` in Dashboard.
+    - Check for distinct clusters (Identity, Catalog, Ordering).
+    - Verify `Http` links exist between services.
 
-rules:
-  # Enforce the Dependency Rule (Points inward)
-  # API -> Infrastructure -> Application -> Domain
-  - type: layering
-    mode: strict
-    layers:
-      - "@api"
-      - "@infrastructure"
-      - "@application"
-      - "@domain"
-```
+### V2: Stress & Time Travel (`nopCommerce`)
 
-- **Expected Result**: **0 Violations**. The scanner should confirm the architecture is perfect.
-- **Test**: Intentionally add a reference from `Domain` to `Infrastructure` and verify the scanner screams at you.
+_Goal: Ensure the system handles large-scale data and temporal evolution._
 
-## 4. Time Travel & Evolution: [nopCommerce](https://github.com/nopSolutions/nopCommerce)
+1.  **Clone**: `git clone https://github.com/nopSolutions/nopCommerce.git validation/nopCommerce`
+2.  **Baseline Scan (v4.50)**:
+    ```bash
+    cd validation/nopCommerce && git checkout release-4.50
+    cartographer scan --repo . --output ../../v2_nop_4.50.json
+    ```
+3.  **Current Scan (v4.70)**:
+    ```bash
+    git checkout release-4.70
+    cartographer scan --repo . --output ../../v2_nop_4.70.json
+    ```
+4.  **Verify**:
+    - Load both files into Dashboard.
+    - Use Timeline controls to play animation.
+    - Toggle "Diff Mode" to see structural changes.
 
-**Scenario**: Demonstrating the "Time Travel" feature by scanning historical releases.
+### V3: Governance Enforcement (`CleanArchitecture`)
 
-- **Step 1**: Checkout a release from 2 years ago.
-  ```bash
-  git checkout release-4.50
-  cartographer scan --repo . --output nop_v4.50.json
-  ```
-- **Step 2**: Checkout the latest release.
-  ```bash
-  git checkout release-4.70
-  cartographer scan --repo . --output nop_v4.70.json
-  ```
-- **Step 3**: Launch Dashboard and drag **BOTH** files into the drop zone.
-- **Verification**:
-  - The "Timeline" controls should appear at the bottom.
-  - Pressing "Play" should animate the architectural changes (growth of nodes, new plugins, refactoring).
-  - The "Diff Mode" (if enabled) should highlight added/removed components between the two snapshots.
+_Goal: Prove that rules are correctly enforced on a compliant codebase._
+
+1.  **Clone**: `git clone https://github.com/jasontaylordev/CleanArchitecture.git validation/CleanArchitecture`
+2.  **Configure**: Create `governance.yaml` in root (content below).
+    <details>
+    <summary>Click to see governance.yaml</summary>
+
+    ```yaml
+    version: 1.0
+    definitions:
+      domain: { namespace: "CleanArchitecture.Domain.*" }
+      application: { namespace: "CleanArchitecture.Application.*" }
+      infrastructure: { namespace: "CleanArchitecture.Infrastructure.*" }
+      api: { namespace: "CleanArchitecture.WebUI.*" }
+    rules:
+      - type: layering
+        mode: strict
+        layers: ["@api", "@infrastructure", "@application", "@domain"]
+    ```
+
+    </details>
+
+3.  **Scan**: `cartographer scan --repo . --output v3_clean.json`
+4.  **Verify**:
+    - **Result should be 0 Violations.**
+    - _sabotage_: Add `public CleanArchitecture.Infrastructure.MyClass BadProp { get; set; }` to a Domain entity.
+    - **Result should be >0 Violations.**
+
+---
+
+## 🏆 Scoring Rubric
+
+Use this rubric to grade the system's readiness.
+
+### 1. Performance (nopCommerce)
+
+| Grade       | Criteria                                                    |
+| ----------- | ----------------------------------------------------------- |
+| 🟢 **Pass** | Scan time < 60s. Dashboard loads < 2s. 60 FPS navigation.   |
+| 🟡 **Warn** | Scan time < 120s. Dashboard loads < 5s. Occasional stutter. |
+| 🔴 **Fail** | Scan time > 120s. Browser crash or significant lag.         |
+
+### 2. Accuracy (CleanArchitecture)
+
+| Grade       | Criteria                                                                    |
+| ----------- | --------------------------------------------------------------------------- |
+| 🟢 **Pass** | 0 False Positives on strict layering. 100% detection of sabotage violation. |
+| 🟡 **Warn** | < 5 False Positives (fixable via config).                                   |
+| 🔴 **Fail** | Missed violations or > 5 False Positives.                                   |
+
+### 3. User Experience (Time Travel)
+
+| Grade       | Criteria                                                                        |
+| ----------- | ------------------------------------------------------------------------------- |
+| 🟢 **Pass** | Smooth animation between snapshots. nodes perform "biological" division/growth. |
+| 🟡 **Warn** | Animation works but nodes "teleport" or clutter.                                |
+| 🔴 **Fail** | Timeline broken, diff mode incorrect, or crash.                                 |
