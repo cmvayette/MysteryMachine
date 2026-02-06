@@ -52,3 +52,23 @@ rules:
 
 - **Expected Result**: **0 Violations**. The scanner should confirm the architecture is perfect.
 - **Test**: Intentionally add a reference from `Domain` to `Infrastructure` and verify the scanner screams at you.
+
+## 4. Time Travel & Evolution: [nopCommerce](https://github.com/nopSolutions/nopCommerce)
+
+**Scenario**: Demonstrating the "Time Travel" feature by scanning historical releases.
+
+- **Step 1**: Checkout a release from 2 years ago.
+  ```bash
+  git checkout release-4.50
+  cartographer scan --repo . --output nop_v4.50.json
+  ```
+- **Step 2**: Checkout the latest release.
+  ```bash
+  git checkout release-4.70
+  cartographer scan --repo . --output nop_v4.70.json
+  ```
+- **Step 3**: Launch Dashboard and drag **BOTH** files into the drop zone.
+- **Verification**:
+  - The "Timeline" controls should appear at the bottom.
+  - Pressing "Play" should animate the architectural changes (growth of nodes, new plugins, refactoring).
+  - The "Diff Mode" (if enabled) should highlight added/removed components between the two snapshots.
