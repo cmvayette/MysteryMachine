@@ -16,13 +16,13 @@ Mystery Machine scans your codebase, reconstructs its architectural DNA, and pro
 
 ## 🏛️ Architecture: The C4 Model
 
-System Cartographer aligns with the **C4 Model** for software architecture:
+Mystery Machine aligns with the **C4 Model** for software architecture:
 
 ```mermaid
 flowchart TD
     User([User])
 
-    subgraph SystemCartographer [System Cartographer]
+    subgraph MysteryMachine [Mystery Machine]
         CLI[SystemCartographer CLI]
         Dashboard[Web Dashboard]
 
@@ -152,7 +152,14 @@ cartographer diff --baseline main.snapshot.json --current feature.snapshot.json
 - `src/SystemCartographer.Scanner.*`: Language-specific parsers.
 - `src/SystemCartographer.Cli`: The command-line orchestration tool.
 - `dashboard/`: The React + D3.js frontend visualization.
+
 - `MassiveRepo/`: (Generated) A synthetic 1,000-class repository for stress testing (Local only).
+
+---
+
+## ✅ Validation
+
+See [docs/validation_plan.md](docs/validation_plan.md) for a list of open-source repositories recommended for stress testing and validating the system.
 
 ---
 
