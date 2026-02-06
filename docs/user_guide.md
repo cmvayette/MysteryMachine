@@ -1,8 +1,8 @@
-# System Cartographer User Guide
+# Diagnostic Structural Lens User Guide
 
 ## Overview
 
-System Cartographer calls your codebase, visualizing architecture, dependencies, and evolution over time.
+Diagnostic Structural Lens analyzes your codebase, visualizing architecture, dependencies, and evolution over time.
 
 ## 1. Dashboard Navigation
 
@@ -51,7 +51,7 @@ Integrate analysis into your pipeline.
 ### Basic Scan
 
 ```bash
-cartographer scan --repo /path/to/repo --output snapshot.json
+dsl scan --repo /path/to/repo --output snapshot.json
 ```
 
 ### CI Mode
@@ -59,7 +59,7 @@ cartographer scan --repo /path/to/repo --output snapshot.json
 Use `--ci` to sanitize output for logs (removes emojis/interactive elements).
 
 ```bash
-cartographer scan --repo . --ci
+dsl scan --repo . --ci
 ```
 
 ### Check for Breaking Changes
@@ -67,5 +67,5 @@ cartographer scan --repo . --ci
 Compare current snapshot against a baseline. Returns exit code 1 if breaking changes found.
 
 ```bash
-cartographer diff --baseline main.json --snapshot current.json
+dsl diff --baseline main.json --snapshot current.json
 ```

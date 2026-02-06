@@ -1,8 +1,8 @@
-# Mystery Machine
+# Diagnostic Structural Lens
 
 > **Atomic-level intelligence for enterprise legacy modernization.**
 
-Mystery Machine scans your codebase, reconstructs its architectural DNA, and provides interactive visualizations to help you navigate, refactor, and govern complex systems.
+Diagnostic Structural Lens scans your codebase, reconstructs its architectural DNA, and provides interactive visualizations to help you navigate, refactor, and govern complex systems.
 
 ## 🚀 Key Features
 
@@ -16,14 +16,14 @@ Mystery Machine scans your codebase, reconstructs its architectural DNA, and pro
 
 ## 🏛️ Architecture: The C4 Model
 
-Mystery Machine aligns with the **C4 Model** for software architecture:
+Diagnostic Structural Lens aligns with the **C4 Model** for software architecture:
 
 ```mermaid
 flowchart TD
     User([User])
 
-    subgraph MysteryMachine [Mystery Machine]
-        CLI[SystemCartographer CLI]
+    subgraph MysteryMachine [Diagnostic Structural Lens]
+        CLI[DiagnosticStructuralLens CLI]
         Dashboard[Web Dashboard]
 
         Config[(governance.yaml)]
@@ -50,14 +50,14 @@ flowchart TD
 
 ## 📦 Installation
 
-System Cartographer can be installed as a global CLI tool or run via Docker.
+Diagnostic Structural Lens can be installed as a global CLI tool or run via Docker.
 
 - **[Packaging & Distribution Guide](docs/packaging_guide.md)**: Detailed instructions for building binaries, NuGet packages, and Docker images.
 
 ### Quick Install (CLI)
 
 ```bash
-dotnet tool install --global SystemCartographer.Cli
+dotnet tool install --global DiagnosticStructuralLens.Cli
 ```
 
 ## 🚀 Quick Start
@@ -71,7 +71,7 @@ dotnet tool install --global SystemCartographer.Cli
 
 ```bash
 # Build the CLI and Core libraries
-dotnet build SystemCartographer.slnx
+dotnet build DiagnosticStructuralLens.slnx
 
 # Build the Dashboard
 cd dashboard
@@ -84,7 +84,7 @@ cd ..
 
 ```bash
 # Run the scanner
-dotnet run --project src/SystemCartographer.Cli -- scan --repo /path/to/your/repo --output snapshot.json
+dotnet run --project src/DiagnosticStructuralLens.Cli -- scan --repo /path/to/your/repo --output snapshot.json
 ```
 
 ### 3. Launch the Dashboard
@@ -141,7 +141,7 @@ _See [docs/governance_rules.md](docs/governance_rules.md) for full documentation
 Generates a snapshot of a repository.
 
 ```bash
-cartographer scan --repo <path> --output <file.json> [--ci]
+dsl scan --repo <path> --output <file.json> [--ci]
 ```
 
 - `--repo`: Path to the root of the code to scan.
@@ -153,16 +153,16 @@ cartographer scan --repo <path> --output <file.json> [--ci]
 Compares two snapshots to find regression or drift.
 
 ```bash
-cartographer diff --baseline main.snapshot.json --current feature.snapshot.json
+dsl diff --baseline main.snapshot.json --current feature.snapshot.json
 ```
 
 ---
 
 ## 🏗️ Project Structure
 
-- `src/SystemCartographer.Core`: Foundational data models (CodeAtom, Link).
-- `src/SystemCartographer.Scanner.*`: Language-specific parsers.
-- `src/SystemCartographer.Cli`: The command-line orchestration tool.
+- `src/DiagnosticStructuralLens.Core`: Foundational data models (CodeAtom, Link).
+- `src/DiagnosticStructuralLens.Scanner.*`: Language-specific parsers.
+- `src/DiagnosticStructuralLens.Cli`: The command-line orchestration tool.
 - `dashboard/`: The React + D3.js frontend visualization.
 
 - `MassiveRepo/`: (Generated) A synthetic 1,000-class repository for stress testing (Local only).

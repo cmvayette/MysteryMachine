@@ -1,6 +1,6 @@
 # Governance Rules
 
-System Cartographer enforces architectural integrity through a flexible, YAML-based configuration engine. You can define custom rules for your repository by creating a `governance.yaml` file in the root directory.
+Diagnostic Structural Lens enforces architectural integrity through a flexible, YAML-based configuration engine. You can define custom rules for your repository by creating a `governance.yaml` file in the root directory.
 
 ## File Format: `governance.yaml`
 
@@ -123,6 +123,6 @@ Enforces encapsulation using an **Allow List**.
 
 ## Troubleshooting
 
-- **No Diagnostics?**: Ensure your `governance.yaml` is in the root folder where you run `cartographer scan`.
+- **No Diagnostics?**: Ensure your `governance.yaml` is in the root folder where you run `dsl scan`.
 - **Regex Issues**: The `pattern` is case-insensitive by default.
 - **Unmatched Selectors**: If a definition doesn't match any atoms, the rule effectively does nothing for that selector.

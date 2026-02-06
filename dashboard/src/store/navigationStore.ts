@@ -8,7 +8,7 @@ interface SnapshotSummary {
   atomCount: number;
 }
 
-export type C4Level = 'federation' | 'repository' | 'namespace' | 'component' | 'code';
+export type C4Level = 'federation' | 'repository' | 'project' | 'component' | 'code';
 
 export interface NavigationState {
   level: C4Level;
@@ -36,7 +36,7 @@ export interface NavigationState {
   reset: () => void;
 }
 
-const levelProgression: C4Level[] = ['federation', 'repository', 'namespace', 'component', 'code'];
+const levelProgression: C4Level[] = ['federation', 'repository', 'project', 'component', 'code'];
 
 export const useNavigationStore = create<NavigationState>((set) => ({
   level: 'federation',

@@ -10,9 +10,11 @@ import { StatusFooter } from './components/StatusFooter';
 import { ZoomControls } from './components/ZoomControls';
 import { FileDropZone } from './components/FileDropZone';
 import { useState, useMemo, useCallback, useEffect } from 'react';
+import { GraphLab } from './components/GraphLab';
 import './index.css';
 
 function Dashboard() {
+  const [showLab, setShowLab] = useState(false);
   const { 
     level, path, selectedAtomId, blastRadiusMode, diffMode, governanceMode, 
     snapshots, currentSnapshotId, isPlaying,
@@ -115,24 +117,65 @@ function Dashboard() {
       });
     } else if (level === 'repository' && repoData?.repository) {
       const repo = repoData.repository;
-      repo.namespaces.forEach((ns: { path: string }) => {
+      
+      // Infer "Containers" (Projects) from Namespace prefixes
+      const containers = new Map<string, { id: string; name: string; count: number }>();
+      
+      repo.namespaces.forEach((ns: { path: string; atomCount?: number }) => {
+        // "DiagnosticStructuralLens.Api.Controllers" -> "DiagnosticStructuralLens.Api"
+        const parts = ns.path.split('.');
+        const containerName = parts.length >= 2 ? `${parts[0]}.${parts[1]}` : parts[0];
+        
+        if (!containers.has(containerName)) {
+           containers.set(containerName, { id: containerName, name: containerName, count: 0 });
+        }
+        containers.get(containerName)!.count += (ns.atomCount || 0);
+      });
+
+      // push inferred containers as nodes
+      containers.forEach((c) => {
         nodes.push({
-          id: ns.path,
-          name: ns.path.split('.').pop() || ns.path,
-          type: 'namespace',
-          group: ns.path
+           id: c.id, 
+           name: c.name, 
+           type: 'container', 
+           riskScore: 0,
+           consumerCount: c.count 
         });
       });
-      // Add links between namespaces if available
-      if (repo.namespaceLinks) {
-        repo.namespaceLinks.forEach((link: { sourceNamespace: string; targetNamespace: string; linkType?: string }) => {
-          links.push({
-            source: link.sourceNamespace,
-            target: link.targetNamespace,
-            type: link.linkType
-          });
-        });
-      }
+       
+    } else if (level === 'project' && repoData?.repository) {
+       // Filter namespaces that belong to the selected "Container" (Project)
+       // The container ID is in path[1] because:
+       // Federation (path[]) -> Repo (path[0]) -> Project (path[1])
+       const containerPrefix = path[1];
+       const repo = repoData.repository;
+       
+       if (containerPrefix) {
+           repo.namespaces.forEach((ns: { path: string }) => {
+               if (ns.path.startsWith(containerPrefix)) {
+                    nodes.push({
+                        id: ns.path,
+                        name: ns.path.split('.').pop() || ns.path,
+                        type: 'namespace',
+                        group: containerPrefix // Cluster by project
+                    });
+               }
+           });
+           
+          // Add links only between these namespaces
+          if (repo.namespaceLinks) {
+            repo.namespaceLinks.forEach((link: { sourceNamespace: string; targetNamespace: string; linkType?: string }) => {
+               if (link.sourceNamespace.startsWith(containerPrefix) && link.targetNamespace.startsWith(containerPrefix)) {
+                  links.push({
+                    source: link.sourceNamespace,
+                    target: link.targetNamespace,
+                    type: link.linkType
+                  });
+               }
+            });
+          }
+       }
+
     } else if (level === 'component' && nsData?.namespace) {
       const ns = nsData.namespace;
       ns.atoms.forEach((atom: { id: string; name: string; type: string; riskScore?: number }) => {
@@ -155,41 +198,20 @@ function Dashboard() {
       }
 
     } else if (level === 'code' && atomData?.atom) {
-      // L4: Code Level - Show atom and its members
-      const rootAtom = atomData.atom;
-      
-      // Central node (the class/interface)
-      nodes.push({
-         id: rootAtom.id,
-         name: rootAtom.name,
-         type: rootAtom.type,
-         riskScore: rootAtom.riskScore,
-         group: 'root'
+      const atom = atomData.atom;
+      // Neighbors
+      atom.inboundLinks.forEach((l: { atomId: string; linkType: string }) => {
+          nodes.push({ id: l.atomId, name: l.atomId, type: 'neighbor' });
+          links.push({ source: l.atomId, target: atom.id, type: l.linkType });
       });
-
-      // Member nodes
-      if (rootAtom.members) {
-         rootAtom.members.forEach((member: { id: string; name: string; type: string; isPublic: boolean }) => {
-            nodes.push({
-               id: member.id,
-               name: member.name,
-               type: member.type, // Method, Property, Field
-               group: 'member',
-               category: member.isPublic ? 'public' : 'private'
-            });
-
-            // Link from root to member
-            links.push({
-               source: rootAtom.id,
-               target: member.id,
-               type: 'Contains'
-            });
-         });
-      }
+      atom.outboundLinks.forEach((l: { atomId: string; linkType: string }) => {
+          nodes.push({ id: l.atomId, name: l.atomId, type: 'neighbor' });
+          links.push({ source: atom.id, target: l.atomId, type: l.linkType });
+      });
     }
 
     return { nodes, links };
-  }, [level, federationData, repoData, nsData, atomData]);
+  }, [level, path, federationData, repoData, nsData, atomData]);
 
 
   // Blast radius highlighting
@@ -231,8 +253,8 @@ function Dashboard() {
       {/* Header */}
       <header className="h-16 px-6 flex items-center gap-6" style={{ backgroundColor: 'var(--color-bg-dark)', borderBottom: '1px solid var(--color-border-dark)' }}>
         <div className="flex items-center gap-3">
-          <span className="text-3xl" style={{ color: 'var(--color-primary)' }}>⬡</span>
-          <h1 className="text-xl font-bold text-white tracking-tight">Mystery Machine</h1>
+          <img src="/logo.png" alt="DSL Logo" className="w-10 h-10 object-contain" />
+          <h1 className="text-xl font-bold text-white tracking-tight">Diagnostic Structural Lens</h1>
         </div>
         <Breadcrumb className="flex-1" />
         
@@ -250,7 +272,32 @@ function Dashboard() {
             }}
           />
         </div>
+
+        {/* New Scan / Clear Project */}
+        <button
+            onClick={() => {
+                selectAtom(null);
+                window.location.reload(); 
+            }}
+            className="px-4 py-2 text-sm text-slate-300 hover:text-white border border-slate-600 hover:border-slate-500 rounded-lg transition-colors"
+        >
+            New Scan
+        </button>
+
+        {/* Lab Toggle */}
+        <button
+            onClick={() => setShowLab(true)}
+            className="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-cyan-400 transition-colors"
+            title="Open Graph Lab"
+        >
+            <span className="text-xl">⚗️</span>
+        </button>
       </header>
+
+      {/* Graph Lab Overlay */}
+      {showLab && (
+        <GraphLab onClose={() => setShowLab(false)} />
+      )}
 
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
@@ -261,9 +308,19 @@ function Dashboard() {
               <div className="text-slate-400">Loading...</div>
             </div>
           ) : graphData.nodes.length === 0 ? (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <FileDropZone onSuccess={handleUploadSuccess} />
-            </div>
+            level === 'federation' ? (
+              <div className="absolute inset-0 flex items-center justify-center p-8">
+                <div className="w-full max-w-3xl">
+                  <FileDropZone onSuccess={handleUploadSuccess} />
+                </div>
+              </div>
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="text-slate-500 bg-slate-900/80 px-4 py-2 rounded border border-slate-700 backdrop-blur">
+                  No nodes found in this view
+                </div>
+              </div>
+            )
           ) : (
             <ForceGraph
               nodes={graphData.nodes}
@@ -275,147 +332,126 @@ function Dashboard() {
               blastRadiusAtoms={blastRadiusMode ? blastRadiusAtoms : undefined}
               blastRadiusDepths={blastRadiusMode ? blastRadiusDepths : undefined}
               diffMode={diffMode}
-              width={window.innerWidth - (selectedAtomId ? 320 : 0)}
-              height={window.innerHeight - 100}
+              governanceMode={governanceMode}
+              width={window.innerWidth} // Full width always to prevent physics reset
+              height={window.innerHeight - 64} // Subtract header height
             />
           )}
 
-          {/* Floating Toolbar */}
-          <div className="absolute bottom-4 left-4 flex items-center gap-2">
-            {/* Zoom Controls */}
-            <ZoomControls
-              onZoomIn={handleZoomIn}
-              onZoomOut={handleZoomOut}
-              onFitToScreen={handleFitToScreen}
-            />
+          {/* Consolidated Toolbar (Bottom Left) */}
+          <div className="absolute bottom-4 left-4 flex flex-col gap-2 p-2 rounded-xl bg-slate-900/50 backdrop-blur border border-slate-700/50">
+            {/* Zoom Controls Group */}
+            <div className="flex flex-col gap-1">
+                <ZoomControls
+                onZoomIn={handleZoomIn}
+                onZoomOut={handleZoomOut}
+                onFitToScreen={handleFitToScreen}
+                orientation="vertical" 
+                />
+            </div>
             
-            {/* Separator */}
-            <div className="w-px h-8 bg-slate-600/50" />
+            {/* Divider */}
+            <div className="h-px w-full bg-slate-700/50 my-1" />
             
-            {/* Links Toggle */}
-            <button
-              onClick={() => setShowLinks(!showLinks)}
-              className="w-10 h-10 rounded-lg flex items-center justify-center transition-all"
-              title={showLinks ? 'Hide Links' : 'Show Links'}
-              style={{
-                backgroundColor: showLinks ? 'rgba(122, 155, 163, 0.25)' : 'rgba(42, 48, 56, 0.6)',
-                border: showLinks ? '1px solid rgba(122, 155, 163, 0.5)' : '1px solid rgba(42, 48, 56, 0.8)',
-                color: showLinks ? '#a0b8c0' : '#6b7280'
-              }}
-            >
-              <span className="material-symbols-outlined text-xl">link</span>
-            </button>
-            
-            {/* Blast Radius Toggle */}
-            <button
-              onClick={toggleBlastRadiusMode}
-              className="w-10 h-10 rounded-lg flex items-center justify-center transition-all"
-              title={blastRadiusMode ? 'Hide Blast Radius' : 'Show Blast Radius'}
-              style={{
-                backgroundColor: blastRadiusMode ? 'rgba(180, 84, 84, 0.25)' : 'rgba(42, 48, 56, 0.6)',
-                border: blastRadiusMode ? '1px solid rgba(180, 84, 84, 0.5)' : '1px solid rgba(42, 48, 56, 0.8)',
-                color: blastRadiusMode ? '#bc9a9a' : '#6b7280'
-              }}
-            >
-              <span className="material-symbols-outlined text-xl">radio_button_checked</span>
-            </button>
-            
-            {/* Diff Mode Toggle */}
-            <button
-              onClick={toggleDiffMode}
-              className="w-10 h-10 rounded-lg flex items-center justify-center transition-all"
-              title={diffMode ? 'Hide Diff' : 'Show Diff'}
-              style={{
-                backgroundColor: diffMode ? 'rgba(34, 197, 94, 0.25)' : 'rgba(42, 48, 56, 0.6)',
-                border: diffMode ? '1px solid rgba(34, 197, 94, 0.5)' : '1px solid rgba(42, 48, 56, 0.8)',
-                color: diffMode ? '#86efac' : '#6b7280'
-              }}
-            >
-              <span className="material-symbols-outlined text-xl">difference</span>
-            </button>
-          </div>
+            {/* View Options Group */}
+            <div className="flex flex-col gap-2">
+                {/* Links Toggle */}
+                <button
+                onClick={() => setShowLinks(!showLinks)}
+                className="w-8 h-8 rounded-lg flex items-center justify-center transition-all relative group"
+                title={showLinks ? 'Hide Links' : 'Show Links'}
+                style={{
+                    backgroundColor: showLinks ? 'rgba(122, 155, 163, 0.25)' : 'transparent',
+                    color: showLinks ? '#a0b8c0' : '#6b7280'
+                }}
+                >
+                <span className="material-symbols-outlined text-lg">link</span>
+                </button>
+                
+                {/* Blast Radius Toggle */}
+                <button
+                onClick={toggleBlastRadiusMode}
+                className="w-8 h-8 rounded-lg flex items-center justify-center transition-all relative"
+                title={blastRadiusMode ? 'Hide Blast Radius' : 'Show Blast Radius'}
+                style={{
+                    backgroundColor: blastRadiusMode ? 'rgba(180, 84, 84, 0.25)' : 'transparent',
+                    color: blastRadiusMode ? '#bc9a9a' : '#6b7280'
+                }}
+                >
+                <span className="material-symbols-outlined text-lg">radio_button_checked</span>
+                </button>
+                
+                {/* Diff Mode Toggle */}
+                <button
+                onClick={toggleDiffMode}
+                className="w-8 h-8 rounded-lg flex items-center justify-center transition-all relative"
+                title={diffMode ? 'Hide Diff' : 'Enable Diff Mode'}
+                style={{
+                    backgroundColor: diffMode ? 'rgba(34, 197, 94, 0.25)' : 'transparent',
+                    color: diffMode ? '#86efac' : '#6b7280'
+                }}
+                >
+                <span className="material-symbols-outlined text-lg">difference</span>
+                </button>
 
-          {/* Smart Filters - coming soon: will replace ModuleFilter with opt-in smell detection */}
+                 {/* Governance Mode Toggle */}
+                <button
+                onClick={toggleGovernanceMode}
+                className="w-8 h-8 rounded-lg flex items-center justify-center transition-all relative"
+                title={governanceMode ? 'Hide Governance' : 'Show Governance'}
+                style={{
+                    backgroundColor: governanceMode ? 'rgba(239, 68, 68, 0.25)' : 'transparent',
+                    color: governanceMode ? '#ef4444' : '#6b7280'
+                }}
+                >
+                <span className="material-symbols-outlined text-lg">policy</span>
+                </button>
+            </div>
+          </div>
 
           {/* Stats Overlay */}
           {federationData?.federation && level === 'federation' && (
-            <div className="absolute top-4 left-4 panel">
+            <div className="absolute top-4 left-4 panel pointer-events-none">
               <h3 className="text-sm font-medium text-slate-300 mb-2">Federation Stats</h3>
               <dl className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
                 <dt className="text-slate-400">Repos</dt>
                 <dd className="text-white font-medium">{federationData.federation.stats.totalRepos}</dd>
                 <dt className="text-slate-400">Code Atoms</dt>
                 <dd className="text-white font-medium">{federationData.federation.stats.totalCodeAtoms}</dd>
-                <dt className="text-slate-400">SQL Atoms</dt>
-                <dd className="text-white font-medium">{federationData.federation.stats.totalSqlAtoms}</dd>
-                <dt className="text-slate-400">Links</dt>
-                <dd className="text-white font-medium">{federationData.federation.stats.totalLinks}</dd>
-                <dt className="text-slate-400">Cross-Repo</dt>
-                <dd className="text-white font-medium">{federationData.federation.stats.crossRepoLinkCount}</dd>
               </dl>
             </div>
           )}
-          
-          {/* Controls Overlay */}
-          <div className="absolute top-4 right-4 flex flex-col gap-2">
-            <ZoomControls onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} onFitToScreen={handleFitToScreen} />
-            
-            {/* Diff Mode Toggle */}
-            <button
-               onClick={toggleDiffMode}
-               className={`p-2 rounded-lg backdrop-blur border transition-all ${
-                 diffMode 
-                   ? 'bg-yellow-500/20 border-yellow-500 text-yellow-400' 
-                   : 'bg-slate-800/50 border-slate-700 text-slate-400 hover:text-white'
-               }`}
-               title="Toggle Diff Mode"
-            >
-              <span className="material-symbols-outlined">history_toggle_off</span>
-            </button>
 
-            {/* Governance Mode Toggle */}
-             <button
-               onClick={toggleGovernanceMode}
-               className={`p-2 rounded-lg backdrop-blur border transition-all ${
-                 governanceMode 
-                   ? 'bg-red-500/20 border-red-500 text-red-500 shadow-[0_0_10px_rgba(239,68,68,0.3)]' 
-                   : 'bg-slate-800/50 border-slate-700 text-slate-400 hover:text-white'
-               }`}
-               title="Toggle Governance Mode"
-            >
-              <span className="material-symbols-outlined">policy</span>
-            </button>
-          </div>
-
-          <TimeControls 
-             snapshots={snapshots}
-             currentSnapshotId={currentSnapshotId}
-             isPlaying={isPlaying}
-             onSnapshotChange={setCurrentSnapshot}
-             onTogglePlay={() => setIsPlaying(!isPlaying)}
-          />
+          {/* Time Controls (Conditional - only when playing or manually toggled) */}
+          {snapshots && snapshots.length > 1 && isPlaying && (
+             <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 panel">
+                <TimeControls 
+                  snapshots={snapshots}
+                  currentSnapshotId={currentSnapshotId}
+                  isPlaying={isPlaying}
+                  onSnapshotChange={setCurrentSnapshot}
+                  onTogglePlay={() => setIsPlaying(!isPlaying)}
+                />
+             </div>
+          )}
 
           {/* Info Icon with Tooltip */}
           <div className="absolute bottom-4 right-4 group">
             <button
-              className="w-10 h-10 rounded-lg flex items-center justify-center transition-all"
-              style={{
-                backgroundColor: 'rgba(42, 48, 56, 0.6)',
-                border: '1px solid rgba(42, 48, 56, 0.8)',
-                color: '#6b7280'
-              }}
-              title="Interactions help"
+              className="w-8 h-8 rounded-lg flex items-center justify-center transition-all hover:bg-slate-700/50"
+              style={{ color: '#6b7280' }}
+              title="Help"
             >
-              <span className="material-symbols-outlined text-xl">help_outline</span>
+              <span className="material-symbols-outlined text-lg">help_outline</span>
             </button>
-            {/* Tooltip - appears on hover */}
+            {/* Tooltip */}
             <div className="absolute bottom-full right-0 mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
               <div className="panel text-xs whitespace-nowrap">
                 <ul className="text-slate-400 space-y-1">
-                  <li><span className="text-slate-300">Click</span> to select & view details</li>
-                  <li><span className="text-slate-300">Double-click</span> to drill down</li>
-                  <li><span className="text-slate-300">Drag</span> to move nodes</li>
-                  <li><span className="text-slate-300">Scroll</span> to zoom</li>
+                  <li><span className="text-slate-300">Click</span> select</li>
+                  <li><span className="text-slate-300">Double-click</span> drill down</li>
+                  <li><span className="text-slate-300">Drag</span> move</li>
+                  <li><span className="text-slate-300">Scroll</span> zoom</li>
                 </ul>
               </div>
             </div>
@@ -423,15 +459,15 @@ function Dashboard() {
 
           {/* Blast Radius Summary */}
           {blastRadiusMode && blastData?.blastRadius && (
-            <div className="absolute bottom-4 left-4 panel">
+            <div className="absolute bottom-4 left-20 panel">
               <h3 className="text-sm font-medium text-red-400 mb-2">💥 Blast Radius</h3>
-              <p className="text-2xl font-bold text-white mb-2">
-                {blastData.blastRadius.totalAffected} atoms affected
+              <p className="text-xl font-bold text-white mb-2">
+                {blastData.blastRadius.totalAffected} atoms
               </p>
               <div className="flex gap-2 flex-wrap">
                 {blastData.blastRadius.byDepth.map((d: { depth: number; count: number }) => (
                   <span key={d.depth} className="text-xs px-2 py-1 rounded bg-slate-700">
-                    Depth {d.depth}: {d.count}
+                    D{d.depth}: {d.count}
                   </span>
                 ))}
               </div>
@@ -441,7 +477,7 @@ function Dashboard() {
 
         {/* Details Panel - Level Aware */}
         {selectedAtomId && (
-          <aside className="w-80 border-l border-slate-700 p-4 overflow-y-auto bg-slate-800/50">
+          <aside className="w-80 border-l border-slate-700 p-4 overflow-y-auto bg-slate-900/95 backdrop-blur absolute right-0 top-0 bottom-0 shadow-2xl z-10 transition-transform duration-300">
             <div className="flex justify-between items-start mb-4">
               <h2 className="text-lg font-semibold text-white">Details</h2>
               <button 

@@ -10,7 +10,7 @@ export function Breadcrumb({ className = '' }: BreadcrumbProps) {
   const levelLabels = {
   federation: 'Federation',
   repository: 'Repository',
-  namespace: 'Namespace',
+  project: 'Project',
   component: 'Component',
   code: 'Code'
 };

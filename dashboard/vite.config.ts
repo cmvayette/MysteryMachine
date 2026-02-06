@@ -1,4 +1,5 @@
-import { defineConfig } from "vite";
+/// <reference types="vitest" />
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
@@ -9,9 +10,18 @@ export default defineConfig({
     port: 3000,
     proxy: {
       "/graphql": {
-        target: "http://localhost:5170",
+        target: "http://localhost:8085",
+        changeOrigin: true,
+      },
+      "/load": {
+        target: "http://localhost:8085",
         changeOrigin: true,
       },
     },
+  },
+  test: {
+    environment: "jsdom",
+    globals: true,
+    setupFiles: "./src/test/setup.ts",
   },
 });

@@ -49,6 +49,11 @@ export const REPOSITORY_QUERY = gql`
         dtoCount
         interfaceCount
       }
+      namespaceLinks {
+        sourceNamespace
+        targetNamespace
+        linkCount
+      }
       sqlSchemas {
         schema
         tableCount

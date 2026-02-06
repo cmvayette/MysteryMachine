@@ -1,10 +1,10 @@
 # System Validation Plan & Rubric
 
-This document outlines the standard operating procedure for validating the **System Cartographer** against industry-standard architectures. Use this guide to verify correctness, performance, and user experience.
+This document outlines the standard operating procedure for validating the **Diagnostic Structural Lens** against industry-standard architectures. Use this guide to verify correctness, performance, and user experience.
 
 ## 📋 Prerequisites
 
-1.  **System Cartographer CLI**: Built and available on `PATH` (or run via `dotnet run`).
+1.  **Diagnostic Structural Lens CLI**: Built and available on `PATH` (or run via `dotnet run`).
 2.  **Git**: For cloning validation repositories.
 3.  **Docker** (Optional): For testing containerized deployments.
 
@@ -29,7 +29,7 @@ _Goal: Ensure multiple microservices are correctly identified and linked._
 1.  **Clone**: `git clone https://github.com/dotnet/eShop.git validation/eShop`
 2.  **Scan**:
     ```bash
-    cartographer scan --repo validation/eShop --output v1_eshop.json
+    dsl scan --repo validation/eShop --output v1_eshop.json
     ```
 3.  **Verify**:
     - Open `v1_eshop.json` in Dashboard.
@@ -44,12 +44,12 @@ _Goal: Ensure the system handles large-scale data and temporal evolution._
 2.  **Baseline Scan (v4.50)**:
     ```bash
     cd validation/nopCommerce && git checkout release-4.50
-    cartographer scan --repo . --output ../../v2_nop_4.50.json
+    dsl scan --repo . --output ../../v2_nop_4.50.json
     ```
 3.  **Current Scan (v4.70)**:
     ```bash
     git checkout release-4.70
-    cartographer scan --repo . --output ../../v2_nop_4.70.json
+    dsl scan --repo . --output ../../v2_nop_4.70.json
     ```
 4.  **Verify**:
     - Load both files into Dashboard.
@@ -80,7 +80,7 @@ _Goal: Prove that rules are correctly enforced on a compliant codebase._
 
     </details>
 
-3.  **Scan**: `cartographer scan --repo . --output v3_clean.json`
+3.  **Scan**: `dsl scan --repo . --output v3_clean.json`
 4.  **Verify**:
     - **Result should be 0 Violations.**
     - _sabotage_: Add `public CleanArchitecture.Infrastructure.MyClass BadProp { get; set; }` to a Domain entity.

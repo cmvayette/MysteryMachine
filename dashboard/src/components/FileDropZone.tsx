@@ -49,7 +49,15 @@ export function FileDropZone({ onSuccess }: FileDropZoneProps) {
       });
 
       if (!response.ok) {
-        throw new Error(`Upload failed: ${response.statusText}`);
+        let errorMessage = response.statusText;
+        try {
+          const errorData = await response.json();
+          // ASP.NET Core Results.Problem returns 'detail', manual returns might use 'error'
+          errorMessage = errorData.detail || errorData.error || errorData.title || errorMessage;
+        } catch {
+          // ignore json parse error, stick to statusText
+        }
+        throw new Error(`Upload failed: ${errorMessage}`);
       }
 
       onSuccess();
@@ -74,21 +82,21 @@ export function FileDropZone({ onSuccess }: FileDropZoneProps) {
       onDrop={handleDrop}
     >
       <div className={`
-        w-20 h-20 rounded-full flex items-center justify-center mb-6 transition-colors
+        w-24 h-24 rounded-full flex items-center justify-center mb-8 transition-colors
         ${isDragging ? 'bg-cyan-500 text-white' : 'bg-slate-700 text-slate-400'}
       `}>
         {isLoading ? (
-          <span className="material-symbols-outlined text-4xl animate-spin">sync</span>
+          <span className="material-symbols-outlined text-5xl animate-spin">sync</span>
         ) : (
-          <span className="material-symbols-outlined text-4xl">cloud_upload</span>
+          <span className="material-symbols-outlined text-5xl">cloud_upload</span>
         )}
       </div>
 
-      <h3 className="text-xl font-bold text-white mb-2">
+      <h3 className="text-2xl font-bold text-white mb-4">
         {isLoading ? 'Loading Snapshot...' : 'Drop Snapshot Here'}
       </h3>
       
-      <p className="text-slate-400 text-center max-w-sm mb-6">
+      <p className="text-slate-400 text-center max-w-md mb-8 text-lg">
         Drag and drop a <code>snapshot.json</code> file to load it into the Cartographer.
       </p>
 

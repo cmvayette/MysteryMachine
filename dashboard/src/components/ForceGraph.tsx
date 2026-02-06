@@ -13,6 +13,8 @@ interface Node {
   fx?: number | null;
   fy?: number | null;
   status?: 'added' | 'removed' | 'modified' | 'unchanged';
+  vx?: number;
+  vy?: number;
 }
 
 interface Link {
@@ -37,11 +39,16 @@ interface ForceGraphProps {
   onViewportChange?: (x: number, y: number, nodeCount: number, edgeCount: number) => void;
   diffMode?: boolean;
   governanceMode?: boolean;
+  // Physics tuning props (for GraphLab)
+  chargeStrength?: number;
+  linkDistance?: number;
+  collisionRadiusMultiplier?: number;
 }
 
 // Material Symbol names mapped to atom types (C4 aligned)
 const TYPE_ICONS: Record<string, string> = {
   repository: 'hexagon',           // C4: bounded system
+  container: 'dns',                // C4: container (Project)
   namespace: 'folder_open',        // container grouping
   dto: 'data_object',              // data transfer object
   interface: 'circle',             // hollow = contract
@@ -54,6 +61,7 @@ const TYPE_ICONS: Record<string, string> = {
   storedprocedure: 'code',         // procedure
   delegate: 'arrow_forward',       // function pointer
   struct: 'diamond',               // value type
+  neighbor: 'help_outline'         // external/unknown
 };
 
 // Risk score to color mapping (muted tones)
@@ -67,8 +75,9 @@ function getRiskColor(riskScore: number): string {
 // Type to muted color mapping - flat desaturated tones
 function getTypeColor(type: string): string {
   switch (type?.toLowerCase()) {
-    case 'repository': return '#7a9ba3'; // slate blue-grey
-    case 'namespace': return '#8b9dc3'; // muted periwinkle
+    case 'repository': return '#f59e0b'; // Amber-500
+    case 'container': return '#0ea5e9';  // Sky-500 (Container/Project)
+    case 'namespace': return '#8b5cf6';  // Violet-500
     case 'dto': return '#a08cba'; // muted lavender
     case 'interface': return '#c9a87c'; // muted amber
     case 'class': return '#7aa3a3'; // muted teal
@@ -86,6 +95,7 @@ function getNodeShape(type: string): string {
   switch (type?.toLowerCase()) {
     case 'repository': // Hexagon - bounded system (C4 L1)
       return 'M 0,-20 L 17.3,-10 L 17.3,10 L 0,20 L -17.3,10 L -17.3,-10 Z';
+    case 'container': // Container (Project) - same as namespace for now (grouping)
     case 'namespace': // Rounded rectangle - container grouping (C4 L2)
       return 'M -22,-14 L 22,-14 Q 26,-14 26,-10 L 26,10 Q 26,14 22,14 L -22,14 Q -26,14 -26,10 L -26,-10 Q -26,-14 -22,-14 Z';
     case 'interface': // Hollow circle - contract (C4 L3)
@@ -115,11 +125,14 @@ function getNodeShape(type: string): string {
 
 // Dynamic node sizing based on type/consumer count
 function getNodeSize(node: Node): number {
-  const base = 40;
-  // Use consumerCount as proxy for importance since we don't have typeCount on node yet
-  // or default to base size
+  if (node.type === 'repository') return 40;
+  if (node.type === 'container') return 30; // Between Repo (40) and Namespace (20)
+  if (node.type === 'namespace') return 20;
+  
+  // Default code level or fallback
+  const base = 12;
   const metric = (node.consumerCount ?? 0) + 1;
-  return Math.min(base + Math.log(metric) * 8, 80);
+  return Math.min(base + Math.log(metric) * 2, 25);
 }
 
 function getBlastRadiusColor(depth: number): string {
@@ -140,7 +153,11 @@ export function ForceGraph({
   height = 600,
   onViewportChange,
   diffMode = false,
-  governanceMode = false
+  governanceMode = false,
+  // Default physics values
+  chargeStrength = -300,
+  linkDistance = 80,
+  collisionRadiusMultiplier = 1.1
 }: ForceGraphProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const clickTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -179,12 +196,78 @@ export function ForceGraph({
     const svg = d3.select(svgRef.current);
     svg.selectAll('*').remove();
 
-    // Create simulation
+    // Grid Layout Fallback (No Links) - "Constellation Fix"
+    if (links.length === 0 && nodes.length > 0) {
+       const aspect = width / height;
+       // Calculate grid dimensions
+       const cols = Math.ceil(Math.sqrt(nodes.length * aspect));
+       const rows = Math.ceil(nodes.length / cols);
+       const cellWidth = width / (cols + 1);
+       const cellHeight = height / (rows + 1);
+       
+       // Center offset
+       const startX = (width - (cols * cellWidth)) / 2 + cellWidth/2;
+       const startY = (height - (rows * cellHeight)) / 2 + cellHeight/2;
+
+       nodes.forEach((node, i) => {
+          const col = i % cols;
+          const row = Math.floor(i / cols);
+          // Fix positions to grid
+          node.fx = startX + col * cellWidth;
+          node.fy = startY + row * cellHeight;
+       });
+    } else {
+       // Reset fixed positions if switching back to force mode
+       nodes.forEach(n => {
+          if (n.status !== 'modified') { // Don't reset if specifically interacting (basic check)
+              n.fx = null;
+              n.fy = null;
+          }
+       });
+    }
+
+    // Solar System Physics (KI Research)
     const simulation = d3.forceSimulation<Node>(nodes)
-      .force('link', d3.forceLink<Node, Link>(links).id(d => d.id).distance(120))
-      .force('charge', d3.forceManyBody().strength(-400))
+      .force('link', d3.forceLink<Node, Link>(links).id(d => d.id).distance(linkDistance))
+      .force('charge', d3.forceManyBody().strength(chargeStrength))
       .force('center', d3.forceCenter(width / 2, height / 2))
-      .force('collision', d3.forceCollide<Node>().radius(d => getNodeSize(d) * 1.2));
+      .force('collision', d3.forceCollide<Node>().radius(d => getNodeSize(d) * collisionRadiusMultiplier));
+
+    // Add Group Centroid Force (Cohesion "Islands")
+    if (links.length > 0) {
+        simulation.force('group', alpha => {
+            const centroids: Record<string, {x: number, y: number, count: number}> = {};
+            
+            // Compute centroids
+            nodes.forEach(n => {
+               const g = n.group || 'root';
+               if (!centroids[g]) centroids[g] = {x: 0, y: 0, count: 0};
+               const x = n.x ?? 0;
+               const y = n.y ?? 0;
+               centroids[g].x += x;
+               centroids[g].y += y;
+               centroids[g].count++;
+            });
+            
+            // Apply force
+            const k = 0.1 * alpha; // Strength factor
+            nodes.forEach(n => {
+               const g = n.group || 'root';
+               const c = centroids[g];
+               if (!c) return;
+               
+               const cx = c.x / c.count;
+               const cy = c.y / c.count;
+               
+               n.vx = (n.vx ?? 0) + (cx - (n.x ?? 0)) * k;
+               n.vy = (n.vy ?? 0) + (cy - (n.y ?? 0)) * k;
+            });
+        });
+    }
+
+    simulation
+      .alphaDecay(0.05)     // Faster cooling (Stable "Solar System")
+      .velocityDecay(0.6);  // High friction (Prevent drift)
 
     // Add zoom behavior
     const g = svg.append('g');
@@ -316,7 +399,6 @@ export function ForceGraph({
         // Thicker border for high inbound dependencies
         const inbound = d.consumerCount ?? 0;
         return Math.min(1.5 + inbound * 0.2, 5);
-         return Math.min(1.5 + inbound * 0.2, 5);
       })
       .style('filter', d => {
          // Apply corrosion filter to high risk nodes
@@ -331,8 +413,9 @@ export function ForceGraph({
       .attr('transform', 'scale(1.3)')
       .attr('fill', 'none')
       .attr('stroke', '#a0b8c0') // muted cyan
-      .attr('stroke-width', 1.5)
-      .attr('stroke-opacity', 0.4);
+      .attr('stroke-width', 2)
+      .attr('stroke-opacity', 0.8) // Less vague opacity
+      .attr('stroke-dasharray', '2,2'); // Tactical dashed ring instead of glow
 
     // Apply Diff Mode Styles
     if (diffMode) {
@@ -398,19 +481,16 @@ export function ForceGraph({
     node.append('text')
       .attr('dy', d => getNodeSize(d) / 2 + 14)
       .attr('text-anchor', 'middle')
-      .attr('fill', '#9ca3af') // muted grey for labels
+      .attr('fill', '#e2e8f0') // slate-200 for better visibility on dark
       .attr('font-size', '10px')
       .attr('font-weight', '400')
       .attr('font-family', 'Inter, sans-serif')
       .attr('letter-spacing', '0.02em')
-      .each(function(d) {
-        const el = d3.select(this);
-        // Add background for readability
-        el.append('tspan')
-          .attr('class', 'label-bg')
-          .attr('class', 'label-bg')
-          .text(truncate(d.name, 18));
-      })
+      // "Outline" effect for readability using paint-order
+      .attr('stroke', '#0f172a') // slate-900 background color
+      .attr('stroke-width', 3)
+      .attr('paint-order', 'stroke')
+      .attr('stroke-linejoin', 'round')
       .attr('class', 'node-label-text') // Add class for LOD selection
       .style('opacity', 0) // Start hidden, let zoom handler reveal if needed (or default to visible if k=1)
       .text(d => truncate(d.name, 18));
@@ -453,19 +533,26 @@ export function ForceGraph({
       onNodeSelect?.(undefined as unknown as Node);
     });
 
-    // Hover glow effect
+    // Hover effect - subtle brighten updates, no glow
     node.on('mouseenter', function() {
       d3.select(this).select('path') // Changed from 'rect' to 'path'
         .transition()
         .duration(150)
-        .attr('filter', 'drop-shadow(0 0 8px rgba(13, 204, 242, 0.5))');
+        .attr('stroke-width', 4)
+        .style('opacity', 1);
     });
 
-    node.on('mouseleave', function() {
-      d3.select(this).select('path') // Changed from 'rect' to 'path'
-        .transition()
-        .duration(150)
-        .attr('filter', 'none');
+    node.on('mouseleave', function(_event, d) {
+       // Reset if not selected
+       if (d.id !== selectedNodeId) {
+          d3.select(this).select('path') // Changed from 'rect' to 'path'
+            .transition()
+            .duration(150)
+            .attr('stroke-width', (d: unknown) => {
+               const inbound = (d as Node).consumerCount ?? 0;
+               return Math.min(1.5 + inbound * 0.2, 5);
+            });
+       }
     });
 
     // Update link highlighting
@@ -507,6 +594,45 @@ export function ForceGraph({
     // Use signatures instead of array references to prevent re-render cascade
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nodesSignature, linksSignature, showLinks, selectedNodeId, blastRadiusAtoms, blastRadiusDepths, width, height, onNodeSelect, onNodeDrillDown, reportViewport, diffMode, governanceMode]);
+
+  // Pan to Selected Node
+  useEffect(() => {
+     if (!selectedNodeId || !svgRef.current) return;
+     
+     const node = nodes.find(n => n.id === selectedNodeId);
+     if (!node || node.x === undefined || node.y === undefined) return;
+
+     const svg = d3.select(svgRef.current);
+     // Calculate target transform
+     // Standard zoom level 1.5 for focus
+     const scale = 1.5; // Fixed zoom level for consistency
+     
+     // Center of screen
+     const cy = height / 2;
+     
+     // Valid panel offset (assuming 320px panel on right)
+     // We shift the center point to the LEFT by half the panel width
+     // so the node appears in the "visual center" of the remaining space.
+     const panelWidth = 320;
+     const visualCenterX = (width - panelWidth) / 2;
+     
+     // We want the node to be at (visualCenterX, cy)
+     // transform.x = visualCenterX - node.x * scale
+     // transform.y = cy - node.y * scale
+     const tx = visualCenterX - node.x * scale;
+     const ty = cy - node.y * scale;
+
+     const zoomIdentity = d3.zoomIdentity.translate(tx, ty).scale(scale);
+     
+     // Use transition for smooth movement
+     svg.transition()
+        .duration(750)
+        .ease(d3.easeCubicOut) // Smooth ease out
+        .call(
+             d3.zoom<SVGSVGElement, unknown>().transform, zoomIdentity
+        );
+
+  }, [selectedNodeId, nodes, width, height]);
 
   return (
     <svg 
@@ -550,7 +676,7 @@ function isConnectedLink(link: Link, nodeId: string): boolean {
 
 function getLinkColor(link: Link, selectedNodeId: string | null | undefined): string {
   if (selectedNodeId && isConnectedLink(link, selectedNodeId)) {
-    return '#0dccf2'; // Primary cyan
+    return '#a0b8c0'; // Muted cyan (Tactical)
   }
   if (link.crossRepo) return '#a855f7'; // Purple
   return '#224249'; // Border dark
