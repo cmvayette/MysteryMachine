@@ -1,0 +1,79 @@
+@import "tailwindcss";
+@import "./design-tokens.css";
+
+/* ===== BASE STYLES ===== */
+body {
+  background-color: var(--color-bg-dark);
+  color: #f1f5f9;
+  font-family: var(--font-display);
+  margin: 0;
+}
+
+/* ===== FORCE GRAPH ===== */
+.force-graph {
+  @apply w-full h-full;
+}
+
+.node {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.node:hover {
+  filter: brightness(1.15);
+}
+
+.node-label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  fill: #e2e8f0;
+  pointer-events: none;
+}
+
+.link {
+  stroke-opacity: 0.6;
+  transition: stroke-opacity 0.2s ease;
+}
+
+.link:hover {
+  stroke-opacity: 1;
+}
+
+/* ===== BLAST RADIUS ===== */
+.blast-radius-0 { fill: var(--color-risk-critical); }
+.blast-radius-1 { fill: #f97316; }
+.blast-radius-2 { fill: #fb923c; }
+.blast-radius-3 { fill: #fdba74; }
+.blast-radius-4 { fill: #fed7aa; }
+
+/* ===== RISK BADGES ===== */
+.risk-critical { @apply bg-red-600 text-white; }
+.risk-high { @apply bg-orange-600 text-white; }
+.risk-medium { @apply bg-yellow-600 text-black; }
+.risk-low { @apply bg-green-600 text-white; }
+
+/* ===== PANEL STYLES ===== */
+.panel {
+  background: var(--color-surface-dark);
+  border: 1px solid var(--color-border-dark);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: var(--shadow-panel);
+}
+
+.panel-header {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border-dark);
+}
+
+/* ===== MATERIAL ICONS ===== */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}

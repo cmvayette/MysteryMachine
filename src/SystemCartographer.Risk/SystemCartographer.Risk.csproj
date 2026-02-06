@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- TargetFramework inherited from Directory.Build.props -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SystemCartographer.Core\SystemCartographer.Core.csproj" />
+    <ProjectReference Include="..\SystemCartographer.Linker\SystemCartographer.Linker.csproj" />
+  </ItemGroup>
+</Project>

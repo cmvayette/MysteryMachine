@@ -1,0 +1,18 @@
+<Project>
+  <PropertyGroup>
+    <!-- 
+      Target Framework Configuration
+      ==============================
+      Local development: net10.0 (matches installed SDK/runtime)
+      Enterprise deployment: Change to net8.0 when deploying to production
+      
+      To switch frameworks, change the value below. The solution will rebuild
+      automatically with the new target.
+    -->
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+</Project>

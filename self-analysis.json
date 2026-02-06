@@ -1,0 +1,4251 @@
+{
+  "id": "6b619417",
+  "repository": "/Users/baxter/devProject/MysteryMachine/src",
+  "scannedAt": "2026-02-06T04:52:07.988134+00:00",
+  "branch": null,
+  "commitSha": null,
+  "codeAtoms": [
+    {
+      "id": "systemcartographer-cli-program",
+      "name": "Program",
+      "type": "Class",
+      "namespace": "SystemCartographer.Cli",
+      "repository": null,
+      "signature": "public class Program",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Cli/Program.cs",
+      "lineNumber": 12
+    },
+    {
+      "id": "systemcartographer-federation-federationengine",
+      "name": "FederationEngine",
+      "type": "Class",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "public class FederationEngine",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 9
+    },
+    {
+      "id": "systemcartographer-federation-federatedsnapshot",
+      "name": "FederatedSnapshot",
+      "type": "Record",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "public record FederatedSnapshot",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 407
+    },
+    {
+      "id": "systemcartographer-federation-federatedsnapshot-id",
+      "name": "Id",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "string Id",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 409
+    },
+    {
+      "id": "systemcartographer-federation-federatedsnapshot-federatedat",
+      "name": "FederatedAt",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "DateTimeOffset FederatedAt",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 410
+    },
+    {
+      "id": "systemcartographer-federation-federatedsnapshot-codeatoms",
+      "name": "CodeAtoms",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "List\u003CFederatedAtom\u003CCodeAtom\u003E\u003E CodeAtoms",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 411
+    },
+    {
+      "id": "systemcartographer-federation-federatedsnapshot-sqlatoms",
+      "name": "SqlAtoms",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "List\u003CFederatedAtom\u003CSqlAtom\u003E\u003E SqlAtoms",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 412
+    },
+    {
+      "id": "systemcartographer-federation-federatedsnapshot-links",
+      "name": "Links",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "List\u003CFederatedLink\u003E Links",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 413
+    },
+    {
+      "id": "systemcartographer-federation-federatedsnapshot-conflicts",
+      "name": "Conflicts",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "List\u003CAtomConflict\u003E Conflicts",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 414
+    },
+    {
+      "id": "systemcartographer-federation-federatedsnapshot-repometadata",
+      "name": "RepoMetadata",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "List\u003CRepoMetadata\u003E RepoMetadata",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 415
+    },
+    {
+      "id": "systemcartographer-federation-federatedsnapshot-stats",
+      "name": "Stats",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "FederationStats Stats",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 416
+    },
+    {
+      "id": "systemcartographer-federation-federatedatom",
+      "name": "FederatedAtom",
+      "type": "Record",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "public record FederatedAtom",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 422
+    },
+    {
+      "id": "systemcartographer-federation-federatedatom-atom",
+      "name": "Atom",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "T Atom",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 424
+    },
+    {
+      "id": "systemcartographer-federation-federatedatom-sourcerepo",
+      "name": "SourceRepo",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "string SourceRepo",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 425
+    },
+    {
+      "id": "systemcartographer-federation-federatedatom-scannedat",
+      "name": "ScannedAt",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "DateTimeOffset ScannedAt",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 426
+    },
+    {
+      "id": "systemcartographer-federation-federatedlink",
+      "name": "FederatedLink",
+      "type": "Record",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "public record FederatedLink",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 432
+    },
+    {
+      "id": "systemcartographer-federation-federatedlink-link",
+      "name": "Link",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "AtomLink Link",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 434
+    },
+    {
+      "id": "systemcartographer-federation-federatedlink-sourcerepo",
+      "name": "SourceRepo",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "string SourceRepo",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 435
+    },
+    {
+      "id": "systemcartographer-federation-federatedlink-targetrepo",
+      "name": "TargetRepo",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "string TargetRepo",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 436
+    },
+    {
+      "id": "systemcartographer-federation-repometadata",
+      "name": "RepoMetadata",
+      "type": "Record",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "public record RepoMetadata",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 442
+    },
+    {
+      "id": "systemcartographer-federation-repometadata-repoid",
+      "name": "RepoId",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "string RepoId",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 444
+    },
+    {
+      "id": "systemcartographer-federation-repometadata-branch",
+      "name": "Branch",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "string? Branch",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 445
+    },
+    {
+      "id": "systemcartographer-federation-repometadata-commitsha",
+      "name": "CommitSha",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "string? CommitSha",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 446
+    },
+    {
+      "id": "systemcartographer-federation-repometadata-scannedat",
+      "name": "ScannedAt",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "DateTimeOffset ScannedAt",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 447
+    },
+    {
+      "id": "systemcartographer-federation-repometadata-atomcount",
+      "name": "AtomCount",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "int AtomCount",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 448
+    },
+    {
+      "id": "systemcartographer-federation-atomconflict",
+      "name": "AtomConflict",
+      "type": "Record",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "public record AtomConflict",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 454
+    },
+    {
+      "id": "systemcartographer-federation-atomconflict-atomid",
+      "name": "AtomId",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "string AtomId",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 456
+    },
+    {
+      "id": "systemcartographer-federation-atomconflict-conflicttype",
+      "name": "ConflictType",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "ConflictType ConflictType",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 457
+    },
+    {
+      "id": "systemcartographer-federation-atomconflict-repo1",
+      "name": "Repo1",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "string Repo1",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 458
+    },
+    {
+      "id": "systemcartographer-federation-atomconflict-repo2",
+      "name": "Repo2",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "string Repo2",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 459
+    },
+    {
+      "id": "systemcartographer-federation-atomconflict-description",
+      "name": "Description",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "string Description",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 460
+    },
+    {
+      "id": "systemcartographer-federation-atomconflict-atom1signature",
+      "name": "Atom1Signature",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "string? Atom1Signature",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 461
+    },
+    {
+      "id": "systemcartographer-federation-atomconflict-atom2signature",
+      "name": "Atom2Signature",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "string? Atom2Signature",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 462
+    },
+    {
+      "id": "systemcartographer-federation-federationoptions",
+      "name": "FederationOptions",
+      "type": "Record",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "public record FederationOptions",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 489
+    },
+    {
+      "id": "systemcartographer-federation-federationoptions-conflictresolution",
+      "name": "ConflictResolution",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "ConflictResolution ConflictResolution",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 491
+    },
+    {
+      "id": "systemcartographer-federation-federationoptions-repopriority",
+      "name": "RepoPriority",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "List\u003Cstring\u003E RepoPriority",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 492
+    },
+    {
+      "id": "systemcartographer-federation-federationoptions-enablecrossrepolinking",
+      "name": "EnableCrossRepoLinking",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "bool EnableCrossRepoLinking",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 493
+    },
+    {
+      "id": "systemcartographer-federation-federationoptions-crossrepoconfidencemultiplier",
+      "name": "CrossRepoConfidenceMultiplier",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "double CrossRepoConfidenceMultiplier",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 494
+    },
+    {
+      "id": "systemcartographer-federation-federationstats",
+      "name": "FederationStats",
+      "type": "Record",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "public record FederationStats",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 500
+    },
+    {
+      "id": "systemcartographer-federation-federationstats-totalrepos",
+      "name": "TotalRepos",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "int TotalRepos",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 502
+    },
+    {
+      "id": "systemcartographer-federation-federationstats-totalcodeatoms",
+      "name": "TotalCodeAtoms",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "int TotalCodeAtoms",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 503
+    },
+    {
+      "id": "systemcartographer-federation-federationstats-totalsqlatoms",
+      "name": "TotalSqlAtoms",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "int TotalSqlAtoms",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 504
+    },
+    {
+      "id": "systemcartographer-federation-federationstats-totallinks",
+      "name": "TotalLinks",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "int TotalLinks",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 505
+    },
+    {
+      "id": "systemcartographer-federation-federationstats-conflictcount",
+      "name": "ConflictCount",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "int ConflictCount",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 506
+    },
+    {
+      "id": "systemcartographer-federation-federationstats-crossrepolinkcount",
+      "name": "CrossRepoLinkCount",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "int CrossRepoLinkCount",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 507
+    },
+    {
+      "id": "systemcartographer-federation-snapshotdelta",
+      "name": "SnapshotDelta",
+      "type": "Record",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "public record SnapshotDelta",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 513
+    },
+    {
+      "id": "systemcartographer-federation-snapshotdelta-sourcerepo",
+      "name": "SourceRepo",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "string SourceRepo",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 515
+    },
+    {
+      "id": "systemcartographer-federation-snapshotdelta-beforecommit",
+      "name": "BeforeCommit",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "string? BeforeCommit",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 516
+    },
+    {
+      "id": "systemcartographer-federation-snapshotdelta-aftercommit",
+      "name": "AfterCommit",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "string? AfterCommit",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 517
+    },
+    {
+      "id": "systemcartographer-federation-snapshotdelta-addedcodeatoms",
+      "name": "AddedCodeAtoms",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "List\u003CCodeAtom\u003E AddedCodeAtoms",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 518
+    },
+    {
+      "id": "systemcartographer-federation-snapshotdelta-removedcodeatomids",
+      "name": "RemovedCodeAtomIds",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "List\u003Cstring\u003E RemovedCodeAtomIds",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 519
+    },
+    {
+      "id": "systemcartographer-federation-snapshotdelta-addedsqlatoms",
+      "name": "AddedSqlAtoms",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "List\u003CSqlAtom\u003E AddedSqlAtoms",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 520
+    },
+    {
+      "id": "systemcartographer-federation-snapshotdelta-removedsqlatomids",
+      "name": "RemovedSqlAtomIds",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "List\u003Cstring\u003E RemovedSqlAtomIds",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 521
+    },
+    {
+      "id": "systemcartographer-federation-snapshotdelta-addedlinks",
+      "name": "AddedLinks",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "List\u003CAtomLink\u003E AddedLinks",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 522
+    },
+    {
+      "id": "systemcartographer-federation-snapshotdelta-removedlinkids",
+      "name": "RemovedLinkIds",
+      "type": "Property",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "List\u003Cstring\u003E RemovedLinkIds",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 523
+    },
+    {
+      "id": "systemcartographer-federation-conflicttype",
+      "name": "ConflictType",
+      "type": "Enum",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "enum ConflictType { SignatureMismatch, DuplicateId, VersionMismatch }",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 468
+    },
+    {
+      "id": "systemcartographer-federation-conflictresolution",
+      "name": "ConflictResolution",
+      "type": "Enum",
+      "namespace": "SystemCartographer.Federation",
+      "repository": null,
+      "signature": "enum ConflictResolution { NewestWins, PriorityOrder, KeepBoth, Fail }",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Federation/FederationEngine.cs",
+      "lineNumber": 478
+    },
+    {
+      "id": "systemcartographer-risk-riskscorer",
+      "name": "RiskScorer",
+      "type": "Class",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "public class RiskScorer",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 9
+    },
+    {
+      "id": "systemcartographer-risk-atomriskscore",
+      "name": "AtomRiskScore",
+      "type": "Record",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "public record AtomRiskScore",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 203
+    },
+    {
+      "id": "systemcartographer-risk-atomriskscore-atomid",
+      "name": "AtomId",
+      "type": "Property",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "string AtomId",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 205
+    },
+    {
+      "id": "systemcartographer-risk-atomriskscore-blastradiusscore",
+      "name": "BlastRadiusScore",
+      "type": "Property",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "double BlastRadiusScore",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 206
+    },
+    {
+      "id": "systemcartographer-risk-atomriskscore-inboundcouplingscore",
+      "name": "InboundCouplingScore",
+      "type": "Property",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "double InboundCouplingScore",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 207
+    },
+    {
+      "id": "systemcartographer-risk-atomriskscore-outboundcouplingscore",
+      "name": "OutboundCouplingScore",
+      "type": "Property",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "double OutboundCouplingScore",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 208
+    },
+    {
+      "id": "systemcartographer-risk-atomriskscore-crossdomainscore",
+      "name": "CrossDomainScore",
+      "type": "Property",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "double CrossDomainScore",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 209
+    },
+    {
+      "id": "systemcartographer-risk-atomriskscore-compositescore",
+      "name": "CompositeScore",
+      "type": "Property",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "double CompositeScore",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 210
+    },
+    {
+      "id": "systemcartographer-risk-atomriskscore-level",
+      "name": "Level",
+      "type": "Property",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "RiskLevel Level",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 211
+    },
+    {
+      "id": "systemcartographer-risk-riskreport",
+      "name": "RiskReport",
+      "type": "Record",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "public record RiskReport",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 228
+    },
+    {
+      "id": "systemcartographer-risk-riskreport-generatedat",
+      "name": "GeneratedAt",
+      "type": "Property",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "DateTimeOffset GeneratedAt",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 230
+    },
+    {
+      "id": "systemcartographer-risk-riskreport-snapshotid",
+      "name": "SnapshotId",
+      "type": "Property",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "string SnapshotId",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 231
+    },
+    {
+      "id": "systemcartographer-risk-riskreport-totalatoms",
+      "name": "TotalAtoms",
+      "type": "Property",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "int TotalAtoms",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 232
+    },
+    {
+      "id": "systemcartographer-risk-riskreport-scores",
+      "name": "Scores",
+      "type": "Property",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "List\u003CAtomRiskScore\u003E Scores",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 233
+    },
+    {
+      "id": "systemcartographer-risk-riskreport-hotspots",
+      "name": "Hotspots",
+      "type": "Property",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "List\u003CAtomRiskScore\u003E Hotspots",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 234
+    },
+    {
+      "id": "systemcartographer-risk-riskreport-stats",
+      "name": "Stats",
+      "type": "Property",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "RiskStats Stats",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 235
+    },
+    {
+      "id": "systemcartographer-risk-riskstats",
+      "name": "RiskStats",
+      "type": "Record",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "public record RiskStats",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 241
+    },
+    {
+      "id": "systemcartographer-risk-riskstats-criticalcount",
+      "name": "CriticalCount",
+      "type": "Property",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "int CriticalCount",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 243
+    },
+    {
+      "id": "systemcartographer-risk-riskstats-highcount",
+      "name": "HighCount",
+      "type": "Property",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "int HighCount",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 244
+    },
+    {
+      "id": "systemcartographer-risk-riskstats-mediumcount",
+      "name": "MediumCount",
+      "type": "Property",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "int MediumCount",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 245
+    },
+    {
+      "id": "systemcartographer-risk-riskstats-lowcount",
+      "name": "LowCount",
+      "type": "Property",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "int LowCount",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 246
+    },
+    {
+      "id": "systemcartographer-risk-riskstats-averagescore",
+      "name": "AverageScore",
+      "type": "Property",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "double AverageScore",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 247
+    },
+    {
+      "id": "systemcartographer-risk-risklevel",
+      "name": "RiskLevel",
+      "type": "Enum",
+      "namespace": "SystemCartographer.Risk",
+      "repository": null,
+      "signature": "enum RiskLevel { Low, Medium, High, Critical }",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Risk/RiskScorer.cs",
+      "lineNumber": 217
+    },
+    {
+      "id": "systemcartographer-linker-semanticlinker",
+      "name": "SemanticLinker",
+      "type": "Class",
+      "namespace": "SystemCartographer.Linker",
+      "repository": null,
+      "signature": "public partial class SemanticLinker",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Linker/SemanticLinker.cs",
+      "lineNumber": 10
+    },
+    {
+      "id": "systemcartographer-linker-linkresult",
+      "name": "LinkResult",
+      "type": "Class",
+      "namespace": "SystemCartographer.Linker",
+      "repository": null,
+      "signature": "public class LinkResult",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Linker/SemanticLinker.cs",
+      "lineNumber": 490
+    },
+    {
+      "id": "systemcartographer-linker-linkresult-links",
+      "name": "Links",
+      "type": "Property",
+      "namespace": "SystemCartographer.Linker",
+      "repository": null,
+      "signature": "List\u003CAtomLink\u003E Links",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Linker/SemanticLinker.cs",
+      "lineNumber": 492
+    },
+    {
+      "id": "systemcartographer-linker-linkresult-diagnostics",
+      "name": "Diagnostics",
+      "type": "Property",
+      "namespace": "SystemCartographer.Linker",
+      "repository": null,
+      "signature": "List\u003Cstring\u003E Diagnostics",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Linker/SemanticLinker.cs",
+      "lineNumber": 493
+    },
+    {
+      "id": "systemcartographer-linker-blastradiusresult",
+      "name": "BlastRadiusResult",
+      "type": "Class",
+      "namespace": "SystemCartographer.Linker",
+      "repository": null,
+      "signature": "public class BlastRadiusResult",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Linker/SemanticLinker.cs",
+      "lineNumber": 499
+    },
+    {
+      "id": "systemcartographer-linker-blastradiusresult-rootatomid",
+      "name": "RootAtomId",
+      "type": "Property",
+      "namespace": "SystemCartographer.Linker",
+      "repository": null,
+      "signature": "string RootAtomId",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Linker/SemanticLinker.cs",
+      "lineNumber": 501
+    },
+    {
+      "id": "systemcartographer-linker-blastradiusresult-affectedatoms",
+      "name": "AffectedAtoms",
+      "type": "Property",
+      "namespace": "SystemCartographer.Linker",
+      "repository": null,
+      "signature": "List\u003CAffectedAtom\u003E AffectedAtoms",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Linker/SemanticLinker.cs",
+      "lineNumber": 502
+    },
+    {
+      "id": "systemcartographer-linker-blastradiusresult-totalaffected",
+      "name": "TotalAffected",
+      "type": "Property",
+      "namespace": "SystemCartographer.Linker",
+      "repository": null,
+      "signature": "int TotalAffected",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Linker/SemanticLinker.cs",
+      "lineNumber": 503
+    },
+    {
+      "id": "systemcartographer-linker-blastradiusresult-maxdepth",
+      "name": "MaxDepth",
+      "type": "Property",
+      "namespace": "SystemCartographer.Linker",
+      "repository": null,
+      "signature": "int MaxDepth",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Linker/SemanticLinker.cs",
+      "lineNumber": 504
+    },
+    {
+      "id": "systemcartographer-linker-affectedatom",
+      "name": "AffectedAtom",
+      "type": "Class",
+      "namespace": "SystemCartographer.Linker",
+      "repository": null,
+      "signature": "public class AffectedAtom",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Linker/SemanticLinker.cs",
+      "lineNumber": 510
+    },
+    {
+      "id": "systemcartographer-linker-affectedatom-atomid",
+      "name": "AtomId",
+      "type": "Property",
+      "namespace": "SystemCartographer.Linker",
+      "repository": null,
+      "signature": "string AtomId",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Linker/SemanticLinker.cs",
+      "lineNumber": 512
+    },
+    {
+      "id": "systemcartographer-linker-affectedatom-depth",
+      "name": "Depth",
+      "type": "Property",
+      "namespace": "SystemCartographer.Linker",
+      "repository": null,
+      "signature": "int Depth",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Linker/SemanticLinker.cs",
+      "lineNumber": 513
+    },
+    {
+      "id": "systemcartographer-linker-affectedatom-path",
+      "name": "Path",
+      "type": "Property",
+      "namespace": "SystemCartographer.Linker",
+      "repository": null,
+      "signature": "string Path",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Linker/SemanticLinker.cs",
+      "lineNumber": 514
+    },
+    {
+      "id": "systemcartographer-scanner-csharp-csharpscanner",
+      "name": "CSharpScanner",
+      "type": "Class",
+      "namespace": "SystemCartographer.Scanner.CSharp",
+      "repository": null,
+      "signature": "public class CSharpScanner : IScanner",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Scanner.CSharp/CSharpScanner.cs",
+      "lineNumber": 11
+    },
+    {
+      "id": "systemcartographer-scanner-sql-sqlscanner",
+      "name": "SqlScanner",
+      "type": "Class",
+      "namespace": "SystemCartographer.Scanner.Sql",
+      "repository": null,
+      "signature": "public class SqlScanner : IScanner",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Scanner.Sql/SqlScanner.cs",
+      "lineNumber": 9
+    },
+    {
+      "id": "systemcartographer-core-iscanner",
+      "name": "IScanner",
+      "type": "Interface",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "public interface IScanner",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/IScanner.cs",
+      "lineNumber": 6
+    },
+    {
+      "id": "systemcartographer-core-iscanner-scanasync",
+      "name": "ScanAsync",
+      "type": "Method",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "Task\u003CScanResult\u003E ScanAsync(string path, ScanOptions? options, CancellationToken cancellationToken)",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/IScanner.cs",
+      "lineNumber": 11
+    },
+    {
+      "id": "systemcartographer-core-scanresult",
+      "name": "ScanResult",
+      "type": "Record",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "public record ScanResult",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/IScanner.cs",
+      "lineNumber": 17
+    },
+    {
+      "id": "systemcartographer-core-scanresult-codeatoms",
+      "name": "CodeAtoms",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "List\u003CCodeAtom\u003E CodeAtoms",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/IScanner.cs",
+      "lineNumber": 19
+    },
+    {
+      "id": "systemcartographer-core-scanresult-sqlatoms",
+      "name": "SqlAtoms",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "List\u003CSqlAtom\u003E SqlAtoms",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/IScanner.cs",
+      "lineNumber": 20
+    },
+    {
+      "id": "systemcartographer-core-scanresult-links",
+      "name": "Links",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "List\u003CAtomLink\u003E Links",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/IScanner.cs",
+      "lineNumber": 21
+    },
+    {
+      "id": "systemcartographer-core-scanresult-diagnostics",
+      "name": "Diagnostics",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "List\u003CScanDiagnostic\u003E Diagnostics",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/IScanner.cs",
+      "lineNumber": 22
+    },
+    {
+      "id": "systemcartographer-core-scanresult-duration",
+      "name": "Duration",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "TimeSpan Duration",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/IScanner.cs",
+      "lineNumber": 23
+    },
+    {
+      "id": "systemcartographer-core-scanoptions",
+      "name": "ScanOptions",
+      "type": "Class",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "public class ScanOptions",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/IScanner.cs",
+      "lineNumber": 29
+    },
+    {
+      "id": "systemcartographer-core-scanoptions-includepatterns",
+      "name": "IncludePatterns",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "List\u003Cstring\u003E IncludePatterns",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/IScanner.cs",
+      "lineNumber": 31
+    },
+    {
+      "id": "systemcartographer-core-scanoptions-excludepatterns",
+      "name": "ExcludePatterns",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "List\u003Cstring\u003E ExcludePatterns",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/IScanner.cs",
+      "lineNumber": 32
+    },
+    {
+      "id": "systemcartographer-core-scanoptions-includeprivatemembers",
+      "name": "IncludePrivateMembers",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "bool IncludePrivateMembers",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/IScanner.cs",
+      "lineNumber": 33
+    },
+    {
+      "id": "systemcartographer-core-scanoptions-extractdocumentation",
+      "name": "ExtractDocumentation",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "bool ExtractDocumentation",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/IScanner.cs",
+      "lineNumber": 34
+    },
+    {
+      "id": "systemcartographer-core-scandiagnostic",
+      "name": "ScanDiagnostic",
+      "type": "Record",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "public record ScanDiagnostic",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/IScanner.cs",
+      "lineNumber": 40
+    },
+    {
+      "id": "systemcartographer-core-diagnosticseverity",
+      "name": "DiagnosticSeverity",
+      "type": "Enum",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "enum DiagnosticSeverity { Info, Warning, Error }",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/IScanner.cs",
+      "lineNumber": 47
+    },
+    {
+      "id": "systemcartographer-core-codeatom",
+      "name": "CodeAtom",
+      "type": "Record",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "public record CodeAtom",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 6
+    },
+    {
+      "id": "systemcartographer-core-codeatom-id",
+      "name": "Id",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "string Id",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 8
+    },
+    {
+      "id": "systemcartographer-core-codeatom-name",
+      "name": "Name",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "string Name",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 9
+    },
+    {
+      "id": "systemcartographer-core-codeatom-type",
+      "name": "Type",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "AtomType Type",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 10
+    },
+    {
+      "id": "systemcartographer-core-codeatom-namespace",
+      "name": "Namespace",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "string Namespace",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 11
+    },
+    {
+      "id": "systemcartographer-core-codeatom-repository",
+      "name": "Repository",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "string? Repository",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 12
+    },
+    {
+      "id": "systemcartographer-core-codeatom-signature",
+      "name": "Signature",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "string? Signature",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 13
+    },
+    {
+      "id": "systemcartographer-core-codeatom-targetframework",
+      "name": "TargetFramework",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "string? TargetFramework",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 14
+    },
+    {
+      "id": "systemcartographer-core-codeatom-filepath",
+      "name": "FilePath",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "string? FilePath",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 15
+    },
+    {
+      "id": "systemcartographer-core-codeatom-linenumber",
+      "name": "LineNumber",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "int? LineNumber",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 16
+    },
+    {
+      "id": "systemcartographer-core-sqlatom",
+      "name": "SqlAtom",
+      "type": "Record",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "public record SqlAtom",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 22
+    },
+    {
+      "id": "systemcartographer-core-sqlatom-id",
+      "name": "Id",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "string Id",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 24
+    },
+    {
+      "id": "systemcartographer-core-sqlatom-name",
+      "name": "Name",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "string Name",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 25
+    },
+    {
+      "id": "systemcartographer-core-sqlatom-type",
+      "name": "Type",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "SqlAtomType Type",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 26
+    },
+    {
+      "id": "systemcartographer-core-sqlatom-parenttable",
+      "name": "ParentTable",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "string? ParentTable",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 27
+    },
+    {
+      "id": "systemcartographer-core-sqlatom-datatype",
+      "name": "DataType",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "string? DataType",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 28
+    },
+    {
+      "id": "systemcartographer-core-sqlatom-isnullable",
+      "name": "IsNullable",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "bool IsNullable",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 29
+    },
+    {
+      "id": "systemcartographer-core-sqlatom-filepath",
+      "name": "FilePath",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "string? FilePath",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 30
+    },
+    {
+      "id": "systemcartographer-core-atomlink",
+      "name": "AtomLink",
+      "type": "Record",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "public record AtomLink",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 36
+    },
+    {
+      "id": "systemcartographer-core-atomlink-id",
+      "name": "Id",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "string Id",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 38
+    },
+    {
+      "id": "systemcartographer-core-atomlink-sourceid",
+      "name": "SourceId",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "string SourceId",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 39
+    },
+    {
+      "id": "systemcartographer-core-atomlink-targetid",
+      "name": "TargetId",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "string TargetId",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 40
+    },
+    {
+      "id": "systemcartographer-core-atomlink-type",
+      "name": "Type",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "LinkType Type",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 41
+    },
+    {
+      "id": "systemcartographer-core-atomlink-confidence",
+      "name": "Confidence",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "double Confidence",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 42
+    },
+    {
+      "id": "systemcartographer-core-atomlink-evidence",
+      "name": "Evidence",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "string? Evidence",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 43
+    },
+    {
+      "id": "systemcartographer-core-atomtype",
+      "name": "AtomType",
+      "type": "Enum",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "enum AtomType { Class, Interface, Record, Struct, Enum, Method, Property, Field, Dto, Unknown }",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 46
+    },
+    {
+      "id": "systemcartographer-core-sqlatomtype",
+      "name": "SqlAtomType",
+      "type": "Enum",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "enum SqlAtomType { Table, Column, StoredProcedure, View, Function, Index }",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 60
+    },
+    {
+      "id": "systemcartographer-core-linktype",
+      "name": "LinkType",
+      "type": "Enum",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "enum LinkType { Inherits, Implements, Calls, References, Contains, NameMatch, AttributeBinding, QueryTrace, ExactMatch, FuzzyMatch, PropertyMatch, PackageDependency, ProjectReference }",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/AtomicModel.cs",
+      "lineNumber": 70
+    },
+    {
+      "id": "systemcartographer-core-snapshot",
+      "name": "Snapshot",
+      "type": "Class",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "public class Snapshot",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/Snapshot.cs",
+      "lineNumber": 6
+    },
+    {
+      "id": "systemcartographer-core-snapshot-id",
+      "name": "Id",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "string Id",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/Snapshot.cs",
+      "lineNumber": 8
+    },
+    {
+      "id": "systemcartographer-core-snapshot-repository",
+      "name": "Repository",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "string Repository",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/Snapshot.cs",
+      "lineNumber": 9
+    },
+    {
+      "id": "systemcartographer-core-snapshot-scannedat",
+      "name": "ScannedAt",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "DateTimeOffset ScannedAt",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/Snapshot.cs",
+      "lineNumber": 10
+    },
+    {
+      "id": "systemcartographer-core-snapshot-branch",
+      "name": "Branch",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "string? Branch",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/Snapshot.cs",
+      "lineNumber": 11
+    },
+    {
+      "id": "systemcartographer-core-snapshot-commitsha",
+      "name": "CommitSha",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "string? CommitSha",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/Snapshot.cs",
+      "lineNumber": 12
+    },
+    {
+      "id": "systemcartographer-core-snapshot-codeatoms",
+      "name": "CodeAtoms",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "List\u003CCodeAtom\u003E CodeAtoms",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/Snapshot.cs",
+      "lineNumber": 14
+    },
+    {
+      "id": "systemcartographer-core-snapshot-sqlatoms",
+      "name": "SqlAtoms",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "List\u003CSqlAtom\u003E SqlAtoms",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/Snapshot.cs",
+      "lineNumber": 15
+    },
+    {
+      "id": "systemcartographer-core-snapshot-links",
+      "name": "Links",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "List\u003CAtomLink\u003E Links",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/Snapshot.cs",
+      "lineNumber": 16
+    },
+    {
+      "id": "systemcartographer-core-snapshot-metadata",
+      "name": "Metadata",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "SnapshotMetadata Metadata",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/Snapshot.cs",
+      "lineNumber": 18
+    },
+    {
+      "id": "systemcartographer-core-snapshotmetadata",
+      "name": "SnapshotMetadata",
+      "type": "Class",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "public class SnapshotMetadata",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/Snapshot.cs",
+      "lineNumber": 21
+    },
+    {
+      "id": "systemcartographer-core-snapshotmetadata-totalcodeatoms",
+      "name": "TotalCodeAtoms",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "int TotalCodeAtoms",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/Snapshot.cs",
+      "lineNumber": 23
+    },
+    {
+      "id": "systemcartographer-core-snapshotmetadata-totalsqlatoms",
+      "name": "TotalSqlAtoms",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "int TotalSqlAtoms",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/Snapshot.cs",
+      "lineNumber": 24
+    },
+    {
+      "id": "systemcartographer-core-snapshotmetadata-totallinks",
+      "name": "TotalLinks",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "int TotalLinks",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/Snapshot.cs",
+      "lineNumber": 25
+    },
+    {
+      "id": "systemcartographer-core-snapshotmetadata-dtocount",
+      "name": "DtoCount",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "int DtoCount",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/Snapshot.cs",
+      "lineNumber": 26
+    },
+    {
+      "id": "systemcartographer-core-snapshotmetadata-interfacecount",
+      "name": "InterfaceCount",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "int InterfaceCount",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/Snapshot.cs",
+      "lineNumber": 27
+    },
+    {
+      "id": "systemcartographer-core-snapshotmetadata-tablecount",
+      "name": "TableCount",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "int TableCount",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/Snapshot.cs",
+      "lineNumber": 28
+    },
+    {
+      "id": "systemcartographer-core-snapshotmetadata-storedprocedurecount",
+      "name": "StoredProcedureCount",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "int StoredProcedureCount",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/Snapshot.cs",
+      "lineNumber": 29
+    },
+    {
+      "id": "systemcartographer-core-snapshotmetadata-scanduration",
+      "name": "ScanDuration",
+      "type": "Property",
+      "namespace": "SystemCartographer.Core",
+      "repository": null,
+      "signature": "TimeSpan ScanDuration",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Core/Snapshot.cs",
+      "lineNumber": 30
+    },
+    {
+      "id": "systemcartographer-api-graphql-cartographerdataservice",
+      "name": "CartographerDataService",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class CartographerDataService",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/CartographerDataService.cs",
+      "lineNumber": 13
+    },
+    {
+      "id": "systemcartographer-api-graphql-federationviewtype",
+      "name": "FederationViewType",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class FederationViewType : ObjectType\u003CFederationView\u003E",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Types.cs",
+      "lineNumber": 9
+    },
+    {
+      "id": "systemcartographer-api-graphql-repositorynodetype",
+      "name": "RepositoryNodeType",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class RepositoryNodeType : ObjectType\u003CRepositoryNode\u003E",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Types.cs",
+      "lineNumber": 22
+    },
+    {
+      "id": "systemcartographer-api-graphql-namespacenodetype",
+      "name": "NamespaceNodeType",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class NamespaceNodeType : ObjectType\u003CNamespaceNode\u003E",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Types.cs",
+      "lineNumber": 35
+    },
+    {
+      "id": "systemcartographer-api-graphql-atomnodetype",
+      "name": "AtomNodeType",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class AtomNodeType : ObjectType\u003CAtomNode\u003E",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Types.cs",
+      "lineNumber": 47
+    },
+    {
+      "id": "systemcartographer-api-graphql-atomdetailtype",
+      "name": "AtomDetailType",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class AtomDetailType : ObjectType\u003CAtomDetail\u003E",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Types.cs",
+      "lineNumber": 60
+    },
+    {
+      "id": "systemcartographer-api-graphql-blastradiusresulttype",
+      "name": "BlastRadiusResultType",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class BlastRadiusResultType : ObjectType\u003CBlastRadiusResult\u003E",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Types.cs",
+      "lineNumber": 78
+    },
+    {
+      "id": "systemcartographer-api-graphql-query",
+      "name": "Query",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class Query",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 11
+    },
+    {
+      "id": "systemcartographer-api-graphql-federationview",
+      "name": "FederationView",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class FederationView",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 216
+    },
+    {
+      "id": "systemcartographer-api-graphql-federationview-id",
+      "name": "Id",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string Id",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 218
+    },
+    {
+      "id": "systemcartographer-api-graphql-federationview-federatedat",
+      "name": "FederatedAt",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "DateTimeOffset FederatedAt",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 219
+    },
+    {
+      "id": "systemcartographer-api-graphql-federationview-repositories",
+      "name": "Repositories",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "List\u003CRepositoryNode\u003E Repositories",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 220
+    },
+    {
+      "id": "systemcartographer-api-graphql-federationview-crossrepolinks",
+      "name": "CrossRepoLinks",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "List\u003CCrossRepoLink\u003E CrossRepoLinks",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 221
+    },
+    {
+      "id": "systemcartographer-api-graphql-federationview-stats",
+      "name": "Stats",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "FederationStatsView Stats",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 222
+    },
+    {
+      "id": "systemcartographer-api-graphql-repositorynode",
+      "name": "RepositoryNode",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class RepositoryNode",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 225
+    },
+    {
+      "id": "systemcartographer-api-graphql-repositorynode-id",
+      "name": "Id",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string Id",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 227
+    },
+    {
+      "id": "systemcartographer-api-graphql-repositorynode-name",
+      "name": "Name",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string Name",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 228
+    },
+    {
+      "id": "systemcartographer-api-graphql-repositorynode-branch",
+      "name": "Branch",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string? Branch",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 229
+    },
+    {
+      "id": "systemcartographer-api-graphql-repositorynode-scannedat",
+      "name": "ScannedAt",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "DateTimeOffset ScannedAt",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 230
+    },
+    {
+      "id": "systemcartographer-api-graphql-repositorynode-atomcount",
+      "name": "AtomCount",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "int AtomCount",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 231
+    },
+    {
+      "id": "systemcartographer-api-graphql-repositorynode-riskscore",
+      "name": "RiskScore",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "double RiskScore",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 232
+    },
+    {
+      "id": "systemcartographer-api-graphql-repositorynode-namespaces",
+      "name": "Namespaces",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "List\u003Cstring\u003E Namespaces",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 233
+    },
+    {
+      "id": "systemcartographer-api-graphql-repositoryview",
+      "name": "RepositoryView",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class RepositoryView",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 236
+    },
+    {
+      "id": "systemcartographer-api-graphql-repositoryview-id",
+      "name": "Id",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string Id",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 238
+    },
+    {
+      "id": "systemcartographer-api-graphql-repositoryview-name",
+      "name": "Name",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string Name",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 239
+    },
+    {
+      "id": "systemcartographer-api-graphql-repositoryview-branch",
+      "name": "Branch",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string? Branch",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 240
+    },
+    {
+      "id": "systemcartographer-api-graphql-repositoryview-namespaces",
+      "name": "Namespaces",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "List\u003CNamespaceNode\u003E Namespaces",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 241
+    },
+    {
+      "id": "systemcartographer-api-graphql-repositoryview-sqlschemas",
+      "name": "SqlSchemas",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "List\u003CSqlSchemaNode\u003E SqlSchemas",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 242
+    },
+    {
+      "id": "systemcartographer-api-graphql-repositoryview-inboundlinks",
+      "name": "InboundLinks",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "List\u003CCrossRepoLink\u003E InboundLinks",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 243
+    },
+    {
+      "id": "systemcartographer-api-graphql-repositoryview-outboundlinks",
+      "name": "OutboundLinks",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "List\u003CCrossRepoLink\u003E OutboundLinks",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 244
+    },
+    {
+      "id": "systemcartographer-api-graphql-namespacenode",
+      "name": "NamespaceNode",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class NamespaceNode",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 247
+    },
+    {
+      "id": "systemcartographer-api-graphql-namespacenode-path",
+      "name": "Path",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string Path",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 249
+    },
+    {
+      "id": "systemcartographer-api-graphql-namespacenode-atomcount",
+      "name": "AtomCount",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "int AtomCount",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 250
+    },
+    {
+      "id": "systemcartographer-api-graphql-namespacenode-dtocount",
+      "name": "DtoCount",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "int DtoCount",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 251
+    },
+    {
+      "id": "systemcartographer-api-graphql-namespacenode-interfacecount",
+      "name": "InterfaceCount",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "int InterfaceCount",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 252
+    },
+    {
+      "id": "systemcartographer-api-graphql-sqlschemanode",
+      "name": "SqlSchemaNode",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class SqlSchemaNode",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 255
+    },
+    {
+      "id": "systemcartographer-api-graphql-sqlschemanode-schema",
+      "name": "Schema",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string Schema",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 257
+    },
+    {
+      "id": "systemcartographer-api-graphql-sqlschemanode-tablecount",
+      "name": "TableCount",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "int TableCount",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 258
+    },
+    {
+      "id": "systemcartographer-api-graphql-namespaceview",
+      "name": "NamespaceView",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class NamespaceView",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 261
+    },
+    {
+      "id": "systemcartographer-api-graphql-namespaceview-path",
+      "name": "Path",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string Path",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 263
+    },
+    {
+      "id": "systemcartographer-api-graphql-namespaceview-atoms",
+      "name": "Atoms",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "List\u003CAtomNode\u003E Atoms",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 264
+    },
+    {
+      "id": "systemcartographer-api-graphql-atomnode",
+      "name": "AtomNode",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class AtomNode",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 267
+    },
+    {
+      "id": "systemcartographer-api-graphql-atomnode-id",
+      "name": "Id",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string Id",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 269
+    },
+    {
+      "id": "systemcartographer-api-graphql-atomnode-name",
+      "name": "Name",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string Name",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 270
+    },
+    {
+      "id": "systemcartographer-api-graphql-atomnode-type",
+      "name": "Type",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string Type",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 271
+    },
+    {
+      "id": "systemcartographer-api-graphql-atomnode-riskscore",
+      "name": "RiskScore",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "double RiskScore",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 272
+    },
+    {
+      "id": "systemcartographer-api-graphql-atomnode-consumercount",
+      "name": "ConsumerCount",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "int ConsumerCount",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 273
+    },
+    {
+      "id": "systemcartographer-api-graphql-atomdetail",
+      "name": "AtomDetail",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class AtomDetail",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 276
+    },
+    {
+      "id": "systemcartographer-api-graphql-atomdetail-id",
+      "name": "Id",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string Id",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 278
+    },
+    {
+      "id": "systemcartographer-api-graphql-atomdetail-name",
+      "name": "Name",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string Name",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 279
+    },
+    {
+      "id": "systemcartographer-api-graphql-atomdetail-type",
+      "name": "Type",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string Type",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 280
+    },
+    {
+      "id": "systemcartographer-api-graphql-atomdetail-namespace",
+      "name": "Namespace",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string? Namespace",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 281
+    },
+    {
+      "id": "systemcartographer-api-graphql-atomdetail-filepath",
+      "name": "FilePath",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string? FilePath",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 282
+    },
+    {
+      "id": "systemcartographer-api-graphql-atomdetail-parenttable",
+      "name": "ParentTable",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string? ParentTable",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 283
+    },
+    {
+      "id": "systemcartographer-api-graphql-atomdetail-datatype",
+      "name": "DataType",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string? DataType",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 284
+    },
+    {
+      "id": "systemcartographer-api-graphql-atomdetail-repository",
+      "name": "Repository",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string Repository",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 285
+    },
+    {
+      "id": "systemcartographer-api-graphql-atomdetail-inboundlinks",
+      "name": "InboundLinks",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "List\u003CLinkInfo\u003E InboundLinks",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 286
+    },
+    {
+      "id": "systemcartographer-api-graphql-atomdetail-outboundlinks",
+      "name": "OutboundLinks",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "List\u003CLinkInfo\u003E OutboundLinks",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 287
+    },
+    {
+      "id": "systemcartographer-api-graphql-linkinfo",
+      "name": "LinkInfo",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class LinkInfo",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 290
+    },
+    {
+      "id": "systemcartographer-api-graphql-linkinfo-atomid",
+      "name": "AtomId",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string AtomId",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 292
+    },
+    {
+      "id": "systemcartographer-api-graphql-linkinfo-linktype",
+      "name": "LinkType",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string LinkType",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 293
+    },
+    {
+      "id": "systemcartographer-api-graphql-crossrepolink",
+      "name": "CrossRepoLink",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class CrossRepoLink",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 296
+    },
+    {
+      "id": "systemcartographer-api-graphql-crossrepolink-sourceatomid",
+      "name": "SourceAtomId",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string SourceAtomId",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 298
+    },
+    {
+      "id": "systemcartographer-api-graphql-crossrepolink-targetatomid",
+      "name": "TargetAtomId",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string TargetAtomId",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 299
+    },
+    {
+      "id": "systemcartographer-api-graphql-crossrepolink-sourcerepo",
+      "name": "SourceRepo",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string SourceRepo",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 300
+    },
+    {
+      "id": "systemcartographer-api-graphql-crossrepolink-targetrepo",
+      "name": "TargetRepo",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string TargetRepo",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 301
+    },
+    {
+      "id": "systemcartographer-api-graphql-crossrepolink-linktype",
+      "name": "LinkType",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string LinkType",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 302
+    },
+    {
+      "id": "systemcartographer-api-graphql-crossrepolink-confidence",
+      "name": "Confidence",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "double Confidence",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 303
+    },
+    {
+      "id": "systemcartographer-api-graphql-federationstatsview",
+      "name": "FederationStatsView",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class FederationStatsView",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 306
+    },
+    {
+      "id": "systemcartographer-api-graphql-federationstatsview-totalrepos",
+      "name": "TotalRepos",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "int TotalRepos",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 308
+    },
+    {
+      "id": "systemcartographer-api-graphql-federationstatsview-totalcodeatoms",
+      "name": "TotalCodeAtoms",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "int TotalCodeAtoms",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 309
+    },
+    {
+      "id": "systemcartographer-api-graphql-federationstatsview-totalsqlatoms",
+      "name": "TotalSqlAtoms",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "int TotalSqlAtoms",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 310
+    },
+    {
+      "id": "systemcartographer-api-graphql-federationstatsview-totallinks",
+      "name": "TotalLinks",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "int TotalLinks",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 311
+    },
+    {
+      "id": "systemcartographer-api-graphql-federationstatsview-crossrepolinkcount",
+      "name": "CrossRepoLinkCount",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "int CrossRepoLinkCount",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 312
+    },
+    {
+      "id": "systemcartographer-api-graphql-blastradiusresult",
+      "name": "BlastRadiusResult",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class BlastRadiusResult",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 315
+    },
+    {
+      "id": "systemcartographer-api-graphql-blastradiusresult-sourceatomid",
+      "name": "SourceAtomId",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string SourceAtomId",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 317
+    },
+    {
+      "id": "systemcartographer-api-graphql-blastradiusresult-affectedatoms",
+      "name": "AffectedAtoms",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "List\u003CAffectedAtomInfo\u003E AffectedAtoms",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 318
+    },
+    {
+      "id": "systemcartographer-api-graphql-blastradiusresult-totalaffected",
+      "name": "TotalAffected",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "int TotalAffected",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 319
+    },
+    {
+      "id": "systemcartographer-api-graphql-blastradiusresult-bydepth",
+      "name": "ByDepth",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "List\u003CDepthGroup\u003E ByDepth",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 320
+    },
+    {
+      "id": "systemcartographer-api-graphql-affectedatominfo",
+      "name": "AffectedAtomInfo",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class AffectedAtomInfo",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 323
+    },
+    {
+      "id": "systemcartographer-api-graphql-affectedatominfo-atomid",
+      "name": "AtomId",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string AtomId",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 325
+    },
+    {
+      "id": "systemcartographer-api-graphql-affectedatominfo-depth",
+      "name": "Depth",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "int Depth",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 326
+    },
+    {
+      "id": "systemcartographer-api-graphql-depthgroup",
+      "name": "DepthGroup",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class DepthGroup",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 329
+    },
+    {
+      "id": "systemcartographer-api-graphql-depthgroup-depth",
+      "name": "Depth",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "int Depth",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 331
+    },
+    {
+      "id": "systemcartographer-api-graphql-depthgroup-count",
+      "name": "Count",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "int Count",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 332
+    },
+    {
+      "id": "systemcartographer-api-graphql-searchresult",
+      "name": "SearchResult",
+      "type": "Class",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "public class SearchResult",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 335
+    },
+    {
+      "id": "systemcartographer-api-graphql-searchresult-atomid",
+      "name": "AtomId",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string AtomId",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 337
+    },
+    {
+      "id": "systemcartographer-api-graphql-searchresult-name",
+      "name": "Name",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string Name",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 338
+    },
+    {
+      "id": "systemcartographer-api-graphql-searchresult-type",
+      "name": "Type",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string Type",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 339
+    },
+    {
+      "id": "systemcartographer-api-graphql-searchresult-repository",
+      "name": "Repository",
+      "type": "Property",
+      "namespace": "SystemCartographer.Api.GraphQL",
+      "repository": null,
+      "signature": "string Repository",
+      "targetFramework": null,
+      "filePath": "/Users/baxter/devProject/MysteryMachine/src/SystemCartographer.Api/GraphQL/Query.cs",
+      "lineNumber": 340
+    }
+  ],
+  "sqlAtoms": [],
+  "links": [
+    {
+      "id": "contains-systemcartographer-federation-federatedsnapshot-systemcartographer-federation-federatedsnapshot-id",
+      "sourceId": "systemcartographer-federation-federatedsnapshot",
+      "targetId": "systemcartographer-federation-federatedsnapshot-id",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federatedsnapshot-systemcartographer-federation-federatedsnapshot-federatedat",
+      "sourceId": "systemcartographer-federation-federatedsnapshot",
+      "targetId": "systemcartographer-federation-federatedsnapshot-federatedat",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federatedsnapshot-systemcartographer-federation-federatedsnapshot-codeatoms",
+      "sourceId": "systemcartographer-federation-federatedsnapshot",
+      "targetId": "systemcartographer-federation-federatedsnapshot-codeatoms",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federatedsnapshot-systemcartographer-federation-federatedsnapshot-sqlatoms",
+      "sourceId": "systemcartographer-federation-federatedsnapshot",
+      "targetId": "systemcartographer-federation-federatedsnapshot-sqlatoms",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federatedsnapshot-systemcartographer-federation-federatedsnapshot-links",
+      "sourceId": "systemcartographer-federation-federatedsnapshot",
+      "targetId": "systemcartographer-federation-federatedsnapshot-links",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federatedsnapshot-systemcartographer-federation-federatedsnapshot-conflicts",
+      "sourceId": "systemcartographer-federation-federatedsnapshot",
+      "targetId": "systemcartographer-federation-federatedsnapshot-conflicts",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federatedsnapshot-systemcartographer-federation-federatedsnapshot-repometadata",
+      "sourceId": "systemcartographer-federation-federatedsnapshot",
+      "targetId": "systemcartographer-federation-federatedsnapshot-repometadata",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federatedsnapshot-systemcartographer-federation-federatedsnapshot-stats",
+      "sourceId": "systemcartographer-federation-federatedsnapshot",
+      "targetId": "systemcartographer-federation-federatedsnapshot-stats",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federatedatom-systemcartographer-federation-federatedatom-atom",
+      "sourceId": "systemcartographer-federation-federatedatom",
+      "targetId": "systemcartographer-federation-federatedatom-atom",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federatedatom-systemcartographer-federation-federatedatom-sourcerepo",
+      "sourceId": "systemcartographer-federation-federatedatom",
+      "targetId": "systemcartographer-federation-federatedatom-sourcerepo",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federatedatom-systemcartographer-federation-federatedatom-scannedat",
+      "sourceId": "systemcartographer-federation-federatedatom",
+      "targetId": "systemcartographer-federation-federatedatom-scannedat",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federatedlink-systemcartographer-federation-federatedlink-link",
+      "sourceId": "systemcartographer-federation-federatedlink",
+      "targetId": "systemcartographer-federation-federatedlink-link",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federatedlink-systemcartographer-federation-federatedlink-sourcerepo",
+      "sourceId": "systemcartographer-federation-federatedlink",
+      "targetId": "systemcartographer-federation-federatedlink-sourcerepo",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federatedlink-systemcartographer-federation-federatedlink-targetrepo",
+      "sourceId": "systemcartographer-federation-federatedlink",
+      "targetId": "systemcartographer-federation-federatedlink-targetrepo",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-repometadata-systemcartographer-federation-repometadata-repoid",
+      "sourceId": "systemcartographer-federation-repometadata",
+      "targetId": "systemcartographer-federation-repometadata-repoid",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-repometadata-systemcartographer-federation-repometadata-branch",
+      "sourceId": "systemcartographer-federation-repometadata",
+      "targetId": "systemcartographer-federation-repometadata-branch",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-repometadata-systemcartographer-federation-repometadata-commitsha",
+      "sourceId": "systemcartographer-federation-repometadata",
+      "targetId": "systemcartographer-federation-repometadata-commitsha",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-repometadata-systemcartographer-federation-repometadata-scannedat",
+      "sourceId": "systemcartographer-federation-repometadata",
+      "targetId": "systemcartographer-federation-repometadata-scannedat",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-repometadata-systemcartographer-federation-repometadata-atomcount",
+      "sourceId": "systemcartographer-federation-repometadata",
+      "targetId": "systemcartographer-federation-repometadata-atomcount",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-atomconflict-systemcartographer-federation-atomconflict-atomid",
+      "sourceId": "systemcartographer-federation-atomconflict",
+      "targetId": "systemcartographer-federation-atomconflict-atomid",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-atomconflict-systemcartographer-federation-atomconflict-conflicttype",
+      "sourceId": "systemcartographer-federation-atomconflict",
+      "targetId": "systemcartographer-federation-atomconflict-conflicttype",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-atomconflict-systemcartographer-federation-atomconflict-repo1",
+      "sourceId": "systemcartographer-federation-atomconflict",
+      "targetId": "systemcartographer-federation-atomconflict-repo1",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-atomconflict-systemcartographer-federation-atomconflict-repo2",
+      "sourceId": "systemcartographer-federation-atomconflict",
+      "targetId": "systemcartographer-federation-atomconflict-repo2",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-atomconflict-systemcartographer-federation-atomconflict-description",
+      "sourceId": "systemcartographer-federation-atomconflict",
+      "targetId": "systemcartographer-federation-atomconflict-description",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-atomconflict-systemcartographer-federation-atomconflict-atom1signature",
+      "sourceId": "systemcartographer-federation-atomconflict",
+      "targetId": "systemcartographer-federation-atomconflict-atom1signature",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-atomconflict-systemcartographer-federation-atomconflict-atom2signature",
+      "sourceId": "systemcartographer-federation-atomconflict",
+      "targetId": "systemcartographer-federation-atomconflict-atom2signature",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federationoptions-systemcartographer-federation-federationoptions-conflictresolution",
+      "sourceId": "systemcartographer-federation-federationoptions",
+      "targetId": "systemcartographer-federation-federationoptions-conflictresolution",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federationoptions-systemcartographer-federation-federationoptions-repopriority",
+      "sourceId": "systemcartographer-federation-federationoptions",
+      "targetId": "systemcartographer-federation-federationoptions-repopriority",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federationoptions-systemcartographer-federation-federationoptions-enablecrossrepolinking",
+      "sourceId": "systemcartographer-federation-federationoptions",
+      "targetId": "systemcartographer-federation-federationoptions-enablecrossrepolinking",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federationoptions-systemcartographer-federation-federationoptions-crossrepoconfidencemultiplier",
+      "sourceId": "systemcartographer-federation-federationoptions",
+      "targetId": "systemcartographer-federation-federationoptions-crossrepoconfidencemultiplier",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federationstats-systemcartographer-federation-federationstats-totalrepos",
+      "sourceId": "systemcartographer-federation-federationstats",
+      "targetId": "systemcartographer-federation-federationstats-totalrepos",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federationstats-systemcartographer-federation-federationstats-totalcodeatoms",
+      "sourceId": "systemcartographer-federation-federationstats",
+      "targetId": "systemcartographer-federation-federationstats-totalcodeatoms",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federationstats-systemcartographer-federation-federationstats-totalsqlatoms",
+      "sourceId": "systemcartographer-federation-federationstats",
+      "targetId": "systemcartographer-federation-federationstats-totalsqlatoms",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federationstats-systemcartographer-federation-federationstats-totallinks",
+      "sourceId": "systemcartographer-federation-federationstats",
+      "targetId": "systemcartographer-federation-federationstats-totallinks",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federationstats-systemcartographer-federation-federationstats-conflictcount",
+      "sourceId": "systemcartographer-federation-federationstats",
+      "targetId": "systemcartographer-federation-federationstats-conflictcount",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-federationstats-systemcartographer-federation-federationstats-crossrepolinkcount",
+      "sourceId": "systemcartographer-federation-federationstats",
+      "targetId": "systemcartographer-federation-federationstats-crossrepolinkcount",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-snapshotdelta-systemcartographer-federation-snapshotdelta-sourcerepo",
+      "sourceId": "systemcartographer-federation-snapshotdelta",
+      "targetId": "systemcartographer-federation-snapshotdelta-sourcerepo",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-snapshotdelta-systemcartographer-federation-snapshotdelta-beforecommit",
+      "sourceId": "systemcartographer-federation-snapshotdelta",
+      "targetId": "systemcartographer-federation-snapshotdelta-beforecommit",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-snapshotdelta-systemcartographer-federation-snapshotdelta-aftercommit",
+      "sourceId": "systemcartographer-federation-snapshotdelta",
+      "targetId": "systemcartographer-federation-snapshotdelta-aftercommit",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-snapshotdelta-systemcartographer-federation-snapshotdelta-addedcodeatoms",
+      "sourceId": "systemcartographer-federation-snapshotdelta",
+      "targetId": "systemcartographer-federation-snapshotdelta-addedcodeatoms",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-snapshotdelta-systemcartographer-federation-snapshotdelta-removedcodeatomids",
+      "sourceId": "systemcartographer-federation-snapshotdelta",
+      "targetId": "systemcartographer-federation-snapshotdelta-removedcodeatomids",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-snapshotdelta-systemcartographer-federation-snapshotdelta-addedsqlatoms",
+      "sourceId": "systemcartographer-federation-snapshotdelta",
+      "targetId": "systemcartographer-federation-snapshotdelta-addedsqlatoms",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-snapshotdelta-systemcartographer-federation-snapshotdelta-removedsqlatomids",
+      "sourceId": "systemcartographer-federation-snapshotdelta",
+      "targetId": "systemcartographer-federation-snapshotdelta-removedsqlatomids",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-snapshotdelta-systemcartographer-federation-snapshotdelta-addedlinks",
+      "sourceId": "systemcartographer-federation-snapshotdelta",
+      "targetId": "systemcartographer-federation-snapshotdelta-addedlinks",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-federation-snapshotdelta-systemcartographer-federation-snapshotdelta-removedlinkids",
+      "sourceId": "systemcartographer-federation-snapshotdelta",
+      "targetId": "systemcartographer-federation-snapshotdelta-removedlinkids",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-risk-atomriskscore-systemcartographer-risk-atomriskscore-atomid",
+      "sourceId": "systemcartographer-risk-atomriskscore",
+      "targetId": "systemcartographer-risk-atomriskscore-atomid",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-risk-atomriskscore-systemcartographer-risk-atomriskscore-blastradiusscore",
+      "sourceId": "systemcartographer-risk-atomriskscore",
+      "targetId": "systemcartographer-risk-atomriskscore-blastradiusscore",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-risk-atomriskscore-systemcartographer-risk-atomriskscore-inboundcouplingscore",
+      "sourceId": "systemcartographer-risk-atomriskscore",
+      "targetId": "systemcartographer-risk-atomriskscore-inboundcouplingscore",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-risk-atomriskscore-systemcartographer-risk-atomriskscore-outboundcouplingscore",
+      "sourceId": "systemcartographer-risk-atomriskscore",
+      "targetId": "systemcartographer-risk-atomriskscore-outboundcouplingscore",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-risk-atomriskscore-systemcartographer-risk-atomriskscore-crossdomainscore",
+      "sourceId": "systemcartographer-risk-atomriskscore",
+      "targetId": "systemcartographer-risk-atomriskscore-crossdomainscore",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-risk-atomriskscore-systemcartographer-risk-atomriskscore-compositescore",
+      "sourceId": "systemcartographer-risk-atomriskscore",
+      "targetId": "systemcartographer-risk-atomriskscore-compositescore",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-risk-atomriskscore-systemcartographer-risk-atomriskscore-level",
+      "sourceId": "systemcartographer-risk-atomriskscore",
+      "targetId": "systemcartographer-risk-atomriskscore-level",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-risk-riskreport-systemcartographer-risk-riskreport-generatedat",
+      "sourceId": "systemcartographer-risk-riskreport",
+      "targetId": "systemcartographer-risk-riskreport-generatedat",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-risk-riskreport-systemcartographer-risk-riskreport-snapshotid",
+      "sourceId": "systemcartographer-risk-riskreport",
+      "targetId": "systemcartographer-risk-riskreport-snapshotid",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-risk-riskreport-systemcartographer-risk-riskreport-totalatoms",
+      "sourceId": "systemcartographer-risk-riskreport",
+      "targetId": "systemcartographer-risk-riskreport-totalatoms",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-risk-riskreport-systemcartographer-risk-riskreport-scores",
+      "sourceId": "systemcartographer-risk-riskreport",
+      "targetId": "systemcartographer-risk-riskreport-scores",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-risk-riskreport-systemcartographer-risk-riskreport-hotspots",
+      "sourceId": "systemcartographer-risk-riskreport",
+      "targetId": "systemcartographer-risk-riskreport-hotspots",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-risk-riskreport-systemcartographer-risk-riskreport-stats",
+      "sourceId": "systemcartographer-risk-riskreport",
+      "targetId": "systemcartographer-risk-riskreport-stats",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-risk-riskstats-systemcartographer-risk-riskstats-criticalcount",
+      "sourceId": "systemcartographer-risk-riskstats",
+      "targetId": "systemcartographer-risk-riskstats-criticalcount",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-risk-riskstats-systemcartographer-risk-riskstats-highcount",
+      "sourceId": "systemcartographer-risk-riskstats",
+      "targetId": "systemcartographer-risk-riskstats-highcount",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-risk-riskstats-systemcartographer-risk-riskstats-mediumcount",
+      "sourceId": "systemcartographer-risk-riskstats",
+      "targetId": "systemcartographer-risk-riskstats-mediumcount",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-risk-riskstats-systemcartographer-risk-riskstats-lowcount",
+      "sourceId": "systemcartographer-risk-riskstats",
+      "targetId": "systemcartographer-risk-riskstats-lowcount",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-risk-riskstats-systemcartographer-risk-riskstats-averagescore",
+      "sourceId": "systemcartographer-risk-riskstats",
+      "targetId": "systemcartographer-risk-riskstats-averagescore",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-linker-linkresult-systemcartographer-linker-linkresult-links",
+      "sourceId": "systemcartographer-linker-linkresult",
+      "targetId": "systemcartographer-linker-linkresult-links",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-linker-linkresult-systemcartographer-linker-linkresult-diagnostics",
+      "sourceId": "systemcartographer-linker-linkresult",
+      "targetId": "systemcartographer-linker-linkresult-diagnostics",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-linker-blastradiusresult-systemcartographer-linker-blastradiusresult-rootatomid",
+      "sourceId": "systemcartographer-linker-blastradiusresult",
+      "targetId": "systemcartographer-linker-blastradiusresult-rootatomid",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-linker-blastradiusresult-systemcartographer-linker-blastradiusresult-affectedatoms",
+      "sourceId": "systemcartographer-linker-blastradiusresult",
+      "targetId": "systemcartographer-linker-blastradiusresult-affectedatoms",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-linker-blastradiusresult-systemcartographer-linker-blastradiusresult-totalaffected",
+      "sourceId": "systemcartographer-linker-blastradiusresult",
+      "targetId": "systemcartographer-linker-blastradiusresult-totalaffected",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-linker-blastradiusresult-systemcartographer-linker-blastradiusresult-maxdepth",
+      "sourceId": "systemcartographer-linker-blastradiusresult",
+      "targetId": "systemcartographer-linker-blastradiusresult-maxdepth",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-linker-affectedatom-systemcartographer-linker-affectedatom-atomid",
+      "sourceId": "systemcartographer-linker-affectedatom",
+      "targetId": "systemcartographer-linker-affectedatom-atomid",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-linker-affectedatom-systemcartographer-linker-affectedatom-depth",
+      "sourceId": "systemcartographer-linker-affectedatom",
+      "targetId": "systemcartographer-linker-affectedatom-depth",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-linker-affectedatom-systemcartographer-linker-affectedatom-path",
+      "sourceId": "systemcartographer-linker-affectedatom",
+      "targetId": "systemcartographer-linker-affectedatom-path",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-iscanner-systemcartographer-core-iscanner-scanasync",
+      "sourceId": "systemcartographer-core-iscanner",
+      "targetId": "systemcartographer-core-iscanner-scanasync",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-scanresult-systemcartographer-core-scanresult-codeatoms",
+      "sourceId": "systemcartographer-core-scanresult",
+      "targetId": "systemcartographer-core-scanresult-codeatoms",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-scanresult-systemcartographer-core-scanresult-sqlatoms",
+      "sourceId": "systemcartographer-core-scanresult",
+      "targetId": "systemcartographer-core-scanresult-sqlatoms",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-scanresult-systemcartographer-core-scanresult-links",
+      "sourceId": "systemcartographer-core-scanresult",
+      "targetId": "systemcartographer-core-scanresult-links",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-scanresult-systemcartographer-core-scanresult-diagnostics",
+      "sourceId": "systemcartographer-core-scanresult",
+      "targetId": "systemcartographer-core-scanresult-diagnostics",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-scanresult-systemcartographer-core-scanresult-duration",
+      "sourceId": "systemcartographer-core-scanresult",
+      "targetId": "systemcartographer-core-scanresult-duration",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-scanoptions-systemcartographer-core-scanoptions-includepatterns",
+      "sourceId": "systemcartographer-core-scanoptions",
+      "targetId": "systemcartographer-core-scanoptions-includepatterns",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-scanoptions-systemcartographer-core-scanoptions-excludepatterns",
+      "sourceId": "systemcartographer-core-scanoptions",
+      "targetId": "systemcartographer-core-scanoptions-excludepatterns",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-scanoptions-systemcartographer-core-scanoptions-includeprivatemembers",
+      "sourceId": "systemcartographer-core-scanoptions",
+      "targetId": "systemcartographer-core-scanoptions-includeprivatemembers",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-scanoptions-systemcartographer-core-scanoptions-extractdocumentation",
+      "sourceId": "systemcartographer-core-scanoptions",
+      "targetId": "systemcartographer-core-scanoptions-extractdocumentation",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-codeatom-systemcartographer-core-codeatom-id",
+      "sourceId": "systemcartographer-core-codeatom",
+      "targetId": "systemcartographer-core-codeatom-id",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-codeatom-systemcartographer-core-codeatom-name",
+      "sourceId": "systemcartographer-core-codeatom",
+      "targetId": "systemcartographer-core-codeatom-name",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-codeatom-systemcartographer-core-codeatom-type",
+      "sourceId": "systemcartographer-core-codeatom",
+      "targetId": "systemcartographer-core-codeatom-type",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-codeatom-systemcartographer-core-codeatom-namespace",
+      "sourceId": "systemcartographer-core-codeatom",
+      "targetId": "systemcartographer-core-codeatom-namespace",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-codeatom-systemcartographer-core-codeatom-repository",
+      "sourceId": "systemcartographer-core-codeatom",
+      "targetId": "systemcartographer-core-codeatom-repository",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-codeatom-systemcartographer-core-codeatom-signature",
+      "sourceId": "systemcartographer-core-codeatom",
+      "targetId": "systemcartographer-core-codeatom-signature",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-codeatom-systemcartographer-core-codeatom-targetframework",
+      "sourceId": "systemcartographer-core-codeatom",
+      "targetId": "systemcartographer-core-codeatom-targetframework",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-codeatom-systemcartographer-core-codeatom-filepath",
+      "sourceId": "systemcartographer-core-codeatom",
+      "targetId": "systemcartographer-core-codeatom-filepath",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-codeatom-systemcartographer-core-codeatom-linenumber",
+      "sourceId": "systemcartographer-core-codeatom",
+      "targetId": "systemcartographer-core-codeatom-linenumber",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-sqlatom-systemcartographer-core-sqlatom-id",
+      "sourceId": "systemcartographer-core-sqlatom",
+      "targetId": "systemcartographer-core-sqlatom-id",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-sqlatom-systemcartographer-core-sqlatom-name",
+      "sourceId": "systemcartographer-core-sqlatom",
+      "targetId": "systemcartographer-core-sqlatom-name",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-sqlatom-systemcartographer-core-sqlatom-type",
+      "sourceId": "systemcartographer-core-sqlatom",
+      "targetId": "systemcartographer-core-sqlatom-type",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-sqlatom-systemcartographer-core-sqlatom-parenttable",
+      "sourceId": "systemcartographer-core-sqlatom",
+      "targetId": "systemcartographer-core-sqlatom-parenttable",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-sqlatom-systemcartographer-core-sqlatom-datatype",
+      "sourceId": "systemcartographer-core-sqlatom",
+      "targetId": "systemcartographer-core-sqlatom-datatype",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-sqlatom-systemcartographer-core-sqlatom-isnullable",
+      "sourceId": "systemcartographer-core-sqlatom",
+      "targetId": "systemcartographer-core-sqlatom-isnullable",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-sqlatom-systemcartographer-core-sqlatom-filepath",
+      "sourceId": "systemcartographer-core-sqlatom",
+      "targetId": "systemcartographer-core-sqlatom-filepath",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-atomlink-systemcartographer-core-atomlink-id",
+      "sourceId": "systemcartographer-core-atomlink",
+      "targetId": "systemcartographer-core-atomlink-id",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-atomlink-systemcartographer-core-atomlink-sourceid",
+      "sourceId": "systemcartographer-core-atomlink",
+      "targetId": "systemcartographer-core-atomlink-sourceid",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-atomlink-systemcartographer-core-atomlink-targetid",
+      "sourceId": "systemcartographer-core-atomlink",
+      "targetId": "systemcartographer-core-atomlink-targetid",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-atomlink-systemcartographer-core-atomlink-type",
+      "sourceId": "systemcartographer-core-atomlink",
+      "targetId": "systemcartographer-core-atomlink-type",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-atomlink-systemcartographer-core-atomlink-confidence",
+      "sourceId": "systemcartographer-core-atomlink",
+      "targetId": "systemcartographer-core-atomlink-confidence",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-atomlink-systemcartographer-core-atomlink-evidence",
+      "sourceId": "systemcartographer-core-atomlink",
+      "targetId": "systemcartographer-core-atomlink-evidence",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-snapshot-systemcartographer-core-snapshot-id",
+      "sourceId": "systemcartographer-core-snapshot",
+      "targetId": "systemcartographer-core-snapshot-id",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-snapshot-systemcartographer-core-snapshot-repository",
+      "sourceId": "systemcartographer-core-snapshot",
+      "targetId": "systemcartographer-core-snapshot-repository",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-snapshot-systemcartographer-core-snapshot-scannedat",
+      "sourceId": "systemcartographer-core-snapshot",
+      "targetId": "systemcartographer-core-snapshot-scannedat",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-snapshot-systemcartographer-core-snapshot-branch",
+      "sourceId": "systemcartographer-core-snapshot",
+      "targetId": "systemcartographer-core-snapshot-branch",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-snapshot-systemcartographer-core-snapshot-commitsha",
+      "sourceId": "systemcartographer-core-snapshot",
+      "targetId": "systemcartographer-core-snapshot-commitsha",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-snapshot-systemcartographer-core-snapshot-codeatoms",
+      "sourceId": "systemcartographer-core-snapshot",
+      "targetId": "systemcartographer-core-snapshot-codeatoms",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-snapshot-systemcartographer-core-snapshot-sqlatoms",
+      "sourceId": "systemcartographer-core-snapshot",
+      "targetId": "systemcartographer-core-snapshot-sqlatoms",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-snapshot-systemcartographer-core-snapshot-links",
+      "sourceId": "systemcartographer-core-snapshot",
+      "targetId": "systemcartographer-core-snapshot-links",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-snapshot-systemcartographer-core-snapshot-metadata",
+      "sourceId": "systemcartographer-core-snapshot",
+      "targetId": "systemcartographer-core-snapshot-metadata",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-snapshotmetadata-systemcartographer-core-snapshotmetadata-totalcodeatoms",
+      "sourceId": "systemcartographer-core-snapshotmetadata",
+      "targetId": "systemcartographer-core-snapshotmetadata-totalcodeatoms",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-snapshotmetadata-systemcartographer-core-snapshotmetadata-totalsqlatoms",
+      "sourceId": "systemcartographer-core-snapshotmetadata",
+      "targetId": "systemcartographer-core-snapshotmetadata-totalsqlatoms",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-snapshotmetadata-systemcartographer-core-snapshotmetadata-totallinks",
+      "sourceId": "systemcartographer-core-snapshotmetadata",
+      "targetId": "systemcartographer-core-snapshotmetadata-totallinks",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-snapshotmetadata-systemcartographer-core-snapshotmetadata-dtocount",
+      "sourceId": "systemcartographer-core-snapshotmetadata",
+      "targetId": "systemcartographer-core-snapshotmetadata-dtocount",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-snapshotmetadata-systemcartographer-core-snapshotmetadata-interfacecount",
+      "sourceId": "systemcartographer-core-snapshotmetadata",
+      "targetId": "systemcartographer-core-snapshotmetadata-interfacecount",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-snapshotmetadata-systemcartographer-core-snapshotmetadata-tablecount",
+      "sourceId": "systemcartographer-core-snapshotmetadata",
+      "targetId": "systemcartographer-core-snapshotmetadata-tablecount",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-snapshotmetadata-systemcartographer-core-snapshotmetadata-storedprocedurecount",
+      "sourceId": "systemcartographer-core-snapshotmetadata",
+      "targetId": "systemcartographer-core-snapshotmetadata-storedprocedurecount",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-core-snapshotmetadata-systemcartographer-core-snapshotmetadata-scanduration",
+      "sourceId": "systemcartographer-core-snapshotmetadata",
+      "targetId": "systemcartographer-core-snapshotmetadata-scanduration",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-federationview-systemcartographer-api-graphql-federationview-id",
+      "sourceId": "systemcartographer-api-graphql-federationview",
+      "targetId": "systemcartographer-api-graphql-federationview-id",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-federationview-systemcartographer-api-graphql-federationview-federatedat",
+      "sourceId": "systemcartographer-api-graphql-federationview",
+      "targetId": "systemcartographer-api-graphql-federationview-federatedat",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-federationview-systemcartographer-api-graphql-federationview-repositories",
+      "sourceId": "systemcartographer-api-graphql-federationview",
+      "targetId": "systemcartographer-api-graphql-federationview-repositories",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-federationview-systemcartographer-api-graphql-federationview-crossrepolinks",
+      "sourceId": "systemcartographer-api-graphql-federationview",
+      "targetId": "systemcartographer-api-graphql-federationview-crossrepolinks",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-federationview-systemcartographer-api-graphql-federationview-stats",
+      "sourceId": "systemcartographer-api-graphql-federationview",
+      "targetId": "systemcartographer-api-graphql-federationview-stats",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-repositorynode-systemcartographer-api-graphql-repositorynode-id",
+      "sourceId": "systemcartographer-api-graphql-repositorynode",
+      "targetId": "systemcartographer-api-graphql-repositorynode-id",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-repositorynode-systemcartographer-api-graphql-repositorynode-name",
+      "sourceId": "systemcartographer-api-graphql-repositorynode",
+      "targetId": "systemcartographer-api-graphql-repositorynode-name",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-repositorynode-systemcartographer-api-graphql-repositorynode-branch",
+      "sourceId": "systemcartographer-api-graphql-repositorynode",
+      "targetId": "systemcartographer-api-graphql-repositorynode-branch",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-repositorynode-systemcartographer-api-graphql-repositorynode-scannedat",
+      "sourceId": "systemcartographer-api-graphql-repositorynode",
+      "targetId": "systemcartographer-api-graphql-repositorynode-scannedat",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-repositorynode-systemcartographer-api-graphql-repositorynode-atomcount",
+      "sourceId": "systemcartographer-api-graphql-repositorynode",
+      "targetId": "systemcartographer-api-graphql-repositorynode-atomcount",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-repositorynode-systemcartographer-api-graphql-repositorynode-riskscore",
+      "sourceId": "systemcartographer-api-graphql-repositorynode",
+      "targetId": "systemcartographer-api-graphql-repositorynode-riskscore",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-repositorynode-systemcartographer-api-graphql-repositorynode-namespaces",
+      "sourceId": "systemcartographer-api-graphql-repositorynode",
+      "targetId": "systemcartographer-api-graphql-repositorynode-namespaces",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-repositoryview-systemcartographer-api-graphql-repositoryview-id",
+      "sourceId": "systemcartographer-api-graphql-repositoryview",
+      "targetId": "systemcartographer-api-graphql-repositoryview-id",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-repositoryview-systemcartographer-api-graphql-repositoryview-name",
+      "sourceId": "systemcartographer-api-graphql-repositoryview",
+      "targetId": "systemcartographer-api-graphql-repositoryview-name",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-repositoryview-systemcartographer-api-graphql-repositoryview-branch",
+      "sourceId": "systemcartographer-api-graphql-repositoryview",
+      "targetId": "systemcartographer-api-graphql-repositoryview-branch",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-repositoryview-systemcartographer-api-graphql-repositoryview-namespaces",
+      "sourceId": "systemcartographer-api-graphql-repositoryview",
+      "targetId": "systemcartographer-api-graphql-repositoryview-namespaces",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-repositoryview-systemcartographer-api-graphql-repositoryview-sqlschemas",
+      "sourceId": "systemcartographer-api-graphql-repositoryview",
+      "targetId": "systemcartographer-api-graphql-repositoryview-sqlschemas",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-repositoryview-systemcartographer-api-graphql-repositoryview-inboundlinks",
+      "sourceId": "systemcartographer-api-graphql-repositoryview",
+      "targetId": "systemcartographer-api-graphql-repositoryview-inboundlinks",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-repositoryview-systemcartographer-api-graphql-repositoryview-outboundlinks",
+      "sourceId": "systemcartographer-api-graphql-repositoryview",
+      "targetId": "systemcartographer-api-graphql-repositoryview-outboundlinks",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-namespacenode-systemcartographer-api-graphql-namespacenode-path",
+      "sourceId": "systemcartographer-api-graphql-namespacenode",
+      "targetId": "systemcartographer-api-graphql-namespacenode-path",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-namespacenode-systemcartographer-api-graphql-namespacenode-atomcount",
+      "sourceId": "systemcartographer-api-graphql-namespacenode",
+      "targetId": "systemcartographer-api-graphql-namespacenode-atomcount",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-namespacenode-systemcartographer-api-graphql-namespacenode-dtocount",
+      "sourceId": "systemcartographer-api-graphql-namespacenode",
+      "targetId": "systemcartographer-api-graphql-namespacenode-dtocount",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-namespacenode-systemcartographer-api-graphql-namespacenode-interfacecount",
+      "sourceId": "systemcartographer-api-graphql-namespacenode",
+      "targetId": "systemcartographer-api-graphql-namespacenode-interfacecount",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-sqlschemanode-systemcartographer-api-graphql-sqlschemanode-schema",
+      "sourceId": "systemcartographer-api-graphql-sqlschemanode",
+      "targetId": "systemcartographer-api-graphql-sqlschemanode-schema",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-sqlschemanode-systemcartographer-api-graphql-sqlschemanode-tablecount",
+      "sourceId": "systemcartographer-api-graphql-sqlschemanode",
+      "targetId": "systemcartographer-api-graphql-sqlschemanode-tablecount",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-namespaceview-systemcartographer-api-graphql-namespaceview-path",
+      "sourceId": "systemcartographer-api-graphql-namespaceview",
+      "targetId": "systemcartographer-api-graphql-namespaceview-path",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-namespaceview-systemcartographer-api-graphql-namespaceview-atoms",
+      "sourceId": "systemcartographer-api-graphql-namespaceview",
+      "targetId": "systemcartographer-api-graphql-namespaceview-atoms",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-atomnode-systemcartographer-api-graphql-atomnode-id",
+      "sourceId": "systemcartographer-api-graphql-atomnode",
+      "targetId": "systemcartographer-api-graphql-atomnode-id",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-atomnode-systemcartographer-api-graphql-atomnode-name",
+      "sourceId": "systemcartographer-api-graphql-atomnode",
+      "targetId": "systemcartographer-api-graphql-atomnode-name",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-atomnode-systemcartographer-api-graphql-atomnode-type",
+      "sourceId": "systemcartographer-api-graphql-atomnode",
+      "targetId": "systemcartographer-api-graphql-atomnode-type",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-atomnode-systemcartographer-api-graphql-atomnode-riskscore",
+      "sourceId": "systemcartographer-api-graphql-atomnode",
+      "targetId": "systemcartographer-api-graphql-atomnode-riskscore",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-atomnode-systemcartographer-api-graphql-atomnode-consumercount",
+      "sourceId": "systemcartographer-api-graphql-atomnode",
+      "targetId": "systemcartographer-api-graphql-atomnode-consumercount",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-atomdetail-systemcartographer-api-graphql-atomdetail-id",
+      "sourceId": "systemcartographer-api-graphql-atomdetail",
+      "targetId": "systemcartographer-api-graphql-atomdetail-id",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-atomdetail-systemcartographer-api-graphql-atomdetail-name",
+      "sourceId": "systemcartographer-api-graphql-atomdetail",
+      "targetId": "systemcartographer-api-graphql-atomdetail-name",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-atomdetail-systemcartographer-api-graphql-atomdetail-type",
+      "sourceId": "systemcartographer-api-graphql-atomdetail",
+      "targetId": "systemcartographer-api-graphql-atomdetail-type",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-atomdetail-systemcartographer-api-graphql-atomdetail-namespace",
+      "sourceId": "systemcartographer-api-graphql-atomdetail",
+      "targetId": "systemcartographer-api-graphql-atomdetail-namespace",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-atomdetail-systemcartographer-api-graphql-atomdetail-filepath",
+      "sourceId": "systemcartographer-api-graphql-atomdetail",
+      "targetId": "systemcartographer-api-graphql-atomdetail-filepath",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-atomdetail-systemcartographer-api-graphql-atomdetail-parenttable",
+      "sourceId": "systemcartographer-api-graphql-atomdetail",
+      "targetId": "systemcartographer-api-graphql-atomdetail-parenttable",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-atomdetail-systemcartographer-api-graphql-atomdetail-datatype",
+      "sourceId": "systemcartographer-api-graphql-atomdetail",
+      "targetId": "systemcartographer-api-graphql-atomdetail-datatype",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-atomdetail-systemcartographer-api-graphql-atomdetail-repository",
+      "sourceId": "systemcartographer-api-graphql-atomdetail",
+      "targetId": "systemcartographer-api-graphql-atomdetail-repository",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-atomdetail-systemcartographer-api-graphql-atomdetail-inboundlinks",
+      "sourceId": "systemcartographer-api-graphql-atomdetail",
+      "targetId": "systemcartographer-api-graphql-atomdetail-inboundlinks",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-atomdetail-systemcartographer-api-graphql-atomdetail-outboundlinks",
+      "sourceId": "systemcartographer-api-graphql-atomdetail",
+      "targetId": "systemcartographer-api-graphql-atomdetail-outboundlinks",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-linkinfo-systemcartographer-api-graphql-linkinfo-atomid",
+      "sourceId": "systemcartographer-api-graphql-linkinfo",
+      "targetId": "systemcartographer-api-graphql-linkinfo-atomid",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-linkinfo-systemcartographer-api-graphql-linkinfo-linktype",
+      "sourceId": "systemcartographer-api-graphql-linkinfo",
+      "targetId": "systemcartographer-api-graphql-linkinfo-linktype",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-crossrepolink-systemcartographer-api-graphql-crossrepolink-sourceatomid",
+      "sourceId": "systemcartographer-api-graphql-crossrepolink",
+      "targetId": "systemcartographer-api-graphql-crossrepolink-sourceatomid",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-crossrepolink-systemcartographer-api-graphql-crossrepolink-targetatomid",
+      "sourceId": "systemcartographer-api-graphql-crossrepolink",
+      "targetId": "systemcartographer-api-graphql-crossrepolink-targetatomid",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-crossrepolink-systemcartographer-api-graphql-crossrepolink-sourcerepo",
+      "sourceId": "systemcartographer-api-graphql-crossrepolink",
+      "targetId": "systemcartographer-api-graphql-crossrepolink-sourcerepo",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-crossrepolink-systemcartographer-api-graphql-crossrepolink-targetrepo",
+      "sourceId": "systemcartographer-api-graphql-crossrepolink",
+      "targetId": "systemcartographer-api-graphql-crossrepolink-targetrepo",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-crossrepolink-systemcartographer-api-graphql-crossrepolink-linktype",
+      "sourceId": "systemcartographer-api-graphql-crossrepolink",
+      "targetId": "systemcartographer-api-graphql-crossrepolink-linktype",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-crossrepolink-systemcartographer-api-graphql-crossrepolink-confidence",
+      "sourceId": "systemcartographer-api-graphql-crossrepolink",
+      "targetId": "systemcartographer-api-graphql-crossrepolink-confidence",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-federationstatsview-systemcartographer-api-graphql-federationstatsview-totalrepos",
+      "sourceId": "systemcartographer-api-graphql-federationstatsview",
+      "targetId": "systemcartographer-api-graphql-federationstatsview-totalrepos",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-federationstatsview-systemcartographer-api-graphql-federationstatsview-totalcodeatoms",
+      "sourceId": "systemcartographer-api-graphql-federationstatsview",
+      "targetId": "systemcartographer-api-graphql-federationstatsview-totalcodeatoms",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-federationstatsview-systemcartographer-api-graphql-federationstatsview-totalsqlatoms",
+      "sourceId": "systemcartographer-api-graphql-federationstatsview",
+      "targetId": "systemcartographer-api-graphql-federationstatsview-totalsqlatoms",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-federationstatsview-systemcartographer-api-graphql-federationstatsview-totallinks",
+      "sourceId": "systemcartographer-api-graphql-federationstatsview",
+      "targetId": "systemcartographer-api-graphql-federationstatsview-totallinks",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-federationstatsview-systemcartographer-api-graphql-federationstatsview-crossrepolinkcount",
+      "sourceId": "systemcartographer-api-graphql-federationstatsview",
+      "targetId": "systemcartographer-api-graphql-federationstatsview-crossrepolinkcount",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-blastradiusresult-systemcartographer-api-graphql-blastradiusresult-sourceatomid",
+      "sourceId": "systemcartographer-api-graphql-blastradiusresult",
+      "targetId": "systemcartographer-api-graphql-blastradiusresult-sourceatomid",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-blastradiusresult-systemcartographer-api-graphql-blastradiusresult-affectedatoms",
+      "sourceId": "systemcartographer-api-graphql-blastradiusresult",
+      "targetId": "systemcartographer-api-graphql-blastradiusresult-affectedatoms",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-blastradiusresult-systemcartographer-api-graphql-blastradiusresult-totalaffected",
+      "sourceId": "systemcartographer-api-graphql-blastradiusresult",
+      "targetId": "systemcartographer-api-graphql-blastradiusresult-totalaffected",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-blastradiusresult-systemcartographer-api-graphql-blastradiusresult-bydepth",
+      "sourceId": "systemcartographer-api-graphql-blastradiusresult",
+      "targetId": "systemcartographer-api-graphql-blastradiusresult-bydepth",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-affectedatominfo-systemcartographer-api-graphql-affectedatominfo-atomid",
+      "sourceId": "systemcartographer-api-graphql-affectedatominfo",
+      "targetId": "systemcartographer-api-graphql-affectedatominfo-atomid",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-affectedatominfo-systemcartographer-api-graphql-affectedatominfo-depth",
+      "sourceId": "systemcartographer-api-graphql-affectedatominfo",
+      "targetId": "systemcartographer-api-graphql-affectedatominfo-depth",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-depthgroup-systemcartographer-api-graphql-depthgroup-depth",
+      "sourceId": "systemcartographer-api-graphql-depthgroup",
+      "targetId": "systemcartographer-api-graphql-depthgroup-depth",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-depthgroup-systemcartographer-api-graphql-depthgroup-count",
+      "sourceId": "systemcartographer-api-graphql-depthgroup",
+      "targetId": "systemcartographer-api-graphql-depthgroup-count",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-searchresult-systemcartographer-api-graphql-searchresult-atomid",
+      "sourceId": "systemcartographer-api-graphql-searchresult",
+      "targetId": "systemcartographer-api-graphql-searchresult-atomid",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-searchresult-systemcartographer-api-graphql-searchresult-name",
+      "sourceId": "systemcartographer-api-graphql-searchresult",
+      "targetId": "systemcartographer-api-graphql-searchresult-name",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-searchresult-systemcartographer-api-graphql-searchresult-type",
+      "sourceId": "systemcartographer-api-graphql-searchresult",
+      "targetId": "systemcartographer-api-graphql-searchresult-type",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "contains-systemcartographer-api-graphql-searchresult-systemcartographer-api-graphql-searchresult-repository",
+      "sourceId": "systemcartographer-api-graphql-searchresult",
+      "targetId": "systemcartographer-api-graphql-searchresult-repository",
+      "type": "Contains",
+      "confidence": 1,
+      "evidence": null
+    },
+    {
+      "id": "returns-systemcartographer-core-iscanner-scanasync-systemcartographer-core-scanresult",
+      "sourceId": "systemcartographer-core-iscanner-scanasync",
+      "targetId": "systemcartographer-core-scanresult",
+      "type": "References",
+      "confidence": 1,
+      "evidence": "Method returns ScanResult"
+    }
+  ],
+  "metadata": {
+    "totalCodeAtoms": 247,
+    "totalSqlAtoms": 0,
+    "totalLinks": 189,
+    "dtoCount": 0,
+    "interfaceCount": 1,
+    "tableCount": 0,
+    "storedProcedureCount": 0,
+    "scanDuration": "00:00:00.2786230"
+  }
+}
