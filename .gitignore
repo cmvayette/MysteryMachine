@@ -26,3 +26,12 @@ packages/
 # Snapshots (output files)
 snapshot.json
 *.snapshot.json
+massive_scan.json
+massive_scan_governed.json
+massive_scan_visibility.json
+self-analysis.json
+interpretation_report.md
+test_snapshot.json
+
+# Large Data
+MassiveRepo/

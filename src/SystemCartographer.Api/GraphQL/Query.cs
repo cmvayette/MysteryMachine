@@ -11,6 +11,53 @@ namespace SystemCartographer.Api.GraphQL;
 public class Query
 {
     /// <summary>
+    /// Phase 4: Time Travel - Get all available historical snapshots.
+    /// </summary>
+    public async Task<IEnumerable<SnapshotSummary>> GetSnapshots([Service] SnapshotService snapshotService)
+    {
+        var snapshots = await snapshotService.GetAllSnapshotsAsync();
+        return snapshots.Select(s => new SnapshotSummary 
+        { 
+            Id = s.Id, 
+            ScannedAt = s.ScannedAt, 
+            Branch = s.Branch, 
+            AtomCount = s.Metadata.TotalCodeAtoms 
+        });
+    }
+
+    /// <summary>
+    /// Phase 4: Time Travel - Get a specific snapshot graph.
+    /// </summary>
+    public async Task<SnapshotGraph?> GetSnapshot(string id, [Service] SnapshotService snapshotService)
+    {
+        var snapshot = await snapshotService.GetSnapshotAsync(id);
+        if (snapshot == null) return null;
+
+        // Map internal Snapshot model to GraphQL Graph view model
+        // For now, returning a simplified graph structure
+        return new SnapshotGraph
+        {
+            Id = snapshot.Id,
+            Nodes = snapshot.CodeAtoms.Select(a => new AtomNode 
+            { 
+                 Id = a.Id, 
+                 Name = a.Name, 
+                 Type = a.Type.ToString(),
+                 LinesOfCode = a.LinesOfCode,
+                 IsPublic = a.IsPublic
+            }).ToList(),
+            Links = snapshot.Links.Select(l => new AtomLinkView 
+            { 
+                 Source = l.SourceId, 
+                 Target = l.TargetId, 
+                 Type = l.Type.ToString(),
+                 // Governance Check would happen here if we had the resolved atoms
+                 IsViolation = false // Placeholder until we link atoms
+            }).ToList()
+        };
+    }
+
+    /// <summary>
     /// L1: Context - Get the federated view of all repositories.
     /// </summary>
     public FederationView? GetFederation([Service] CartographerDataService dataService)
@@ -312,7 +359,32 @@ public class SqlSchemaNode
     public int TableCount { get; set; }
 }
 
-public class NamespaceView
+public class SnapshotSummary
+{
+    public required string Id { get; set; }
+    public DateTimeOffset ScannedAt { get; set; }
+    public string? Branch { get; set; }
+    public int AtomCount { get; set; }
+}
+
+public class SnapshotGraph
+{
+    public required string Id { get; set; }
+    public List<AtomNode> Nodes { get; set; } = [];
+    public List<AtomLinkView> Links { get; set; } = [];
+}
+
+public class AtomLinkView
+{
+    public required string Source { get; set; }
+    public required string Target { get; set; }
+    public string? Type { get; set; }
+    public bool IsViolation { get; set; }
+    public List<string>? ViolationReasons { get; set; }
+    public bool CrossRepo { get; set; }
+}
+
+public record NamespaceView
 {
     public required string Path { get; set; }
     public List<AtomNode> Atoms { get; set; } = [];

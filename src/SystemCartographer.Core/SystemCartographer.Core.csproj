@@ -2,4 +2,7 @@
   <PropertyGroup>
     <!-- TargetFramework inherited from Directory.Build.props -->
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="YamlDotNet" Version="16.3.0" />
+  </ItemGroup>
 </Project>

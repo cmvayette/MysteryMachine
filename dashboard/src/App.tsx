@@ -1,17 +1,23 @@
 import { ApolloProvider, useQuery } from '@apollo/client';
-import { client, FEDERATION_QUERY, REPOSITORY_QUERY, NAMESPACE_QUERY, ATOM_QUERY, BLAST_RADIUS_QUERY } from './graphql/client';
+import { client, FEDERATION_QUERY, REPOSITORY_QUERY, NAMESPACE_QUERY, ATOM_QUERY, BLAST_RADIUS_QUERY, SNAPSHOTS_QUERY } from './graphql/client';
 import { useNavigationStore } from './store/navigationStore';
 import { Breadcrumb } from './components/Breadcrumb';
 import { ForceGraph } from './components/ForceGraph';
 import { AtomInfoPanel } from './components/AtomInfoPanel';
 import { MemberPanel } from './components/MemberPanel';
+import { TimeControls } from './components/TimeControls';
 import { StatusFooter } from './components/StatusFooter';
 import { ZoomControls } from './components/ZoomControls';
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import './index.css';
 
 function Dashboard() {
-  const { level, path, selectedAtomId, blastRadiusMode, diffMode, drillDown, selectAtom, toggleBlastRadiusMode, toggleDiffMode } = useNavigationStore();
+  const { 
+    level, path, selectedAtomId, blastRadiusMode, diffMode, governanceMode, 
+    snapshots, currentSnapshotId, isPlaying,
+    drillDown, selectAtom, toggleBlastRadiusMode, toggleDiffMode, toggleGovernanceMode,
+    setSnapshots, setCurrentSnapshot, setIsPlaying 
+  } = useNavigationStore();
   const [searchQuery, setSearchQuery] = useState('');
   const [showLinks, setShowLinks] = useState(true);
 
@@ -31,12 +37,12 @@ function Dashboard() {
 
   // GraphQL queries based on current navigation level
   const { data: federationData, loading: fedLoading } = useQuery(FEDERATION_QUERY, {
-    skip: level !== 'context'
+    skip: level !== 'federation'
   });
 
   const { data: repoData, loading: repoLoading } = useQuery(REPOSITORY_QUERY, {
     variables: { id: path[0] },
-    skip: level !== 'container' || !path[0]
+    skip: level !== 'repository' || !path[0]
   });
 
   const { data: nsData, loading: nsLoading } = useQuery(NAMESPACE_QUERY, {
@@ -56,9 +62,21 @@ function Dashboard() {
     skip: !selectedAtomId || !blastRadiusMode
   });
 
+  // Fetch Snapshots for Phase 4
+  const { data: snapshotData } = useQuery(SNAPSHOTS_QUERY);
+  useEffect(() => {
+    if (snapshotData?.snapshots) {
+       setSnapshots(snapshotData.snapshots);
+       // Auto-select latest if none selected
+       if (!currentSnapshotId && snapshotData.snapshots.length > 0) {
+           setCurrentSnapshot(snapshotData.snapshots[snapshotData.snapshots.length - 1].id);
+       }
+    }
+  }, [snapshotData, setSnapshots, currentSnapshotId, setCurrentSnapshot]);
+
   // Auto-drill into first repository on initial load
   useEffect(() => {
-    if (level === 'context' && federationData?.federation?.repositories?.length > 0) {
+    if (level === 'federation' && federationData?.federation?.repositories?.length > 0) {
       const firstRepo = federationData.federation.repositories[0];
       drillDown(firstRepo.id);
     }
@@ -69,7 +87,7 @@ function Dashboard() {
     const nodes: { id: string; name: string; type: string; riskScore?: number; group?: string; category?: string; consumerCount?: number }[] = [];
     const links: { source: string; target: string; type?: string; crossRepo?: boolean }[] = [];
 
-    if (level === 'context' && federationData?.federation) {
+    if (level === 'federation' && federationData?.federation) {
       const fed = federationData.federation;
       fed.repositories.forEach((repo: { id: string; name: string; riskScore?: number }) => {
         nodes.push({
@@ -87,7 +105,7 @@ function Dashboard() {
           crossRepo: true
         });
       });
-    } else if (level === 'container' && repoData?.repository) {
+    } else if (level === 'repository' && repoData?.repository) {
       const repo = repoData.repository;
       repo.namespaces.forEach((ns: { path: string }) => {
         nodes.push({
@@ -315,7 +333,7 @@ function Dashboard() {
           {/* Smart Filters - coming soon: will replace ModuleFilter with opt-in smell detection */}
 
           {/* Stats Overlay */}
-          {federationData?.federation && level === 'context' && (
+          {federationData?.federation && level === 'federation' && (
             <div className="absolute top-4 left-4 panel">
               <h3 className="text-sm font-medium text-slate-300 mb-2">Federation Stats</h3>
               <dl className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
@@ -332,6 +350,45 @@ function Dashboard() {
               </dl>
             </div>
           )}
+          
+          {/* Controls Overlay */}
+          <div className="absolute top-4 right-4 flex flex-col gap-2">
+            <ZoomControls onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} onFitToScreen={handleFitToScreen} />
+            
+            {/* Diff Mode Toggle */}
+            <button
+               onClick={toggleDiffMode}
+               className={`p-2 rounded-lg backdrop-blur border transition-all ${
+                 diffMode 
+                   ? 'bg-yellow-500/20 border-yellow-500 text-yellow-400' 
+                   : 'bg-slate-800/50 border-slate-700 text-slate-400 hover:text-white'
+               }`}
+               title="Toggle Diff Mode"
+            >
+              <span className="material-symbols-outlined">history_toggle_off</span>
+            </button>
+
+            {/* Governance Mode Toggle */}
+             <button
+               onClick={toggleGovernanceMode}
+               className={`p-2 rounded-lg backdrop-blur border transition-all ${
+                 governanceMode 
+                   ? 'bg-red-500/20 border-red-500 text-red-500 shadow-[0_0_10px_rgba(239,68,68,0.3)]' 
+                   : 'bg-slate-800/50 border-slate-700 text-slate-400 hover:text-white'
+               }`}
+               title="Toggle Governance Mode"
+            >
+              <span className="material-symbols-outlined">policy</span>
+            </button>
+          </div>
+
+          <TimeControls 
+             snapshots={snapshots}
+             currentSnapshotId={currentSnapshotId}
+             isPlaying={isPlaying}
+             onSnapshotChange={setCurrentSnapshot}
+             onTogglePlay={() => setIsPlaying(!isPlaying)}
+          />
 
           {/* Info Icon with Tooltip */}
           <div className="absolute bottom-4 right-4 group">
@@ -391,7 +448,7 @@ function Dashboard() {
             </div>
             
             {/* Context level - show repo info */}
-            {level === 'context' && federationData?.federation && (
+            {level === 'federation' && federationData?.federation && (
               <div className="space-y-3">
                 {(() => {
                   const repo = federationData.federation.repositories.find(
@@ -425,7 +482,7 @@ function Dashboard() {
             )}
             
             {/* Container level - show namespace info */}
-            {level === 'container' && repoData?.repository && (
+            {level === 'repository' && repoData?.repository && (
               <div className="space-y-3">
                 {(() => {
                   const ns = repoData.repository.namespaces.find(

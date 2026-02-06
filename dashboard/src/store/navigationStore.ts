@@ -1,6 +1,14 @@
 import { create } from 'zustand';
 
-export type C4Level = 'context' | 'container' | 'component' | 'code';
+// Define locally or move to types file
+interface SnapshotSummary {
+  id: string;
+  scannedAt: string;
+  branch: string | null;
+  atomCount: number;
+}
+
+export type C4Level = 'federation' | 'repository' | 'namespace' | 'component' | 'code';
 
 export interface NavigationState {
   level: C4Level;
@@ -8,7 +16,11 @@ export interface NavigationState {
   selectedAtomId: string | null;
   blastRadiusMode: boolean;
   diffMode: boolean;
+  governanceMode: boolean;
   baselineSnapshot: string | null;
+  snapshots: SnapshotSummary[]; // Using any to avoid circular deps for now, or define in type
+  currentSnapshotId: string | null;
+  isPlaying: boolean;
   
   // Actions
   drillDown: (target: string) => void;
@@ -16,19 +28,27 @@ export interface NavigationState {
   selectAtom: (atomId: string | null) => void;
   toggleBlastRadiusMode: () => void;
   toggleDiffMode: () => void;
+  toggleGovernanceMode: () => void;
   setBaseline: (snapshotId: string | null) => void;
+  setSnapshots: (snapshots: SnapshotSummary[]) => void;
+  setCurrentSnapshot: (id: string | null) => void;
+  setIsPlaying: (isPlaying: boolean) => void;
   reset: () => void;
 }
 
-const levelProgression: C4Level[] = ['context', 'container', 'component', 'code'];
+const levelProgression: C4Level[] = ['federation', 'repository', 'namespace', 'component', 'code'];
 
 export const useNavigationStore = create<NavigationState>((set) => ({
-  level: 'context',
+  level: 'federation',
   path: [],
   selectedAtomId: null,
   blastRadiusMode: false,
   diffMode: false,
+  governanceMode: false,
   baselineSnapshot: null,
+  snapshots: [],
+  currentSnapshotId: null,
+  isPlaying: false,
 
   drillDown: (target) => set((state) => {
     const currentIndex = levelProgression.indexOf(state.level);
@@ -59,10 +79,15 @@ export const useNavigationStore = create<NavigationState>((set) => ({
   })),
 
   toggleDiffMode: () => set(state => ({ diffMode: !state.diffMode })),
+  toggleGovernanceMode: () => set((state) => ({ governanceMode: !state.governanceMode })),
+  
   setBaseline: (id) => set({ baselineSnapshot: id }),
+  setSnapshots: (snapshots) => set({ snapshots }),
+  setCurrentSnapshot: (id) => set({ currentSnapshotId: id }),
+  setIsPlaying: (isPlaying) => set({ isPlaying }),
   
   reset: () => set({
-    level: 'context',
+    level: 'federation',
     path: [],
     selectedAtomId: null,
     blastRadiusMode: false,

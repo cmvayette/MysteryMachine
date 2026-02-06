@@ -65,6 +65,17 @@ export const REPOSITORY_QUERY = gql`
   }
 `;
 
+export const SNAPSHOTS_QUERY = gql`
+  query GetSnapshots {
+    snapshots {
+      id
+      scannedAt
+      branch
+      atomCount
+    }
+  }
+`;
+
 export const NAMESPACE_QUERY = gql`
   query GetNamespace($repoId: String!, $path: String!) {
     namespace(repoId: $repoId, path: $path) {

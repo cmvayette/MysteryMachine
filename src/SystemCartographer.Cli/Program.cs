@@ -11,6 +11,8 @@ namespace SystemCartographer.Cli;
 
 public class Program
 {
+    public static bool IsCiMode { get; private set; } = false;
+
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         WriteIndented = true,
@@ -20,6 +22,13 @@ public class Program
 
     public static async Task<int> Main(string[] args)
     {
+        // Check for CI flag
+        if (args.Contains("--ci"))
+        {
+            IsCiMode = true;
+            args = args.Where(a => a != "--ci").ToArray();
+        }
+
         if (args.Length == 0)
         {
             PrintHelp();
@@ -35,6 +44,7 @@ public class Program
             "risk" => await ExecuteRisk(args[1..]),
             "federate" => await ExecuteFederate(args[1..]),
             "update" => await ExecuteUpdate(args[1..]),
+            "interpret" => await ExecuteInterpret(args[1..]),
             "--help" or "-h" => PrintHelp(),
             "--version" or "-v" => PrintVersion(),
             _ => PrintUnknownCommand(command)
@@ -55,6 +65,7 @@ public class Program
               risk      Generate risk report for a snapshot
               federate  Merge multiple snapshots into a global map
               update    Update the central database with a snapshot
+              interpret Read a snapshot and generate a human-readable summary
 
             Scan Options:
               --repo <path>       Path to repository (required)
@@ -88,12 +99,17 @@ public class Program
               --strategy <type>   Conflict resolution: newest, priority (default: newest)
               --priority <repos>  Repo priority for conflicts (comma-separated)
 
+            Interpret Options:
+              --snapshot <file>   Snapshot file to read (required)
+              --output <file>     Output file (optional, writes to stdout if omitted)
+
             Examples:
               cartographer scan --repo ./src --output ./snapshot.json
               cartographer diff --baseline main.json --snapshot current.json
               cartographer blast --snapshot ./snapshot.json --atom table:users
               cartographer risk --snapshot ./snapshot.json --format html --output risk.html
               cartographer update --snapshot ./snapshot.json --connection "Server=..."
+              cartographer interpret --snapshot ./snapshot.json
             """);
         return 0;
     }
@@ -109,6 +125,14 @@ public class Program
         Console.WriteLine($"Unknown command: {command}");
         Console.WriteLine("Run 'cartographer --help' for usage information.");
         return 1;
+    }
+
+    private static void Log(string message, string? emoji = null)
+    {
+        if (IsCiMode || emoji == null)
+            Console.WriteLine(message);
+        else
+            Console.WriteLine($"{emoji} {message}");
     }
 
     private static async Task<int> ExecuteScan(string[] args)
@@ -150,19 +174,19 @@ public class Program
             return 1;
         }
 
-        Console.WriteLine($"🔍 Scanning repository: {fullRepoPath}");
+        Log($"Scanning repository: {fullRepoPath}", "🔍");
         var startTime = DateTime.UtcNow;
 
         var options = new ScanOptions { IncludePrivateMembers = includePrivate };
         
         // Run C# scanner
-        Console.WriteLine("   📦 Scanning C# files...");
+        Log("   Scanning C# files...", "📦");
         var csharpScanner = new CSharpScanner();
         var csharpResult = await csharpScanner.ScanAsync(fullRepoPath, options);
         Console.WriteLine($"      Found {csharpResult.CodeAtoms.Count} code atoms, {csharpResult.Links.Count} links");
 
         // Run SQL scanner
-        Console.WriteLine("   🗄️  Scanning SQL files...");
+        Log("   Scanning SQL files...", "🗄️");
         var sqlScanner = new SqlScanner();
         var sqlResult = await sqlScanner.ScanAsync(fullRepoPath, options);
         Console.WriteLine($"      Found {sqlResult.SqlAtoms.Count} SQL atoms, {sqlResult.Links.Count} links");
@@ -176,7 +200,7 @@ public class Program
         var semanticLinks = new List<AtomLink>();
         if (!skipLinking && (allCodeAtoms.Count > 0 || allSqlAtoms.Count > 0))
         {
-            Console.WriteLine("   🔗 Running semantic linker...");
+            Log("   Running semantic linker...", "🔗");
             var linker = new SemanticLinker();
             var linkResult = linker.LinkAtoms(allCodeAtoms, allSqlAtoms, allLinks);
             semanticLinks = linkResult.Links;
@@ -194,6 +218,37 @@ public class Program
 
         // Merge all links
         var finalLinks = allLinks.Concat(semanticLinks).ToList();
+
+        // RUN GOVERNANCE ENGINE
+        var governancePath = Path.Combine(fullRepoPath, "governance.yaml");
+        if (File.Exists(governancePath))
+        {
+            Log($"   Running governance check...", "⚖️");
+            var governance = new GovernanceEngine(governancePath);
+            // Only check CodeAtoms for now
+            var atomMap = allCodeAtoms.ToDictionary(a => a.Id);
+            
+            foreach (var link in finalLinks)
+            {
+                if (atomMap.TryGetValue(link.SourceId, out var source) && 
+                    atomMap.TryGetValue(link.TargetId, out var target))
+                {
+                    if (governance.IsViolation(link, source, target))
+                    {
+                        var reasons = governance.GetViolationReasons(link, source, target);
+                        foreach (var reason in reasons)
+                        {
+                            csharpResult.Diagnostics.Add(new ScanDiagnostic(
+                                DiagnosticSeverity.Error, 
+                                reason,
+                                source.FilePath,
+                                source.LineNumber
+                            ));
+                        }
+                    }
+                }
+            }
+        }
 
         // Create snapshot
         var snapshot = new Snapshot
@@ -228,21 +283,21 @@ public class Program
         var allDiagnostics = csharpResult.Diagnostics.Concat(sqlResult.Diagnostics).ToList();
         if (allDiagnostics.Count > 0)
         {
-            Console.WriteLine($"\n⚠️  {allDiagnostics.Count} diagnostics:");
+            Log($"\n{allDiagnostics.Count} diagnostics:", "⚠️");
             foreach (var diag in allDiagnostics.Take(10))
             {
                 var icon = diag.Severity == DiagnosticSeverity.Error ? "❌" : 
                            diag.Severity == DiagnosticSeverity.Warning ? "⚠️" : "ℹ️";
-                Console.WriteLine($"   {icon} {diag.Message}");
+                Log($"   {diag.Message}", icon);
             }
             if (allDiagnostics.Count > 10)
                 Console.WriteLine($"   ... and {allDiagnostics.Count - 10} more");
         }
 
+        Log($"\nSnapshot saved to: {outputPath}", "✅");
+        
         Console.WriteLine($"""
 
-            ✅ Snapshot saved to: {outputPath}
-            
             Summary:
               Code Atoms:  {snapshot.Metadata.TotalCodeAtoms:N0}
                 DTOs:      {snapshot.Metadata.DtoCount:N0}
@@ -695,10 +750,138 @@ public class Program
         return sb.ToString();
     }
 
+    private static async Task<int> ExecuteInterpret(string[] args)
+    {
+        string? snapshotPath = null;
+        string? outputPath = null;
+
+        for (int i = 0; i < args.Length; i++)
+        {
+            switch (args[i])
+            {
+                case "--snapshot" when i + 1 < args.Length:
+                    snapshotPath = args[++i];
+                    break;
+                case "--output" when i + 1 < args.Length:
+                    outputPath = args[++i];
+                    break;
+            }
+        }
+
+        if (string.IsNullOrEmpty(snapshotPath))
+        {
+            Console.WriteLine("Error: --snapshot is required");
+            return 1;
+        }
+
+        if (!File.Exists(snapshotPath))
+        {
+            Console.WriteLine($"Error: Snapshot file not found: {snapshotPath}");
+            return 1;
+        }
+
+        // Load snapshot
+        var json = await File.ReadAllTextAsync(snapshotPath);
+        var snapshot = JsonSerializer.Deserialize<Snapshot>(json, JsonOptions)!;
+
+        // Generate Human-Readable Summary
+        var sb = new System.Text.StringBuilder();
+
+        sb.AppendLine($"# 🗺️ System Interpretation Report");
+        sb.AppendLine($"**Analyzed Repository**: `{snapshot.Repository}`");
+        sb.AppendLine($"**Date**: {DateTime.Now:yyyy-MM-dd HH:mm}");
+        sb.AppendLine();
+
+        sb.AppendLine("## 1. High-Level Vital Signs");
+        sb.AppendLine($"- **Code Volume**: {snapshot.Metadata.TotalCodeAtoms:N0} structured code units found.");
+        sb.AppendLine($"- **Database Surface**: {snapshot.Metadata.TotalSqlAtoms:N0} SQL objects detected.");
+        sb.AppendLine($"- **Connectivity**: {snapshot.Metadata.TotalLinks:N0} relationships identified.");
+        sb.AppendLine($"- **Complexity Density**: {((double)snapshot.Metadata.TotalLinks / (Math.Max(1, snapshot.Metadata.TotalCodeAtoms + snapshot.Metadata.TotalSqlAtoms))):F2} links per node.");
+        sb.AppendLine();
+
+        sb.AppendLine("## 2. Architecture Breakdown");
+
+        // Breakdown by Namespace (Top 5)
+        var topNamespaces = snapshot.CodeAtoms
+            .GroupBy(a => a.Namespace)
+            .OrderByDescending(g => g.Count())
+            .Take(5);
+
+        sb.AppendLine("### Top Namespaces (by Volume)");
+        foreach (var ns in topNamespaces)
+        {
+            sb.AppendLine($"- **`{ns.Key}`**: {ns.Count():N0} atoms");
+        }
+        sb.AppendLine();
+
+        // Breakdown by Type
+        sb.AppendLine("### Component Taxonomy");
+        sb.AppendLine($"- **Interfaces (Contracts)**: {snapshot.Metadata.InterfaceCount:N0}");
+        sb.AppendLine($"- **DTOs (Data Carriers)**: {snapshot.Metadata.DtoCount:N0}");
+        sb.AppendLine($"- **Classes (Logic)**: {snapshot.CodeAtoms.Count(a => a.Type == AtomType.Class):N0}");
+        sb.AppendLine($"- **Database Tables**: {snapshot.Metadata.TableCount:N0}");
+        sb.AppendLine();
+
+        sb.AppendLine("## 3. Connectivity Analysis");
+        
+        // Find most connected nodes (Fan-In + Fan-Out)
+        var linkCounts = new Dictionary<string, int>();
+        foreach (var link in snapshot.Links)
+        {
+            linkCounts[link.SourceId] = linkCounts.GetValueOrDefault(link.SourceId) + 1;
+            linkCounts[link.TargetId] = linkCounts.GetValueOrDefault(link.TargetId) + 1;
+        }
+
+        var topNodes = linkCounts.OrderByDescending(kv => kv.Value).Take(10);
+        
+        sb.AppendLine("### Central Nervous System (Most Connected Nodes)");
+        sb.AppendLine("These are likely your core domain entities or utility services.");
+        foreach (var node in topNodes)
+        {
+            var atomName = snapshot.CodeAtoms.FirstOrDefault(a => a.Id == node.Key)?.Name
+                        ?? snapshot.SqlAtoms.FirstOrDefault(a => a.Id == node.Key)?.Name
+                        ?? node.Key;
+            
+            sb.AppendLine($"- **`{atomName}`**: {node.Value:N0} connections");
+        }
+        sb.AppendLine();
+
+        sb.AppendLine("## 4. Diagnostics & Recommendations");
+        
+        if (snapshot.Metadata.InterfaceCount == 0)
+        {
+            sb.AppendLine("- ⚠️ **Low Abstraction**: No interfaces found. Consider introducing interfaces for better testability and decoupling.");
+        }
+        else
+        {
+            sb.AppendLine("- ✅ **Good Abstraction**: Interfaces detected, suggesting a decoupled architecture.");
+        }
+
+        if (snapshot.Metadata.DtoCount > snapshot.Metadata.TotalCodeAtoms * 0.5)
+        {
+            sb.AppendLine("- ℹ️ **Data-Heavy**: High ratio of DTOs. This looks like a data transformations pipeline or CRUD app.");
+        }
+
+        // Output logic
+        var markdown = sb.ToString();
+        if (!string.IsNullOrEmpty(outputPath))
+        {
+            await File.WriteAllTextAsync(outputPath, markdown);
+            Console.WriteLine($"✅ Interpretation report saved to: {outputPath}");
+        }
+        else
+        {
+            Console.WriteLine(markdown);
+        }
+
+        return 0;
+    }
+
     private static string? GetCurrentBranch(string repoPath)
     {
         try
         {
+
             var headPath = Path.Combine(repoPath, ".git", "HEAD");
             if (File.Exists(headPath))
             {

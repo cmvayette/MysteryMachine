@@ -20,6 +20,7 @@ interface Link {
   target: string | Node;
   type?: string;
   crossRepo?: boolean;
+  isViolation?: boolean;
 }
 
 interface ForceGraphProps {
@@ -35,6 +36,7 @@ interface ForceGraphProps {
   height?: number;
   onViewportChange?: (x: number, y: number, nodeCount: number, edgeCount: number) => void;
   diffMode?: boolean;
+  governanceMode?: boolean;
 }
 
 // Material Symbol names mapped to atom types (C4 aligned)
@@ -137,7 +139,8 @@ export function ForceGraph({
   width = 800,
   height = 600,
   onViewportChange,
-  diffMode = false
+  diffMode = false,
+  governanceMode = false
 }: ForceGraphProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const clickTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -191,6 +194,16 @@ export function ForceGraph({
       .on('zoom', (event) => {
         g.attr('transform', event.transform);
         transformRef.current = { x: event.transform.x, y: event.transform.y, k: event.transform.k };
+        g.attr('transform', event.transform);
+        transformRef.current = { x: event.transform.x, y: event.transform.y, k: event.transform.k };
+        
+        // LOD: Hide labels when zoomed out
+        if (event.transform.k < 1.2) {
+           g.selectAll('.node-label-text').style('opacity', 0);
+        } else {
+           g.selectAll('.node-label-text').style('opacity', 1);
+        }
+
         reportViewport();
       });
     svg.call(zoom);
@@ -208,6 +221,28 @@ export function ForceGraph({
       .attr('points', '0 0, 10 3.5, 0 7')
       .attr('fill', '#224249');
 
+    // Corrosion Filter (Turbulence for "Entropy")
+    const filter = svg.select('defs').append('filter')
+      .attr('id', 'corrosion')
+      .attr('x', '-20%')
+      .attr('y', '-20%')
+      .attr('width', '140%')
+      .attr('height', '140%');
+    
+    filter.append('feTurbulence')
+      .attr('type', 'fractalNoise')
+      .attr('baseFrequency', '0.05')
+      .attr('numOctaves', '3')
+      .attr('result', 'noise');
+      
+    filter.append('feDisplacementMap')
+      .attr('in', 'SourceGraphic')
+      .attr('in2', 'noise')
+      .attr('scale', '3')
+      .attr('xChannelSelector', 'R')
+      .attr('yChannelSelector', 'G');
+
+
     // Draw links
     const link = g.append('g')
       .attr('class', 'links')
@@ -216,9 +251,29 @@ export function ForceGraph({
       .join('line')
       .attr('stroke', d => getLinkColor(d, selectedNodeId))
       .attr('stroke-width', d => getLinkWidth(d, selectedNodeId))
-      .attr('stroke-opacity', showLinks ? 0.6 : 0)
-      .attr('stroke-dasharray', d => getLinkDashArray(d)) // C4: solid=inherit, dashed=implements, dotted=uses
+      .attr('stroke-width', d => getLinkWidth(d, selectedNodeId))
+      .attr('stroke-opacity', d => {
+          if (!showLinks) return 0;
+          if (governanceMode) {
+             return d.isViolation ? 1 : 0.1; // Dim non-violations
+          }
+          return 0.6;
+      })
+      .attr('stroke', d => {
+          if (governanceMode && d.isViolation) return '#ef4444'; // Red-500 for violations
+          return getLinkColor(d, selectedNodeId);
+      })
+      .attr('stroke-dasharray', d => {
+          if (governanceMode && d.isViolation) return '4,2'; // Dashed for violation
+          return getLinkDashArray(d);
+      }) 
       .attr('marker-end', 'url(#arrowhead)');
+      
+      // Animate Violations
+      if (governanceMode) {
+         link.filter(d => !!d.isViolation)
+             .style('animation', 'pulse-edge 1s infinite');
+      }
 
     // Draw node groups
     const node = g.append('g')
@@ -261,6 +316,12 @@ export function ForceGraph({
         // Thicker border for high inbound dependencies
         const inbound = d.consumerCount ?? 0;
         return Math.min(1.5 + inbound * 0.2, 5);
+         return Math.min(1.5 + inbound * 0.2, 5);
+      })
+      .style('filter', d => {
+         // Apply corrosion filter to high risk nodes
+         if ((d.riskScore || 0) > 0.7) return 'url(#corrosion)';
+         return null;
       });
 
     // Selection glow ring (uses same shape, slightly scaled up)
@@ -347,8 +408,11 @@ export function ForceGraph({
         // Add background for readability
         el.append('tspan')
           .attr('class', 'label-bg')
+          .attr('class', 'label-bg')
           .text(truncate(d.name, 18));
       })
+      .attr('class', 'node-label-text') // Add class for LOD selection
+      .style('opacity', 0) // Start hidden, let zoom handler reveal if needed (or default to visible if k=1)
       .text(d => truncate(d.name, 18));
 
 
@@ -428,6 +492,10 @@ export function ForceGraph({
     });
 
     // Initial viewport report
+    // Initial viewport report and LOD check
+    // Ensure labels are visible initially if zoom is default
+    g.selectAll('.node-label-text').style('opacity', 1);
+    
     reportViewport();
 
     return () => {
@@ -438,7 +506,7 @@ export function ForceGraph({
     };
     // Use signatures instead of array references to prevent re-render cascade
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nodesSignature, linksSignature, showLinks, selectedNodeId, blastRadiusAtoms, blastRadiusDepths, width, height, onNodeSelect, onNodeDrillDown, reportViewport, diffMode]);
+  }, [nodesSignature, linksSignature, showLinks, selectedNodeId, blastRadiusAtoms, blastRadiusDepths, width, height, onNodeSelect, onNodeDrillDown, reportViewport, diffMode, governanceMode]);
 
   return (
     <svg 

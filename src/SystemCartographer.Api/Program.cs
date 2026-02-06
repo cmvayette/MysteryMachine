@@ -1,6 +1,7 @@
 using SystemCartographer.Api.GraphQL;
 using SystemCartographer.Core;
 using SystemCartographer.Federation;
+using SystemCartographer.Linker;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +23,10 @@ builder.Services
     .AddProjections();
 
 // Add data services
-builder.Services.AddSingleton<CartographerDataService>();
+builder.Services.AddSingleton<CartographerDataService>(); // Keep state between requests
+builder.Services.AddSingleton<SnapshotService>();
+builder.Services.AddSingleton<IGovernanceEngine, GovernanceEngine>();
+builder.Services.AddSingleton<SemanticLinker>();
 
 var app = builder.Build();
 
@@ -30,6 +34,10 @@ app.MapGraphQL();
 
 // Health check endpoint
 app.MapGet("/health", () => "OK");
+
+// Verify wwwroot exists and serve static files
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 // Load snapshot endpoint
 app.MapPost("/load", async (HttpRequest request, CartographerDataService dataService) =>
@@ -74,6 +82,8 @@ if (!string.IsNullOrEmpty(snapshotPath) && File.Exists(snapshotPath))
         Console.WriteLine($"   ✅ Loaded {snapshot.CodeAtoms.Count} atoms, {snapshot.Links.Count} links");
     }
 }
+
+app.MapFallbackToFile("index.html");
 
 app.Run();
 

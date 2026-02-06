@@ -8,11 +8,12 @@ export function Breadcrumb({ className = '' }: BreadcrumbProps) {
   const { level, path, drillUp, reset } = useNavigationStore();
 
   const levelLabels = {
-    context: '🌐 Federation',
-    container: '📦 Repository',
-    component: '🧩 Namespace',
-    code: '📄 Atom'
-  };
+  federation: 'Federation',
+  repository: 'Repository',
+  namespace: 'Namespace',
+  component: 'Component',
+  code: 'Code'
+};
 
   return (
     <nav className={`flex items-center gap-2 text-sm ${className}`}>
@@ -20,7 +21,7 @@ export function Breadcrumb({ className = '' }: BreadcrumbProps) {
         onClick={reset}
         className="text-slate-400 hover:text-white transition-colors"
       >
-        {levelLabels.context}
+        {levelLabels.federation}
       </button>
       
       {path.map((segment, index) => (
