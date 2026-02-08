@@ -1,6 +1,65 @@
 @import "tailwindcss";
 @import "./design-tokens.css";
 
+/* ===== LOADING SPINNER ===== */
+.graph-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(148, 163, 184, 0.15);
+  border-top-color: #06b6d4;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== DRILL-DOWN TRANSITION ANIMATIONS ===== */
+
+/* Fade out sibling nodes during zoom-into-card */
+.react-flow__node.node-fade-out {
+  opacity: 0 !important;
+  transition: opacity 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+/* Fade-in for new children appearing after drill-down */
+/* NOTE: Do NOT use transform here — React Flow positions nodes via inline
+   transform: translate(x, y).  Any CSS animation or transition on transform
+   will override those positions and cause all nodes to stack at (0,0). */
+.react-flow__node {
+  animation: nodeAppear 400ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes nodeAppear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Edge draw-in animation */
+.react-flow__edge path {
+  animation: edgeDrawIn 500ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation-delay: 200ms;
+}
+
+@keyframes edgeDrawIn {
+  from {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    opacity: 0;
+  }
+  to {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
 /* ===== BASE STYLES ===== */
 body {
   background-color: var(--color-bg-dark);
@@ -9,51 +68,334 @@ body {
   margin: 0;
 }
 
-/* ===== FORCE GRAPH ===== */
-.force-graph {
-  @apply w-full h-full;
+/* ===== WORKFLOW GRAPH (React Flow) ===== */
+.workflow-graph {
+  width: 100%;
+  height: 100%;
 }
 
-.node {
+/* Reset React Flow's default node wrapper so our card-node div controls all styling */
+.react-flow__node-cardNode {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  font-size: inherit !important;
+}
+
+.react-flow__node-cardNode.selected {
+  box-shadow: none !important;
+}
+
+/* ===== CARD NODE ===== */
+.card-node {
+  background: #1e293b;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-left: 4px solid currentColor;
+  padding: 10px 14px;
   cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.node:hover {
-  filter: brightness(1.15);
-}
-
-.node-label {
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s,
+    transform 0.1s;
   font-family: var(--font-display);
-  font-size: 10px;
-  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  min-width: 180px;
+  position: relative;
+}
+
+.card-node:hover {
+  border-color: rgba(160, 184, 192, 0.4);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  transform: translateY(-1px);
+}
+
+.card-node--selected {
+  border-color: #a0b8c0 !important;
+  box-shadow:
+    0 0 0 2px rgba(160, 184, 192, 0.3),
+    0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* ===== LAYER BADGE ===== */
+.card-node__layer-badge {
+  font-size: 8px;
+  font-style: italic;
+  opacity: 0.7;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  fill: #e2e8f0;
-  pointer-events: none;
+  letter-spacing: 0.5px;
+  margin-left: auto;
 }
 
-.link {
-  stroke-opacity: 0.6;
-  transition: stroke-opacity 0.2s ease;
+/* ===== HUB NODE INDICATOR ===== */
+.card-node--hub {
+  box-shadow:
+    0 0 0 2px rgba(251, 191, 36, 0.4),
+    0 0 16px rgba(251, 191, 36, 0.2) !important;
+}
+.card-node__hub-badge {
+  font-size: 8px;
+  font-weight: 600;
+  color: #fbbf24;
+  letter-spacing: 0.5px;
+  opacity: 0.85;
+  margin-left: 4px;
 }
 
-.link:hover {
-  stroke-opacity: 1;
+/* ===== GROUP NODE (Compound Container) ===== */
+.group-node {
+  width: 100%;
+  height: 100%;
+  background: rgba(30, 41, 59, 0.45);
+  border: 1.5px solid rgba(100, 116, 139, 0.35);
+  border-radius: 12px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-sizing: border-box;
+}
+
+.group-node__header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-bottom: 1px solid rgba(100, 116, 139, 0.2);
+}
+
+.group-node__label {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(148, 163, 184, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.group-node__count {
+  font-size: 9px;
+  font-weight: 500;
+  color: rgba(148, 163, 184, 0.5);
+  background: rgba(100, 116, 139, 0.2);
+  padding: 1px 5px;
+  border-radius: 6px;
+}
+
+/* ===== STEREOTYPE SHAPE VARIANTS ===== */
+.card-node--rounded {
+  border-radius: 10px;
+}
+.card-node--hexagon {
+  border-radius: 4px;
+  clip-path: polygon(8% 0%, 92% 0%, 100% 50%, 92% 100%, 8% 100%, 0% 50%);
+  border-left: none;
+  padding-left: 16px;
+}
+.card-node--octagon {
+  border-radius: 4px;
+  clip-path: polygon(
+    20% 0%,
+    80% 0%,
+    100% 20%,
+    100% 80%,
+    80% 100%,
+    20% 100%,
+    0% 80%,
+    0% 20%
+  );
+  border-left: none;
+  padding: 10px 16px;
+}
+.card-node--stadium {
+  border-radius: 24px;
+  padding: 8px 16px;
+}
+.card-node--pill {
+  border-radius: 50px;
+  padding: 8px 16px;
+}
+.card-node--square {
+  border-radius: 4px;
+}
+.card-node--notched {
+  border-radius: 4px;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 85% 100%, 0% 100%);
+}
+.card-node--stacked {
+  border-radius: 3px;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    3px 3px 0 0 #151a20,
+    6px 6px 0 0 #111519;
+}
+.card-node--diamond {
+  border-radius: 4px;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  border-left: none;
+  padding: 20px 30px;
+  text-align: center;
+}
+.card-node--trapezoid {
+  border-radius: 4px;
+  clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+  border-left: none;
+  padding: 10px 18px;
+}
+.card-node--arrow {
+  border-radius: 4px;
+  clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
+  padding-right: 24px;
+}
+
+/* Card interior elements */
+.card-node__header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 2px;
+}
+
+.card-node__icon {
+  font-size: 14px !important;
+  line-height: 1;
+}
+
+.card-node__type {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #64748b;
+  flex: 1;
+}
+
+.card-node__risk-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.card-node__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #f1f5f9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 240px;
+  line-height: 1.3;
+}
+
+.card-node__metrics {
+  font-size: 9px;
+  color: #64748b;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Connection handles */
+.card-node__handle {
+  width: 8px !important;
+  height: 8px !important;
+  background: #3a4a54 !important;
+  border: 1.5px solid #1e293b !important;
+  border-radius: 50% !important;
+}
+
+.card-node__handle:hover {
+  background: #a0b8c0 !important;
+}
+
+/* ===== REACT FLOW OVERRIDES ===== */
+.react-flow__edge-path {
+  stroke: #3a4a54;
+  stroke-width: 1.5;
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: #a0b8c0;
+  stroke-width: 2;
+}
+
+/* Semantic edge labels */
+.react-flow__edge-textbg {
+  fill: rgba(13, 14, 18, 0.85);
+  rx: 3;
+  ry: 3;
+}
+
+.react-flow__edge-text {
+  font-family: var(--font-display);
+  font-size: 9px;
+}
+
+/* Violation edge pulse */
+@keyframes edge-pulse {
+  0%, 100% { stroke-opacity: 0.6; }
+  50% { stroke-opacity: 1; }
+}
+
+.react-flow__edge.animated .react-flow__edge-path {
+  animation: edge-pulse 1.5s ease-in-out infinite;
+}
+
+.react-flow__controls {
+  border: 1px solid var(--color-border-dark) !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+  box-shadow: var(--shadow-panel) !important;
+}
+
+.react-flow__controls-button {
+  background: var(--color-surface-dark) !important;
+  border-bottom: 1px solid var(--color-border-dark) !important;
+  fill: #94a3b8 !important;
+}
+
+.react-flow__controls-button:hover {
+  background: var(--color-surface-elevated) !important;
+  fill: #e2e8f0 !important;
+}
+
+.workflow-graph__minimap {
+  border: 1px solid var(--color-border-dark) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  background: var(--color-surface-dark) !important;
 }
 
 /* ===== BLAST RADIUS ===== */
-.blast-radius-0 { fill: var(--color-risk-critical); }
-.blast-radius-1 { fill: #f97316; }
-.blast-radius-2 { fill: #fb923c; }
-.blast-radius-3 { fill: #fdba74; }
-.blast-radius-4 { fill: #fed7aa; }
+.blast-radius-0 {
+  fill: var(--color-risk-critical);
+}
+.blast-radius-1 {
+  fill: #f97316;
+}
+.blast-radius-2 {
+  fill: #fb923c;
+}
+.blast-radius-3 {
+  fill: #fdba74;
+}
+.blast-radius-4 {
+  fill: #fed7aa;
+}
 
 /* ===== RISK BADGES ===== */
-.risk-critical { @apply bg-red-600 text-white; }
-.risk-high { @apply bg-orange-600 text-white; }
-.risk-medium { @apply bg-yellow-600 text-black; }
-.risk-low { @apply bg-green-600 text-white; }
+.risk-critical {
+  @apply bg-red-600 text-white;
+}
+.risk-high {
+  @apply bg-orange-600 text-white;
+}
+.risk-medium {
+  @apply bg-yellow-600 text-black;
+}
+.risk-low {
+  @apply bg-green-600 text-white;
+}
 
 /* ===== PANEL STYLES ===== */
 .panel {
@@ -75,11 +417,185 @@ body {
 
 /* ===== MATERIAL ICONS ===== */
 .material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
 }
 
 @keyframes pulse-edge {
-  0% { stroke-opacity: 0.5; stroke-width: 2px; }
-  50% { stroke-opacity: 1; stroke-width: 4px; }
-  100% { stroke-opacity: 0.5; stroke-width: 2px; }
+  0% {
+    stroke-opacity: 0.5;
+    stroke-width: 2px;
+  }
+  50% {
+    stroke-opacity: 1;
+    stroke-width: 4px;
+  }
+  100% {
+    stroke-opacity: 0.5;
+    stroke-width: 2px;
+  }
+}
+
+/* ===== EDGE LEGEND OVERLAY ===== */
+.edge-legend-container {
+  position: absolute;
+  bottom: 12px;
+  left: 52px;
+  z-index: 10;
+}
+
+.edge-legend-toggle {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(100, 116, 139, 0.3);
+  background: rgba(15, 23, 42, 0.85);
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s;
+}
+.edge-legend-toggle:hover {
+  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(148, 163, 184, 0.4);
+}
+
+.edge-legend {
+  position: absolute;
+  bottom: 40px;
+  left: 0;
+  background: rgba(15, 23, 42, 0.92);
+  border: 1px solid rgba(100, 116, 139, 0.3);
+  border-radius: 10px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 10px 12px;
+  min-width: 200px;
+}
+
+.edge-legend__section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.edge-legend__title {
+  font-size: 9px;
+  font-weight: 700;
+  color: rgba(148, 163, 184, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
+.edge-legend__divider {
+  height: 1px;
+  background: rgba(100, 116, 139, 0.2);
+  margin: 6px 0;
+}
+
+.edge-legend__row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+}
+
+.edge-legend__swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.edge-legend__arrow {
+  width: 14px;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(148, 163, 184, 0.8);
+}
+
+.edge-legend__label {
+  font-weight: 600;
+  color: rgba(226, 232, 240, 0.9);
+}
+
+.edge-legend__desc {
+  color: rgba(148, 163, 184, 0.6);
+  margin-left: auto;
+}
+
+/* ── Treemap View (Phase 7) ─────────────────────────────────────────────── */
+
+.treemap-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: var(--card-bg, #0d0e12);
+}
+
+.treemap-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.treemap-cell {
+  transition: opacity 0.15s ease;
+}
+
+.treemap-rect {
+  transition: fill-opacity 0.15s ease, stroke 0.15s ease, stroke-width 0.15s ease;
+}
+
+.treemap-label {
+  pointer-events: none;
+  font-family: 'Inter', sans-serif;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.treemap-value {
+  pointer-events: none;
+  font-family: 'Inter', sans-serif;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.treemap-tooltip {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #e2e8f0;
+  font-size: 13px;
+  line-height: 1.5;
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+  z-index: 20;
+  max-width: 280px;
+}
+
+.treemap-tooltip-hint {
+  color: rgba(148, 163, 184, 0.5);
+  font-size: 11px;
+  font-style: italic;
+}
+
+.treemap-empty {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  font-size: 14px;
 }
