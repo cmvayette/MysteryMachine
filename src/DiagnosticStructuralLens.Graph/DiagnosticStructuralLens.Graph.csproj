@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- TargetFramework inherited from Directory.Build.props -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DiagnosticStructuralLens.Core\DiagnosticStructuralLens.Core.csproj" />
+    <ProjectReference Include="..\DiagnosticStructuralLens.Federation\DiagnosticStructuralLens.Federation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>DiagnosticStructuralLens.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- TargetFramework inherited from Directory.Build.props -->
+    <OutputType>Exe</OutputType>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>dsl</ToolCommandName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DiagnosticStructuralLens.Core\DiagnosticStructuralLens.Core.csproj" />
+    <ProjectReference Include="..\DiagnosticStructuralLens.Scanner.CSharp\DiagnosticStructuralLens.Scanner.CSharp.csproj" />
+    <ProjectReference Include="..\DiagnosticStructuralLens.Scanner.Sql\DiagnosticStructuralLens.Scanner.Sql.csproj" />
+    <ProjectReference Include="..\DiagnosticStructuralLens.Linker\DiagnosticStructuralLens.Linker.csproj" />
+    <ProjectReference Include="..\DiagnosticStructuralLens.Risk\DiagnosticStructuralLens.Risk.csproj" />
+    <ProjectReference Include="..\DiagnosticStructuralLens.Federation\DiagnosticStructuralLens.Federation.csproj" />
+  </ItemGroup>
+</Project>
