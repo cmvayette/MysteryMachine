@@ -8,11 +8,11 @@ interface SnapshotSummary {
   atomCount: number;
 }
 
-export type C4Level = 'federation' | 'repository' | 'project' | 'component' | 'code';
+export type C4Level = 'context' | 'system' | 'repository' | 'project' | 'component' | 'code';
 
 export interface NavigationState {
   level: C4Level;
-  path: string[]; // e.g., ["RepoA", "Company.Orders", "OrderDTO"]
+  path: string[]; // e.g., ["SystemA", "RepoA", "Company.Orders", "OrderDTO"]
   selectedAtomId: string | null;
   blastRadiusMode: boolean;
   diffMode: boolean;
@@ -36,10 +36,10 @@ export interface NavigationState {
   reset: () => void;
 }
 
-const levelProgression: C4Level[] = ['federation', 'repository', 'project', 'component', 'code'];
+const levelProgression: C4Level[] = ['context', 'system', 'repository', 'project', 'component', 'code'];
 
 export const useNavigationStore = create<NavigationState>((set) => ({
-  level: 'federation',
+  level: 'context',
   path: [],
   selectedAtomId: null,
   blastRadiusMode: false,
@@ -87,7 +87,7 @@ export const useNavigationStore = create<NavigationState>((set) => ({
   setIsPlaying: (isPlaying) => set({ isPlaying }),
   
   reset: () => set({
-    level: 'federation',
+    level: 'context',
     path: [],
     selectedAtomId: null,
     blastRadiusMode: false,

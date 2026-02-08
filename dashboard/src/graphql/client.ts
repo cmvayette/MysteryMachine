@@ -17,7 +17,21 @@ export const FEDERATION_QUERY = gql`
         branch
         atomCount
         riskScore
+        riskScore
         namespaces
+        owner {
+          name
+          email
+          teamName
+          avatarUrl
+        }
+        qualityMetrics {
+          coveragePercent
+          sonarRating
+          cyclomaticComplexity
+        }
+        churnScore
+        maintenanceCost
       }
       crossRepoLinks {
         sourceAtomId
@@ -25,6 +39,7 @@ export const FEDERATION_QUERY = gql`
         sourceRepo
         targetRepo
         linkType
+        isViolation
       }
       stats {
         totalRepos
@@ -65,6 +80,13 @@ export const REPOSITORY_QUERY = gql`
       outboundLinks {
         targetAtomId
         targetRepo
+        isViolation
+        violationDetails {
+          ruleId
+          severity
+          message
+          remediationSuggestion
+        }
       }
     }
   }
@@ -92,15 +114,22 @@ export const NAMESPACE_QUERY = gql`
         riskScore
         consumerCount
         linesOfCode
-        consumerCount
-        linesOfCode
         language
         isPublic
+        churnScore
+        maintenanceCost
       }
       internalLinks {
         sourceAtomId
         targetAtomId
         linkType
+        isViolation
+        violationDetails {
+          ruleId
+          severity
+          message
+          remediationSuggestion
+        }
       }
     }
   }
@@ -115,7 +144,6 @@ export const ATOM_QUERY = gql`
       namespace
       filePath
       repository
-      linesOfCode
       linesOfCode
       language
       isPublic
@@ -162,6 +190,21 @@ export const SEARCH_QUERY = gql`
       name
       type
       repository
+    }
+  }
+`;
+
+export const LAYOUT_HINT_QUERY = gql`
+  query GetLayoutHint($scopeId: String) {
+    layoutHint(scopeId: $scopeId) {
+      pattern
+      confidence
+      hubNodeId
+      pipelineOrder
+      layerAssignments {
+        nodeId
+        layer
+      }
     }
   }
 `;
