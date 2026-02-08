@@ -36,3 +36,11 @@ test_snapshot.json
 # Large Data
 MassiveRepo/
 validation/
+
+# Temp / scratch files
+temp_extract/
+this.jpeg
+*.bak
+
+# Playwright test results
+dashboard/test-results/
