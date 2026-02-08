@@ -126,6 +126,15 @@ app.MapPost("/load", async (HttpRequest request, DiagnosticStructuralLensDataSer
         
         Console.WriteLine($"🔄 Federating {snapshots.Count} snapshots for graph...");
 
+        // Normalize legacy full-path repository names to just the directory name
+        foreach (var snap in snapshots)
+        {
+            if (snap.Repository.Contains('/') || snap.Repository.Contains('\\'))
+            {
+                snap.Repository = System.IO.Path.GetFileName(snap.Repository.TrimEnd('/', '\\'));
+            }
+        }
+
         // 2. Federate
         var engine = new FederationEngine();
         var federated = engine.Merge(snapshots);
@@ -175,6 +184,15 @@ using (var scope = app.Services.CreateScope())
 
             if (snapshots.Count > 0)
             {
+                // Normalize legacy full-path repository names
+                foreach (var snap in snapshots)
+                {
+                    if (snap.Repository.Contains('/') || snap.Repository.Contains('\\'))
+                    {
+                        snap.Repository = System.IO.Path.GetFileName(snap.Repository.TrimEnd('/', '\\'));
+                    }
+                }
+
                 var engine = new FederationEngine();
                 var federated = engine.Merge(snapshots);
                 dataService.LoadFederation(federated);

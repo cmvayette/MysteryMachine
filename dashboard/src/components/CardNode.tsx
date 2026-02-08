@@ -215,9 +215,9 @@ function getMetrics(data: Record<string, unknown>): string {
 
 function getDiffStyle(status?: string): React.CSSProperties {
   switch (status) {
-    case 'added':    return { boxShadow: '0 0 12px rgba(34,197,94,0.3)', borderColor: 'rgba(34,197,94,0.5)' };
+    case 'added':    return { borderWidth: 2, borderColor: 'rgba(34,197,94,0.6)' };
     case 'removed':  return { opacity: 0.5, borderStyle: 'dashed', borderColor: 'rgba(239,68,68,0.5)' };
-    case 'modified': return { boxShadow: '0 0 12px rgba(234,179,8,0.3)', borderColor: 'rgba(234,179,8,0.5)' };
+    case 'modified': return { borderWidth: 2, borderColor: 'rgba(234,179,8,0.6)' };
     default:         return {};
   }
 }

@@ -7,9 +7,7 @@ vi.mock('./Breadcrumb', () => ({
   Breadcrumb: () => <div data-testid="breadcrumb">Breadcrumb</div>
 }));
 
-vi.mock('./TimeControls', () => ({
-  TimeControls: () => <div data-testid="time-controls">TimeControls</div>
-}));
+
 
 describe('Header Component', () => {
   const defaultProps = {
@@ -21,11 +19,6 @@ describe('Header Component', () => {
     onHeatmapChange: vi.fn(),
     showLinks: true,
     onToggleLinks: vi.fn(),
-    snapshots: [],
-    currentSnapshotId: null,
-    isPlaying: false,
-    onSnapshotChange: vi.fn(),
-    onTogglePlay: vi.fn()
   };
 
   it('renders title and tabs', () => {
@@ -67,6 +60,5 @@ describe('Header Component', () => {
   it('renders child components', () => {
     render(<Header {...defaultProps} />);
     expect(screen.getByTestId('breadcrumb')).toBeInTheDocument();
-    expect(screen.getByTestId('time-controls')).toBeInTheDocument();
   });
 });

@@ -1,11 +1,11 @@
 import { ApolloProvider, useQuery } from '@apollo/client';
-import { client, FEDERATION_QUERY, REPOSITORY_QUERY, NAMESPACE_QUERY, ATOM_QUERY, BLAST_RADIUS_QUERY, SNAPSHOTS_QUERY } from './graphql/client';
+import { client, FEDERATION_QUERY, REPOSITORY_QUERY, NAMESPACE_QUERY, ATOM_QUERY, BLAST_RADIUS_QUERY } from './graphql/client';
 import { useNavigationStore } from './store/navigationStore';
 import { WorkflowGraph } from './components/WorkflowGraph';
 import { TreemapView } from './components/TreemapView';
 import { StatusFooter } from './components/StatusFooter';
 import { FileDropZone } from './components/FileDropZone';
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { inferSystems } from './utils/systemInference';
 import { DetailsPanel } from './components/DetailsPanel';
 import { Header } from './components/Header';
@@ -14,9 +14,7 @@ import './index.css';
 function Dashboard() {
   const { 
     level, path, selectedAtomId, blastRadiusMode, diffMode, governanceMode, 
-    snapshots, currentSnapshotId, isPlaying,
     drillDown, selectAtom, toggleBlastRadiusMode, toggleDiffMode, toggleGovernanceMode,
-    setSnapshots, setCurrentSnapshot, setIsPlaying 
   } = useNavigationStore();
   const [searchQuery, setSearchQuery] = useState('');
   const [showLinks, setShowLinks] = useState(true);
@@ -27,7 +25,7 @@ function Dashboard() {
   const handleUploadSuccess = useCallback(() => {
     // Refetch all queries to update the UI
     client.refetchQueries({
-        include: [FEDERATION_QUERY, SNAPSHOTS_QUERY]
+        include: [FEDERATION_QUERY]
     });
     // Also trigger a drill down reset if needed
     selectAtom(null);
@@ -61,17 +59,8 @@ function Dashboard() {
     skip: !selectedAtomId || !blastRadiusMode
   });
 
-  // Fetch Snapshots for Phase 4
-  const { data: snapshotData } = useQuery(SNAPSHOTS_QUERY);
-  useEffect(() => {
-    if (snapshotData?.snapshots) {
-       setSnapshots(snapshotData.snapshots);
-       // Auto-select latest if none selected
-       if (!currentSnapshotId && snapshotData.snapshots.length > 0) {
-           setCurrentSnapshot(snapshotData.snapshots[snapshotData.snapshots.length - 1].id);
-       }
-    }
-  }, [snapshotData, setSnapshots, currentSnapshotId, setCurrentSnapshot]);
+
+  // Snapshot query removed — TimeControls was the only consumer
 
   // Auto-drill into first repository on initial load
   // Auto-drill disabled to show Context view first
@@ -273,11 +262,6 @@ function Dashboard() {
         onHeatmapChange={setActiveHeatmap}
         showLinks={showLinks}
         onToggleLinks={() => setShowLinks(!showLinks)}
-        snapshots={snapshots}
-        currentSnapshotId={currentSnapshotId}
-        isPlaying={isPlaying}
-        onSnapshotChange={setCurrentSnapshot}
-        onTogglePlay={() => setIsPlaying(!isPlaying)}
       />
 
 
@@ -299,7 +283,7 @@ function Dashboard() {
               </div>
             ) : (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="text-slate-500 bg-slate-900/80 px-4 py-2 rounded border border-slate-700 backdrop-blur">
+                <div className="text-slate-500 bg-[#1e2026] px-4 py-2 rounded-[3px] border border-slate-700">
                   No nodes found in this view
                 </div>
               </div>
@@ -322,16 +306,16 @@ function Dashboard() {
           )}
 
           {/* View Options Toolbar (Bottom Left - above React Flow controls) */}
-          <div className="absolute bottom-16 left-4 z-10 flex flex-col gap-2 p-2 rounded-xl bg-slate-900/50 backdrop-blur border border-slate-700/50">
+          <div className="absolute bottom-16 left-4 z-10 flex flex-col gap-2 p-2 rounded-[3px] bg-[#1e2026] border border-[#2a3038]">
             <div className="flex flex-col gap-2">
                 {/* Links Toggle */}
                 <button
                 onClick={() => setShowLinks(!showLinks)}
-                className="w-8 h-8 rounded-lg flex items-center justify-center transition-all relative group"
+                className="w-8 h-8 rounded-[3px] flex items-center justify-center transition-all relative group"
                 title={showLinks ? 'Hide Links' : 'Show Links'}
                 style={{
-                    backgroundColor: showLinks ? 'rgba(122, 155, 163, 0.25)' : 'transparent',
-                    color: showLinks ? '#a0b8c0' : '#6b7280'
+                    backgroundColor: showLinks ? '#2a2520' : 'transparent',
+                    color: showLinks ? '#c4a882' : '#6b7280'
                 }}
                 >
                 <span className="material-symbols-outlined text-lg">link</span>
@@ -341,11 +325,11 @@ function Dashboard() {
                 {level === 'repository' && (
                 <button
                 onClick={() => setViewMode(viewMode === 'graph' ? 'treemap' : 'graph')}
-                className="w-8 h-8 rounded-lg flex items-center justify-center transition-all relative"
+                className="w-8 h-8 rounded-[3px] flex items-center justify-center transition-all relative"
                 title={viewMode === 'graph' ? 'Switch to Treemap' : 'Switch to Graph'}
                 data-testid="treemap-toggle"
                 style={{
-                    backgroundColor: viewMode === 'treemap' ? 'rgba(13, 148, 136, 0.25)' : 'transparent',
+                    backgroundColor: viewMode === 'treemap' ? '#1a2a25' : 'transparent',
                     color: viewMode === 'treemap' ? '#5eead4' : '#6b7280'
                 }}
                 >
@@ -356,10 +340,10 @@ function Dashboard() {
                 {/* Blast Radius Toggle */}
                 <button
                 onClick={toggleBlastRadiusMode}
-                className="w-8 h-8 rounded-lg flex items-center justify-center transition-all relative"
+                className="w-8 h-8 rounded-[3px] flex items-center justify-center transition-all relative"
                 title={blastRadiusMode ? 'Hide Blast Radius' : 'Show Blast Radius'}
                 style={{
-                    backgroundColor: blastRadiusMode ? 'rgba(180, 84, 84, 0.25)' : 'transparent',
+                    backgroundColor: blastRadiusMode ? '#302020' : 'transparent',
                     color: blastRadiusMode ? '#bc9a9a' : '#6b7280'
                 }}
                 >
@@ -369,10 +353,10 @@ function Dashboard() {
                 {/* Diff Mode Toggle */}
                 <button
                 onClick={toggleDiffMode}
-                className="w-8 h-8 rounded-lg flex items-center justify-center transition-all relative"
+                className="w-8 h-8 rounded-[3px] flex items-center justify-center transition-all relative"
                 title={diffMode ? 'Hide Diff' : 'Enable Diff Mode'}
                 style={{
-                    backgroundColor: diffMode ? 'rgba(34, 197, 94, 0.25)' : 'transparent',
+                    backgroundColor: diffMode ? '#1a2a1a' : 'transparent',
                     color: diffMode ? '#86efac' : '#6b7280'
                 }}
                 >
@@ -382,10 +366,10 @@ function Dashboard() {
                  {/* Governance Mode Toggle */}
                 <button
                 onClick={toggleGovernanceMode}
-                className="w-8 h-8 rounded-lg flex items-center justify-center transition-all relative"
+                className="w-8 h-8 rounded-[3px] flex items-center justify-center transition-all relative"
                 title={governanceMode ? 'Hide Governance' : 'Show Governance'}
                 style={{
-                    backgroundColor: governanceMode ? 'rgba(239, 68, 68, 0.25)' : 'transparent',
+                    backgroundColor: governanceMode ? '#2a1a1a' : 'transparent',
                     color: governanceMode ? '#ef4444' : '#6b7280'
                 }}
                 >
@@ -425,7 +409,7 @@ function Dashboard() {
           {/* Info Icon with Tooltip */}
           <div className="absolute bottom-4 right-4 group">
             <button
-              className="w-8 h-8 rounded-lg flex items-center justify-center transition-all hover:bg-slate-700/50"
+              className="w-8 h-8 rounded-[3px] flex items-center justify-center transition-all hover:bg-[#252830]"
               style={{ color: '#6b7280' }}
               title="Help"
             >

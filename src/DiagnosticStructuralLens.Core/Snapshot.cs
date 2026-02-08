@@ -6,7 +6,7 @@ namespace DiagnosticStructuralLens.Core;
 public class Snapshot
 {
     public required string Id { get; init; }
-    public required string Repository { get; init; }
+    public required string Repository { get; set; }
     public required DateTimeOffset ScannedAt { get; init; }
     public string? Branch { get; init; }
     public string? CommitSha { get; init; }

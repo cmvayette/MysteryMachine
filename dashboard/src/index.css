@@ -6,7 +6,7 @@
   width: 40px;
   height: 40px;
   border: 3px solid rgba(148, 163, 184, 0.15);
-  border-top-color: #06b6d4;
+  border-top-color: #a09078;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -86,36 +86,38 @@ body {
 
 .react-flow__node-cardNode.selected {
   box-shadow: none !important;
+  z-index: 10 !important;
+}
+
+/* Raise the node being dragged so it stays above siblings */
+.react-flow__node.dragging {
+  z-index: 100 !important;
 }
 
 /* ===== CARD NODE ===== */
 .card-node {
-  background: #1e293b;
+  background: #1d2028;
   border: 1px solid rgba(148, 163, 184, 0.15);
   border-left: 4px solid currentColor;
   padding: 10px 14px;
   cursor: pointer;
   transition:
     border-color 0.15s,
-    box-shadow 0.15s,
-    transform 0.1s;
+    background-color 0.15s;
   font-family: var(--font-display);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
   min-width: 180px;
   position: relative;
 }
 
 .card-node:hover {
-  border-color: rgba(160, 184, 192, 0.4);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-  transform: translateY(-1px);
+  background: #252830;
+  border-color: rgba(160, 184, 192, 0.3);
 }
 
 .card-node--selected {
-  border-color: #a0b8c0 !important;
-  box-shadow:
-    0 0 0 2px rgba(160, 184, 192, 0.3),
-    0 4px 16px rgba(0, 0, 0, 0.4) !important;
+  border-color: #c4a882 !important;
+  background: #252830 !important;
 }
 
 /* ===== LAYER BADGE ===== */
@@ -130,9 +132,7 @@ body {
 
 /* ===== HUB NODE INDICATOR ===== */
 .card-node--hub {
-  box-shadow:
-    0 0 0 2px rgba(251, 191, 36, 0.4),
-    0 0 16px rgba(251, 191, 36, 0.2) !important;
+  border: 2px solid #c9a050 !important;
 }
 .card-node__hub-badge {
   font-size: 8px;
@@ -147,11 +147,9 @@ body {
 .group-node {
   width: 100%;
   height: 100%;
-  background: rgba(30, 41, 59, 0.45);
+  background: #1e2026;
   border: 1.5px solid rgba(100, 116, 139, 0.35);
   border-radius: 12px;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
   box-sizing: border-box;
 }
 
@@ -223,9 +221,8 @@ body {
 .card-node--stacked {
   border-radius: 3px;
   box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.3),
-    3px 3px 0 0 #151a20,
-    6px 6px 0 0 #111519;
+    3px 3px 0 0 #1a1c22,
+    6px 6px 0 0 #161820;
 }
 .card-node--diamond {
   border-radius: 4px;
@@ -331,14 +328,8 @@ body {
   font-size: 9px;
 }
 
-/* Violation edge pulse */
-@keyframes edge-pulse {
-  0%, 100% { stroke-opacity: 0.6; }
-  50% { stroke-opacity: 1; }
-}
-
 .react-flow__edge.animated .react-flow__edge-path {
-  animation: edge-pulse 1.5s ease-in-out infinite;
+  stroke-opacity: 0.9;
 }
 
 .react-flow__controls {
@@ -361,9 +352,16 @@ body {
 
 .workflow-graph__minimap {
   border: 1px solid var(--color-border-dark) !important;
-  border-radius: 8px !important;
+  border-radius: 3px !important;
   overflow: hidden !important;
   background: var(--color-surface-dark) !important;
+  width: 120px !important;
+  height: 80px !important;
+  opacity: 0.3;
+  transition: opacity 0.2s ease;
+}
+.workflow-graph__minimap:hover {
+  opacity: 1;
 }
 
 /* ===== BLAST RADIUS ===== */
@@ -450,9 +448,9 @@ body {
 .edge-legend-toggle {
   width: 32px;
   height: 32px;
-  border-radius: 8px;
+  border-radius: 3px;
   border: 1px solid rgba(100, 116, 139, 0.3);
-  background: rgba(15, 23, 42, 0.85);
+  background: #1e2026;
   cursor: pointer;
   font-size: 16px;
   display: flex;
@@ -461,7 +459,7 @@ body {
   transition: background 0.2s, border-color 0.2s;
 }
 .edge-legend-toggle:hover {
-  background: rgba(30, 41, 59, 0.95);
+  background: #252830;
   border-color: rgba(148, 163, 184, 0.4);
 }
 
@@ -469,11 +467,9 @@ body {
   position: absolute;
   bottom: 40px;
   left: 0;
-  background: rgba(15, 23, 42, 0.92);
+  background: #1e2026;
   border: 1px solid rgba(100, 116, 139, 0.3);
-  border-radius: 10px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  border-radius: 3px;
   padding: 10px 12px;
   min-width: 200px;
 }
@@ -571,14 +567,13 @@ body {
   position: absolute;
   bottom: 16px;
   right: 16px;
-  background: rgba(15, 23, 42, 0.95);
+  background: #1e2026;
   border: 1px solid rgba(148, 163, 184, 0.2);
-  border-radius: 8px;
+  border-radius: 3px;
   padding: 12px 16px;
   color: #e2e8f0;
   font-size: 13px;
   line-height: 1.5;
-  backdrop-filter: blur(8px);
   pointer-events: none;
   z-index: 20;
   max-width: 280px;

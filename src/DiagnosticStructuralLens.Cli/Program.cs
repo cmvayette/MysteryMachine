@@ -267,7 +267,7 @@ public class Program
         var snapshot = new Snapshot
         {
             Id = Guid.NewGuid().ToString("N")[..8],
-            Repository = fullRepoPath,
+            Repository = DetectGitRepoName(fullRepoPath),
             ScannedAt = DateTimeOffset.UtcNow,
             Branch = GetCurrentBranch(fullRepoPath),
             CommitSha = GetCurrentCommit(fullRepoPath),
@@ -901,6 +901,24 @@ public class Program
         }
 
         return 0;
+    }
+
+    /// <summary>
+    /// Walk up from the scanned path to find the Git repository root,
+    /// then return its directory name as the canonical repository identifier.
+    /// Falls back to the leaf directory name if no .git is found.
+    /// </summary>
+    private static string DetectGitRepoName(string path)
+    {
+        var dir = new DirectoryInfo(path);
+        while (dir != null)
+        {
+            if (Directory.Exists(Path.Combine(dir.FullName, ".git")))
+                return dir.Name;
+            dir = dir.Parent;
+        }
+        // No .git found — fall back to directory name
+        return new DirectoryInfo(path).Name;
     }
 
     private static string? GetCurrentBranch(string repoPath)

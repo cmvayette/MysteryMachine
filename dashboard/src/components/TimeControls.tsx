@@ -48,7 +48,7 @@ export function TimeControls({
   const currentSnapshot = sortedSnapshots[currentIndex];
   
   return (
-    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-slate-800/90 backdrop-blur border border-slate-700 rounded-xl p-4 shadow-2xl z-50 flex flex-col gap-3 w-[600px]">
+    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-[#1e2026] border border-slate-700 rounded-[3px] p-4 z-50 flex flex-col gap-3 w-[600px]">
       
       {/* Header Info */}
       <div className="flex justify-between items-center text-xs text-slate-400 font-mono">
@@ -62,7 +62,7 @@ export function TimeControls({
                     {new Date(currentSnapshot.scannedAt).toLocaleDateString()} 
                   </span>
                   <span className="mx-2 text-slate-600">|</span>
-                  <span className="text-cyan-400">{currentSnapshot.branch || 'HEAD'}</span>
+                  <span className="text-[#c4a882]">{currentSnapshot.branch || 'HEAD'}</span>
                   <span className="mx-2 text-slate-600">|</span>
                   <span>{currentSnapshot.atomCount} atoms</span>
                 </>
@@ -79,7 +79,7 @@ export function TimeControls({
         <button 
           onClick={onTogglePlay}
           className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${
-            isPlaying ? 'bg-red-500/20 text-red-500 hover:bg-red-500/30' : 'bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500/30'
+            isPlaying ? 'bg-[#302020] text-[#b45454] hover:bg-[#3a2525]' : 'bg-[#2a2520] text-[#c4a882] hover:bg-[#3a3530]'
           }`}
         >
           <span className="material-symbols-outlined text-xl">
@@ -93,8 +93,8 @@ export function TimeControls({
            <div className="absolute top-1/2 left-0 right-0 h-1 bg-slate-700 rounded-full -translate-y-1/2"></div>
            
            {/* Progress */}
-           <div 
-             className="absolute top-1/2 left-0 h-1 bg-cyan-500/50 rounded-full -translate-y-1/2 transition-all duration-300"
+           <div
+              className="absolute top-1/2 left-0 h-1 bg-[#a09078] rounded-full -translate-y-1/2 transition-all duration-300"
              style={{ width: `${total > 1 ? (currentIndex / (total - 1)) * 100 : 0}%` }}
            ></div>
 
@@ -111,8 +111,8 @@ export function TimeControls({
            />
            
            {/* Thumb (Visual Only, follows logic) */}
-           <div 
-              className="absolute top-1/2 w-4 h-4 bg-cyan-400 rounded-full -translate-y-1/2 -ml-2 pointer-events-none transition-all duration-300 border-2 border-slate-900 shadow-[0_0_10px_rgba(34,211,238,0.5)]"
+           <div
+              className="absolute top-1/2 w-4 h-4 bg-[#c4a882] rounded-full -translate-y-1/2 -ml-2 pointer-events-none transition-all duration-300 border-2 border-[#18191f]"
               style={{ left: `${total > 1 ? (currentIndex / (total - 1)) * 100 : 0}%` }}
            ></div>
         </div>

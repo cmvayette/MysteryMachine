@@ -32,7 +32,7 @@ export function DetailsPanel({
             <h3 className="text-2xl font-bold text-blue-400 mt-1">{selectedNodeId}</h3>
           </div>
           
-          <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-700">
+          <div className="p-4 bg-[#18191f] rounded-[3px] border border-slate-700">
              <div className="flex items-center gap-2 mb-2">
                 <span className="material-symbols-outlined text-blue-400">hub</span>
                 <span className="font-medium text-slate-200">System Purpose</span>
@@ -44,7 +44,7 @@ export function DetailsPanel({
 
           <button
             onClick={() => onDrillDown(selectedNodeId)}
-            className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2"
+            className="w-full py-2.5 px-4 bg-[#a09078] hover:bg-[#b8a48c] text-white rounded-[3px] text-sm font-medium transition-colors flex items-center justify-center gap-2"
           >
             Explore System <span className="material-symbols-outlined text-sm">arrow_forward</span>
           </button>
@@ -75,14 +75,14 @@ export function DetailsPanel({
           <div>
             <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Repository</span>
              <div className="flex items-center gap-2 mt-1">
-                <h3 className="text-xl font-bold text-cyan-400 break-all">{repo.name}</h3>
+                <h3 className="text-xl font-bold text-[#c4a882] break-all">{repo.name}</h3>
                 <a href="#" className="text-slate-500 hover:text-white"><span className="material-symbols-outlined text-sm">open_in_new</span></a>
              </div>
           </div>
 
           {/* Owner Info */}
           {repo.owner && (
-             <div className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg border border-slate-700">
+             <div className="flex items-center gap-3 p-3 bg-[#18191f] rounded-[3px] border border-slate-700">
                 <img src={repo.owner.avatarUrl} alt={repo.owner.name} className="w-10 h-10 rounded-full border border-slate-600" />
                 <div>
                    <div className="text-sm font-bold text-slate-200">{repo.owner.name}</div>
@@ -94,21 +94,21 @@ export function DetailsPanel({
           {/* Quality Metrics */}
           {repo.qualityMetrics && (
           <div className="grid grid-cols-2 gap-3">
-             <div className="p-3 bg-slate-800/50 rounded-lg border border-slate-700">
+             <div className="p-3 bg-[#18191f] rounded-[3px] border border-slate-700">
                 <span className="text-[10px] text-slate-500 uppercase">Coverage</span>
                 <div className="flex items-center gap-2 mt-1">
-                    <span className={`w-2 h-2 rounded-full ${repo.qualityMetrics.coveragePercent > 80 ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-amber-500'}`}></span>
+                    <span className={`w-2 h-2 rounded-full ${repo.qualityMetrics.coveragePercent > 80 ? 'bg-green-500' : 'bg-amber-500'}`}></span>
                     <span className="text-sm font-medium text-slate-200">{repo.qualityMetrics.coveragePercent}%</span>
                 </div>
              </div>
-             <div className="p-3 bg-slate-800/50 rounded-lg border border-slate-700">
+             <div className="p-3 bg-[#18191f] rounded-[3px] border border-slate-700">
                 <span className="text-[10px] text-slate-500 uppercase">SonarQube</span>
                 <div className="flex items-center gap-2 mt-1">
-                    <div className="px-1.5 py-0.5 bg-blue-900/50 text-blue-400 border border-blue-700/50 rounded text-xs font-bold">{repo.qualityMetrics.sonarRating}</div>
+                    <div className="px-1.5 py-0.5 bg-[#2a2520] text-[#c4a882] border border-[#3a3530] rounded text-xs font-bold">{repo.qualityMetrics.sonarRating}</div>
                     <span className="text-sm font-medium text-slate-300">Rating</span>
                 </div>
              </div>
-             <div className="col-span-2 p-3 bg-slate-800/50 rounded-lg border border-slate-700 flex justify-between items-center">
+             <div className="col-span-2 p-3 bg-[#18191f] rounded-[3px] border border-slate-700 flex justify-between items-center">
                 <span className="text-[10px] text-slate-500 uppercase">Complexity</span>
                 <span className="text-sm font-mono text-slate-200">{repo.qualityMetrics.cyclomaticComplexity}</span>
              </div>
@@ -116,7 +116,7 @@ export function DetailsPanel({
           )}
 
           {/* Commit Velocity (Mock) */}
-          <div className="p-4 bg-slate-800/30 rounded-lg border border-slate-700/50">
+          <div className="p-4 bg-[#18191f] rounded-[3px] border border-slate-700">
              <div className="flex justify-between items-end mb-2">
                 <span className="text-xs text-slate-500 uppercase">Commit Velocity</span>
                 <span className="text-xs text-slate-500">Last 30 Days</span>
@@ -124,10 +124,10 @@ export function DetailsPanel({
              <div className="h-12 flex items-end gap-1">
                 {/* Mock bar chart */}
                 {[4, 7, 3, 8, 12, 5, 9, 14, 6, 8, 10, 15, 8, 4, 7].map((h, i) => (
-                    <div key={i} className="flex-1 bg-cyan-900/40 hover:bg-cyan-500/60 transition-colors rounded-sm" style={{ height: `${(h/15)*100}%` }}></div>
+                    <div key={i} className="flex-1 bg-[#2a2520] hover:bg-[#3a3530] transition-colors rounded-sm" style={{ height: `${(h/15)*100}%` }}></div>
                 ))}
              </div>
-             <div className="mt-2 text-center text-xs font-medium text-cyan-400">+124 commits</div>
+             <div className="mt-2 text-center text-xs font-medium text-[#c4a882]">+124 commits</div>
           </div>
 
           <div className="grid grid-cols-2 gap-4 text-sm">
@@ -143,7 +143,7 @@ export function DetailsPanel({
 
           <button
             onClick={() => onDrillDown(repo.id)}
-            className="w-full py-2.5 px-4 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg text-sm font-medium transition-colors shadow-lg shadow-cyan-900/20"
+            className="w-full py-2.5 px-4 bg-[#a09078] hover:bg-[#b8a48c] text-white rounded-[3px] text-sm font-medium transition-colors"
           >
             Explore Repository
           </button>
@@ -162,19 +162,19 @@ export function DetailsPanel({
         <div className="space-y-5">
            <div>
             <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Namespace</span>
-            <h3 className="text-lg font-bold text-violet-400 mt-1 break-all">{ns.path}</h3>
+            <h3 className="text-lg font-bold text-[#8a7a9a] mt-1 break-all">{ns.path}</h3>
           </div>
 
           <div className="grid grid-cols-3 gap-2">
-             <div className="p-2 text-center bg-slate-800/50 rounded border border-slate-700">
+             <div className="p-2 text-center bg-[#18191f] rounded-[3px] border border-slate-700">
                 <span className="block text-[10px] text-slate-500">Atoms</span>
                 <span className="text-white font-medium">{ns.atomCount}</span>
              </div>
-             <div className="p-2 text-center bg-slate-800/50 rounded border border-slate-700">
+             <div className="p-2 text-center bg-[#18191f] rounded-[3px] border border-slate-700">
                 <span className="block text-[10px] text-slate-500">DTOs</span>
                 <span className="text-green-400 font-medium">{ns.dtoCount}</span>
              </div>
-             <div className="p-2 text-center bg-slate-800/50 rounded border border-slate-700">
+             <div className="p-2 text-center bg-[#18191f] rounded-[3px] border border-slate-700">
                 <span className="block text-[10px] text-slate-500">Interfaces</span>
                 <span className="text-blue-400 font-medium">{ns.interfaceCount}</span>
              </div>
@@ -182,7 +182,7 @@ export function DetailsPanel({
 
           <button
             onClick={() => onDrillDown(ns.path)}
-            className="w-full py-2.5 px-4 bg-violet-600 hover:bg-violet-500 text-white rounded-lg text-sm font-medium transition-colors shadow-lg shadow-violet-900/20"
+            className="w-full py-2.5 px-4 bg-[#8a7a9a] hover:bg-[#9a8aaa] text-white rounded-[3px] text-sm font-medium transition-colors"
           >
             Explore Namespace
           </button>
@@ -217,7 +217,7 @@ export function DetailsPanel({
   };
 
   return (
-    <aside className="w-80 border-l border-slate-700 p-5 overflow-y-auto bg-slate-900/95 backdrop-blur absolute right-0 top-16 bottom-16 shadow-2xl z-20 transition-transform duration-300 flex flex-col">
+    <aside className="w-80 border-l border-slate-700 p-5 overflow-y-auto bg-[#1e2026] absolute right-0 top-16 bottom-16 z-20 transition-transform duration-300 flex flex-col">
       <div className="flex justify-between items-start mb-6">
         <h2 className="text-lg font-semibold text-white tracking-tight">Details</h2>
         <button 

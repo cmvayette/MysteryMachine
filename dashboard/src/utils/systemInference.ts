@@ -15,14 +15,12 @@ export function inferSystems(repos: { id: string; name: string }[]): SystemGroup
   const groups = new Map<string, string[]>();
 
   repos.forEach(repo => {
-    const parts = repo.name.split('.');
-    // Use first part as system name, or full name if no dots
-    // Special case: if it starts with "DiagnosticStructuralLens", treat that as the system
+    // Handle both clean names and legacy filesystem paths
+    const cleanName = repo.name.includes('/') 
+        ? repo.name.split('/').pop()! 
+        : repo.name;
+    const parts = cleanName.split('.');
     const systemName = parts[0];
-    
-    // Heuristic: If there are diverse repos, group them.
-    // If a repo has no dots, it's its own system? Or "Other"? 
-    // Let's use the first segment for now.
     
     if (!groups.has(systemName)) {
       groups.set(systemName, []);

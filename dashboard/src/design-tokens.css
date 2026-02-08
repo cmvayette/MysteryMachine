@@ -1,21 +1,20 @@
 /**
- * System Cartographer Design Tokens
- * Extracted from design mockup: dashboard/design/mockup-repository-view.html
+ * Diagnostic Structural Lens – Flat Matte Design Tokens
  */
 
 :root {
-  /* ===== CORE PALETTE (Muted) ===== */
-  --color-primary: #7a9ba3;           /* muted slate-teal */
-  --color-primary-hover: #8eb0b8;
-  --color-primary-muted: rgba(122, 155, 163, 0.25);
-  --color-primary-subtle: rgba(122, 155, 163, 0.08);
-  --color-accent: #a0b8c0;            /* soft accent */
+  /* ===== CORE PALETTE (Warm Sandstone) ===== */
+  --color-primary: #a09078;           /* muted sandstone */
+  --color-primary-hover: #b8a48c;
+  --color-primary-muted: #2a2520;     /* opaque tinted bg */
+  --color-primary-subtle: #1f1d1a;    /* opaque subtle bg */
+  --color-accent: #c4a882;            /* warm sand accent */
 
-  /* ===== BACKGROUNDS ===== */
-  --color-bg-dark: #0d0e12;           /* slightly warmer dark */
+  /* ===== BACKGROUNDS (Raised Dark Floor) ===== */
+  --color-bg-dark: #18191f;
   --color-bg-light: #f0f2f4;
-  --color-surface-dark: #16181d;
-  --color-surface-elevated: #1c1f26;
+  --color-surface-dark: #1e2026;
+  --color-surface-elevated: #252830;
 
   /* ===== BORDERS ===== */
   --color-border-dark: #2a3038;       /* softer border */
@@ -46,10 +45,8 @@
   --space-lg: 1.5rem;
   --space-xl: 2rem;
 
-  /* ===== EFFECTS (Subtle) ===== */
-  --shadow-panel: 0 8px 32px rgba(0, 0, 0, 0.3);
-  --shadow-glow: 0 0 12px rgba(122, 155, 163, 0.3);
-  --backdrop-blur: blur(8px);
+  /* ===== EFFECTS (Flat) ===== */
+  --shadow-panel: 0 1px 3px rgba(0, 0, 0, 0.25);
 }
 
 /* ===== UTILITY CLASSES ===== */
@@ -60,20 +57,19 @@
   background-size: 30px 30px;
 }
 
-/* Node glow effect on hover */
+/* Node hover — background tint only (flat, no glow) */
 .node-glow {
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition: background-color 0.2s ease;
 }
 .node-glow:hover {
-  box-shadow: var(--shadow-glow);
+  background-color: var(--color-surface-elevated);
 }
 
-/* Panel with glass effect */
+/* Panel — opaque, flat */
 .panel-glass {
-  background: rgba(26, 29, 35, 0.8);
-  backdrop-filter: var(--backdrop-blur);
+  background: var(--color-surface-dark);
   border: 1px solid var(--color-border-dark);
-  border-radius: 0.75rem;
+  border-radius: 3px;
 }
 
 /* Label style (10px uppercase) */
@@ -91,7 +87,7 @@
   color: var(--color-bg-dark);
   font-weight: 700;
   padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
+  border-radius: 3px;
   transition: all 0.2s ease;
 }
 .btn-primary:hover {
@@ -104,7 +100,7 @@
   background: rgba(11, 12, 16, 0.5);
   border: 1px solid var(--color-border-dark);
   padding: 1rem;
-  border-radius: 0.5rem;
+  border-radius: 3px;
 }
 .metric-card .value {
   font-size: 1.5rem;
