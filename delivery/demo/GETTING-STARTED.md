@@ -30,7 +30,7 @@ delivery/demo/
 
 ## Prerequisites
 
-- .NET 10 SDK
+- .NET 8 SDK
 - Node.js 18+ (for TypeScript scanner and dashboard)
 - Git
 

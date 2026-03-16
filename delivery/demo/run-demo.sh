@@ -6,7 +6,7 @@
 # repositories. Run each step interactively or pass --all to run everything.
 #
 # Prerequisites:
-#   - .NET 10 SDK installed
+#   - .NET 8 SDK installed
 #   - DSL CLI built (dotnet build from repo root)
 #   - Sample repos cloned into ../validation/ (or run Step 0)
 #
