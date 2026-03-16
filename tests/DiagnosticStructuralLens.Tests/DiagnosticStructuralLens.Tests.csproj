@@ -22,6 +22,7 @@
     <ProjectReference Include="..\..\src\DiagnosticStructuralLens.Core\DiagnosticStructuralLens.Core.csproj" />
     <ProjectReference Include="..\..\src\DiagnosticStructuralLens.Scanner.CSharp\DiagnosticStructuralLens.Scanner.CSharp.csproj" />
     <ProjectReference Include="..\..\src\DiagnosticStructuralLens.Scanner.Sql\DiagnosticStructuralLens.Scanner.Sql.csproj" />
+    <ProjectReference Include="..\..\src\DiagnosticStructuralLens.Scanner.TypeScript\DiagnosticStructuralLens.Scanner.TypeScript.csproj" />
     <ProjectReference Include="..\..\src\DiagnosticStructuralLens.Linker\DiagnosticStructuralLens.Linker.csproj" />
     <ProjectReference Include="..\..\src\DiagnosticStructuralLens.Risk\DiagnosticStructuralLens.Risk.csproj" />
     <ProjectReference Include="..\..\src\DiagnosticStructuralLens.Federation\DiagnosticStructuralLens.Federation.csproj" />

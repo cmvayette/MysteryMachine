@@ -1,11 +1,13 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using DiagnosticStructuralLens.Cli.Analyzers;
 using DiagnosticStructuralLens.Core;
 using DiagnosticStructuralLens.Federation;
 using DiagnosticStructuralLens.Linker;
 using DiagnosticStructuralLens.Risk;
 using DiagnosticStructuralLens.Scanner.CSharp;
 using DiagnosticStructuralLens.Scanner.Sql;
+using DiagnosticStructuralLens.Scanner.TypeScript;
 
 namespace DiagnosticStructuralLens.Cli;
 
@@ -45,6 +47,7 @@ public class Program
             "federate" => await ExecuteFederate(args[1..]),
             "publish" => await ExecutePublish(args[1..]),
             "interpret" => await ExecuteInterpret(args[1..]),
+            "report" => await ExecuteReport(args[1..]),
             "--help" or "-h" => PrintHelp(),
             "--version" or "-v" => PrintVersion(),
             _ => PrintUnknownCommand(command)
@@ -54,18 +57,25 @@ public class Program
     private static int PrintHelp()
     {
         Console.WriteLine("""
-            Diagnostic Structural Lens - Atomic-level codebase intelligence
+            Diagnostic Structural Lens - Codebase architecture intelligence
 
             Usage: dsl <command> [options]
 
             Commands:
-              scan      Scan a repository for code and SQL atoms
+              report    Scan + analyze a repo and generate a markdown architecture report
+              scan      Scan a repository for components and database objects
               diff      Compare snapshots and detect breaking changes
-              blast     Calculate blast radius for an atom
+              blast     Calculate impact radius for a component
               risk      Generate risk report for a snapshot
               federate  Merge multiple snapshots into a global map
               publish   Publish a snapshot to the DSL API
               interpret Read a snapshot and generate a human-readable summary
+
+            Report Options:
+              --repo <path>       Path to repository (required)
+              --output <file>     Output report file (default: <repo>/dsl-report.md)
+              --include-private   Include internal/private types
+              --top <n>           Show top N risky components (default: 10)
 
             Scan Options:
               --repo <path>       Path to repository (required)
@@ -82,15 +92,14 @@ public class Program
 
             Blast Options:
               --snapshot <file>   Snapshot file to analyze (required)
-              --atom <id>         Atom ID to calculate blast radius for (required)
+              --atom <id>         Component ID to calculate impact radius for (required)
               --depth <n>         Max depth to traverse (default: 5)
 
             Risk Options:
               --snapshot <file>   Snapshot file to analyze (required)
               --format <type>     Output format: text, json, html (default: text)
               --output <file>     Output file (optional, writes to stdout if omitted)
-              --top <n>           Show top N risky atoms (default: 10)
-
+              --top <n>           Show top N risky components (default: 10)
 
             Publish Options:
               --file <file>       Snapshot file to publish (required)
@@ -107,9 +116,10 @@ public class Program
               --output <file>     Output file (optional, writes to stdout if omitted)
 
             Examples:
+              dsl report --repo .                              # Full architecture report
+              dsl report --repo . --output docs/report.md      # Custom output path
               dsl scan --repo ./src --output ./snapshot.json
               dsl diff --baseline main.json --snapshot current.json
-              dsl blast --snapshot ./snapshot.json --atom table:users
               dsl blast --snapshot ./snapshot.json --atom table:users
               dsl risk --snapshot ./snapshot.json --format html --output risk.html
               dsl publish --file ./snapshot.json
@@ -148,6 +158,7 @@ public class Program
         bool skipLinking = false;
         bool publish = false;
         string publishUrl = "http://localhost:8080/load";
+        string language = "all"; // "all", "csharp", "typescript"
 
         for (int i = 0; i < args.Length; i++)
         {
@@ -171,6 +182,9 @@ public class Program
                 case "--url" when i + 1 < args.Length:
                     publishUrl = args[++i];
                     break;
+                case "--language" when i + 1 < args.Length:
+                    language = args[++i].ToLowerInvariant();
+                    break;
             }
         }
 
@@ -192,22 +206,54 @@ public class Program
 
         var options = new ScanOptions { IncludePrivateMembers = includePrivate };
         
+        // Determine which languages to scan
+        var scanCSharp = language is "all" or "csharp";
+        var scanTypeScript = language is "all" or "typescript";
+
+        // Auto-detect TypeScript if language is "all" and package.json with workspaces exists
+        if (language == "all")
+        {
+            var packageJsonPath = Path.Combine(fullRepoPath, "package.json");
+            scanTypeScript = File.Exists(packageJsonPath);
+        }
+
+        var allCodeAtoms = new List<CodeAtom>();
+        var allSqlAtoms = new List<SqlAtom>();
+        var allLinks = new List<AtomLink>();
+        var allDiagnostics = new List<ScanDiagnostic>();
+
         // Run C# scanner
-        Log("   Scanning C# files...", "📦");
-        var csharpScanner = new CSharpScanner();
-        var csharpResult = await csharpScanner.ScanAsync(fullRepoPath, options);
-        Console.WriteLine($"      Found {csharpResult.CodeAtoms.Count} code atoms, {csharpResult.Links.Count} links");
+        if (scanCSharp)
+        {
+            Log("   Scanning C# files...", "📦");
+            var csharpScanner = new CSharpScanner();
+            var csharpResult = await csharpScanner.ScanAsync(fullRepoPath, options);
+            Console.WriteLine($"      Found {csharpResult.CodeAtoms.Count} code atoms, {csharpResult.Links.Count} links");
+            allCodeAtoms.AddRange(csharpResult.CodeAtoms);
+            allLinks.AddRange(csharpResult.Links);
+            allDiagnostics.AddRange(csharpResult.Diagnostics);
 
-        // Run SQL scanner
-        Log("   Scanning SQL files...", "🗄️");
-        var sqlScanner = new SqlScanner();
-        var sqlResult = await sqlScanner.ScanAsync(fullRepoPath, options);
-        Console.WriteLine($"      Found {sqlResult.SqlAtoms.Count} SQL atoms, {sqlResult.Links.Count} links");
+            // Run SQL scanner (only relevant for C# projects)
+            Log("   Scanning SQL files...", "🗄️");
+            var sqlScanner = new SqlScanner();
+            var sqlResult = await sqlScanner.ScanAsync(fullRepoPath, options);
+            Console.WriteLine($"      Found {sqlResult.SqlAtoms.Count} SQL atoms, {sqlResult.Links.Count} links");
+            allSqlAtoms.AddRange(sqlResult.SqlAtoms);
+            allLinks.AddRange(sqlResult.Links);
+            allDiagnostics.AddRange(sqlResult.Diagnostics);
+        }
 
-        // Merge scanner results
-        var allCodeAtoms = csharpResult.CodeAtoms.ToList();
-        var allSqlAtoms = sqlResult.SqlAtoms.ToList();
-        var allLinks = csharpResult.Links.Concat(sqlResult.Links).ToList();
+        // Run TypeScript scanner
+        if (scanTypeScript)
+        {
+            Log("   Scanning TypeScript files...", "💠");
+            var tsScanner = new TypeScriptScanner();
+            var tsResult = await tsScanner.ScanAsync(fullRepoPath, options);
+            Console.WriteLine($"      Found {tsResult.CodeAtoms.Count} TS atoms, {tsResult.Links.Count} links");
+            allCodeAtoms.AddRange(tsResult.CodeAtoms);
+            allLinks.AddRange(tsResult.Links);
+            allDiagnostics.AddRange(tsResult.Diagnostics);
+        }
 
         // Run semantic linker
         var semanticLinks = new List<AtomLink>();
@@ -251,7 +297,7 @@ public class Program
                         var reasons = governance.GetViolationReasons(link, source, target);
                         foreach (var reason in reasons)
                         {
-                            csharpResult.Diagnostics.Add(new ScanDiagnostic(
+                            allDiagnostics.Add(new ScanDiagnostic(
                                 DiagnosticSeverity.Error, 
                                 reason,
                                 source.FilePath,
@@ -283,6 +329,9 @@ public class Program
                 InterfaceCount = allCodeAtoms.Count(a => a.Type == AtomType.Interface),
                 TableCount = allSqlAtoms.Count(a => a.Type == SqlAtomType.Table),
                 StoredProcedureCount = allSqlAtoms.Count(a => a.Type == SqlAtomType.StoredProcedure),
+                TypeAliasCount = allCodeAtoms.Count(a => a.Type == AtomType.TypeAlias),
+                ModuleCount = allCodeAtoms.Count(a => a.Type == AtomType.Module),
+                ComponentCount = allCodeAtoms.Count(a => a.Type == AtomType.Component),
                 ScanDuration = DateTime.UtcNow - startTime
             }
         };
@@ -292,8 +341,7 @@ public class Program
         var json = JsonSerializer.Serialize(snapshot, JsonOptions);
         await File.WriteAllTextAsync(outputPath, json);
 
-        // Print diagnostics
-        var allDiagnostics = csharpResult.Diagnostics.Concat(sqlResult.Diagnostics).ToList();
+        // Print diagnostics (allDiagnostics already accumulated above)
         if (allDiagnostics.Count > 0)
         {
             Log($"\n{allDiagnostics.Count} diagnostics:", "⚠️");
@@ -994,5 +1042,254 @@ public class Program
 
         var success = await PublishSnapshotAsync(filePath, url);
         return success ? 0 : 1;
+    }
+
+    private static async Task<int> ExecuteReport(string[] args)
+    {
+        string? repoPath = null;
+        string? outputPath = null;
+        string? policyPath = null;
+        string? jsonOutputPath = null;
+        bool includePrivate = false;
+        int topN = 10;
+
+        for (int i = 0; i < args.Length; i++)
+        {
+            switch (args[i])
+            {
+                case "--repo" when i + 1 < args.Length:
+                    repoPath = args[++i];
+                    break;
+                case "--output" when i + 1 < args.Length:
+                    outputPath = args[++i];
+                    break;
+                case "--policy" when i + 1 < args.Length:
+                    policyPath = args[++i];
+                    break;
+                case "--output-json" when i + 1 < args.Length:
+                    jsonOutputPath = args[++i];
+                    break;
+                case "--include-private":
+                    includePrivate = true;
+                    break;
+                case "--top" when i + 1 < args.Length:
+                    topN = int.Parse(args[++i]);
+                    break;
+            }
+        }
+
+        if (string.IsNullOrEmpty(repoPath))
+        {
+            Console.WriteLine("Error: --repo is required");
+            return 1;
+        }
+
+        var fullRepoPath = Path.GetFullPath(repoPath);
+        if (!Directory.Exists(fullRepoPath))
+        {
+            Console.WriteLine($"Error: Repository path not found: {fullRepoPath}");
+            return 1;
+        }
+
+        Log($"Analyzing repository: {fullRepoPath}", "🔍");
+        var startTime = DateTime.UtcNow;
+
+        // --- Phase 1: Scan ---
+        var options = new ScanOptions { IncludePrivateMembers = includePrivate };
+
+        var allCodeAtoms = new List<CodeAtom>();
+        var allSqlAtoms = new List<SqlAtom>();
+        var allLinks = new List<AtomLink>();
+        var allDiagnostics = new List<ScanDiagnostic>();
+
+        // C# scanner
+        Log("   Scanning C# files...", "📦");
+        var csharpScanner = new CSharpScanner();
+        var csharpResult = await csharpScanner.ScanAsync(fullRepoPath, options);
+        allCodeAtoms.AddRange(csharpResult.CodeAtoms);
+        allLinks.AddRange(csharpResult.Links);
+        allDiagnostics.AddRange(csharpResult.Diagnostics);
+
+        // SQL scanner
+        Log("   Scanning SQL files...", "🗄️");
+        var sqlScanner = new SqlScanner();
+        var sqlResult = await sqlScanner.ScanAsync(fullRepoPath, options);
+        allSqlAtoms.AddRange(sqlResult.SqlAtoms);
+        allLinks.AddRange(sqlResult.Links);
+        allDiagnostics.AddRange(sqlResult.Diagnostics);
+
+        // TypeScript scanner (auto-detect)
+        var packageJsonPath = Path.Combine(fullRepoPath, "package.json");
+        if (File.Exists(packageJsonPath))
+        {
+            Log("   Scanning TypeScript files...", "💠");
+            var tsScanner = new TypeScriptScanner();
+            var tsResult = await tsScanner.ScanAsync(fullRepoPath, options);
+            allCodeAtoms.AddRange(tsResult.CodeAtoms);
+            allLinks.AddRange(tsResult.Links);
+            allDiagnostics.AddRange(tsResult.Diagnostics);
+        }
+
+        // --- Phase 2: Link ---
+        Log("   Running semantic linker...", "🔗");
+        var linker = new SemanticLinker();
+        var linkResult = linker.LinkAtoms(allCodeAtoms, allSqlAtoms, allLinks);
+        var finalLinks = allLinks.Concat(linkResult.Links).ToList();
+
+        // --- Phase 3: Governance ---
+        var governanceViolations = new List<string>();
+        var governancePath = Path.Combine(fullRepoPath, "governance.yaml");
+        if (File.Exists(governancePath))
+        {
+            Log("   Running governance check...", "⚖️");
+            var governance = new GovernanceEngine(governancePath);
+            var atomMap = allCodeAtoms.DistinctBy(a => a.Id).ToDictionary(a => a.Id);
+
+            foreach (var link in finalLinks)
+            {
+                if (atomMap.TryGetValue(link.SourceId, out var source) &&
+                    atomMap.TryGetValue(link.TargetId, out var target))
+                {
+                    if (governance.IsViolation(link, source, target))
+                    {
+                        var reasons = governance.GetViolationReasons(link, source, target);
+                        governanceViolations.AddRange(reasons);
+                    }
+                }
+            }
+        }
+
+        // --- Phase 4: Build Snapshot ---
+        var snapshot = new Snapshot
+        {
+            Id = Guid.NewGuid().ToString("N")[..8],
+            Repository = DetectGitRepoName(fullRepoPath),
+            ScannedAt = DateTimeOffset.UtcNow,
+            Branch = GetCurrentBranch(fullRepoPath),
+            CommitSha = GetCurrentCommit(fullRepoPath),
+            CodeAtoms = allCodeAtoms,
+            SqlAtoms = allSqlAtoms,
+            Links = finalLinks,
+            Metadata = new SnapshotMetadata
+            {
+                TotalCodeAtoms = allCodeAtoms.Count,
+                TotalSqlAtoms = allSqlAtoms.Count,
+                TotalLinks = finalLinks.Count,
+                DtoCount = allCodeAtoms.Count(a => a.Type == AtomType.Dto),
+                InterfaceCount = allCodeAtoms.Count(a => a.Type == AtomType.Interface),
+                TableCount = allSqlAtoms.Count(a => a.Type == SqlAtomType.Table),
+                StoredProcedureCount = allSqlAtoms.Count(a => a.Type == SqlAtomType.StoredProcedure),
+                TypeAliasCount = allCodeAtoms.Count(a => a.Type == AtomType.TypeAlias),
+                ModuleCount = allCodeAtoms.Count(a => a.Type == AtomType.Module),
+                ComponentCount = allCodeAtoms.Count(a => a.Type == AtomType.Component),
+                ScanDuration = DateTime.UtcNow - startTime
+            }
+        };
+
+        // --- Phase 5: Risk Scoring ---
+        Log("   Calculating risk scores...", "📊");
+        var scorer = new RiskScorer();
+        var riskReport = scorer.ScoreSnapshot(snapshot);
+
+        // --- Phase 5.5: Analyzers ---
+        Log("   Running architecture analyzers...", "🔬");
+        var analyzerRunner = new AnalyzerRunner();
+        var analysisReport = analyzerRunner.Run(fullRepoPath, snapshot, allDiagnostics);
+
+        // --- Phase 5.6: Policy Evaluation ---
+        PolicyResult? policyResult = null;
+        policyPath ??= Path.Combine(fullRepoPath, "dsl-policy.yaml");
+        var policyEngine = PolicyEngine.LoadFromFile(policyPath);
+        if (policyEngine != null)
+        {
+            Log("   Evaluating policy gates...", "🛡️");
+            policyResult = policyEngine.Evaluate(analysisReport, riskReport, governanceViolations);
+        }
+
+        // --- Phase 6: Generate Report ---
+        Log("   Generating architecture report...", "📝");
+        var markdown = ReportGenerator.GenerateMarkdownReport(
+            snapshot, riskReport, allDiagnostics, governanceViolations,
+            analysisReport, policyResult, topN);
+
+        // Write markdown report
+        outputPath ??= Path.Combine(fullRepoPath, "dsl-report.md");
+        await File.WriteAllTextAsync(outputPath, markdown);
+
+        // Write JSON results (for ADO test publishing)
+        if (jsonOutputPath != null)
+        {
+            var jsonResults = System.Text.Json.JsonSerializer.Serialize(new
+            {
+                repository = snapshot.Repository,
+                branch = snapshot.Branch,
+                commit = snapshot.CommitSha,
+                timestamp = snapshot.ScannedAt,
+                summary = new
+                {
+                    components = allCodeAtoms.Count,
+                    databaseObjects = allSqlAtoms.Count,
+                    relationships = finalLinks.Count,
+                    riskCritical = riskReport.Stats.CriticalCount,
+                    riskHigh = riskReport.Stats.HighCount,
+                    governanceViolations = governanceViolations.Count
+                },
+                findings = analysisReport.Findings.Select(f => new
+                {
+                    ruleId = f.RuleId,
+                    category = f.Category.ToString(),
+                    severity = f.Severity.ToString(),
+                    title = f.Title,
+                    description = f.Description,
+                    filePath = f.FilePath,
+                    lineNumber = f.LineNumber,
+                    occurrences = f.Occurrences
+                }),
+                policy = policyResult != null ? new
+                {
+                    passed = policyResult.Passed,
+                    gates = policyResult.Gates.Select(g => new
+                    {
+                        name = g.Name,
+                        passed = g.Passed,
+                        actual = g.Actual,
+                        threshold = g.Threshold
+                    })
+                } : null
+            }, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
+
+            await File.WriteAllTextAsync(jsonOutputPath, jsonResults);
+            Console.WriteLine($"   JSON results saved to: {jsonOutputPath}");
+        }
+
+        // CLI summary
+        var duration = DateTime.UtcNow - startTime;
+        var findingSummary = analysisReport.Findings.Count > 0
+            ? $"\n              Findings:          {analysisReport.CriticalCount} critical, {analysisReport.HighCount} high, {analysisReport.MediumCount} medium"
+            : "";
+        var policyLine = policyResult != null
+            ? $"\n              Policy:            {(policyResult.Passed ? "✅ PASSED" : "❌ FAILED")} ({policyResult.Gates.Count} gates)"
+            : "";
+
+        Console.WriteLine($"\n{(policyResult?.Passed == false ? "❌" : "✅")} Architecture report saved to: {outputPath}");
+        Console.WriteLine($"""
+
+            Summary:
+              Components:       {allCodeAtoms.Count:N0}
+              Database Objects:  {allSqlAtoms.Count:N0}
+              Relationships:     {finalLinks.Count:N0}
+              Risk: {riskReport.Stats.CriticalCount} critical, {riskReport.Stats.HighCount} high, {riskReport.Stats.MediumCount} medium
+              Governance:        {governanceViolations.Count} violation(s){findingSummary}{policyLine}
+              Duration:          {duration.TotalSeconds:F2}s
+            """);
+
+        // Exit code: non-zero if policy failed and in CI mode
+        if (policyResult != null && !policyResult.Passed && IsCiMode)
+        {
+            Console.WriteLine("\n❌ Pipeline gate FAILED — see report for details.");
+            return 1;
+        }
+
+        return 0;
     }
 }

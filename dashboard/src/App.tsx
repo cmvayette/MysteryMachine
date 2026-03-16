@@ -9,6 +9,7 @@ import { useState, useMemo, useCallback } from 'react';
 import { inferSystems } from './utils/systemInference';
 import { DetailsPanel } from './components/DetailsPanel';
 import { Header } from './components/Header';
+import { ArchitecturalReport } from './components/ArchitecturalReport';
 import './index.css';
 
 function Dashboard() {
@@ -137,9 +138,20 @@ function Dashboard() {
       const containers = new Map<string, { id: string; name: string; count: number }>();
       
       repo.namespaces.forEach((ns: { path: string; atomCount?: number }) => {
-        // "DiagnosticStructuralLens.Api.Controllers" -> "DiagnosticStructuralLens.Api"
-        const parts = ns.path.split('.');
-        const containerName = parts.length >= 2 ? `${parts[0]}.${parts[1]}` : parts[0];
+        // Infer container from namespace path:
+        // TS style:  "semantic-operating-model::domains.governance" -> "semantic-operating-model"
+        //            "@som/api-client::hooks" -> "@som/api-client"
+        // C# style:  "CleanArchitecture.Application.Controllers" -> "CleanArchitecture.Application"
+        let containerName: string;
+        
+        if (ns.path.includes('::')) {
+          // TypeScript: workspace name is everything before ::
+          containerName = ns.path.split('::')[0];
+        } else {
+          // C# style: take first two dotted segments as the project
+          const parts = ns.path.split('.');
+          containerName = parts.length >= 2 ? `${parts[0]}.${parts[1]}` : parts[0];
+        }
         
         if (!containers.has(containerName)) {
            containers.set(containerName, { id: containerName, name: containerName, count: 0 });
@@ -160,27 +172,38 @@ function Dashboard() {
        
     } else if (level === 'project' && repoData?.repository) {
        // Filter namespaces that belong to the selected "Container" (Project)
-       // The container ID is in path[2] because:
-       // Context (path[0]) -> System (path[0]) -> Repo (path[1]) -> Project (path[2])
        const containerPrefix = path[2];
        const repo = repoData.repository;
        
        if (containerPrefix) {
            repo.namespaces.forEach((ns: { path: string }) => {
-               if (ns.path.startsWith(containerPrefix)) {
+               // Match: exact workspace name, or workspace::subdir, or C# prefix.subns
+               const isMatch = ns.path === containerPrefix ||
+                 ns.path.startsWith(containerPrefix + '::') ||
+                 ns.path.startsWith(containerPrefix + '.');
+               if (isMatch) {
+                    // Extract display name from the subdirectory part
+                    let displayName: string;
+                    if (ns.path.includes('::')) {
+                      const sub = ns.path.split('::')[1];
+                      displayName = sub ? sub.split('.').pop() || sub : ns.path;
+                    } else {
+                      displayName = ns.path.split('.').pop() || ns.path;
+                    }
                     nodes.push({
                         id: ns.path,
-                        name: ns.path.split('.').pop() || ns.path,
+                        name: displayName,
                         type: 'namespace',
-                        group: containerPrefix // Cluster by project
+                        group: containerPrefix
                     });
                }
            });
            
           // Add links only between these namespaces
           if (repo.namespaceLinks) {
+            const nodeIds = new Set(nodes.map(n => n.id));
             repo.namespaceLinks.forEach((link: { sourceNamespace: string; targetNamespace: string; linkType?: string }) => {
-               if (link.sourceNamespace.startsWith(containerPrefix) && link.targetNamespace.startsWith(containerPrefix)) {
+               if (nodeIds.has(link.sourceNamespace) && nodeIds.has(link.targetNamespace)) {
                   links.push({
                     source: link.sourceNamespace,
                     target: link.targetNamespace,
@@ -268,6 +291,10 @@ function Dashboard() {
 
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
+        {activeTab === 'Reports' ? (
+          <ArchitecturalReport onNavigateToExplorer={() => setActiveTab('Explorer')} />
+        ) : (
+        <>
         {/* Graph Area with Grid */}
         <main className="flex-1 relative force-graph-grid" style={{ backgroundColor: 'var(--color-bg-dark)' }}>
           {isLoading ? (
@@ -460,6 +487,8 @@ function Dashboard() {
           onDrillDown={drillDown}
           onSelectAtom={selectAtom}
         />
+        </>
+        )}
       </div>
 
       {/* Status Footer - counts from filtered data, no D3 state sync */}

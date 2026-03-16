@@ -26,6 +26,15 @@ public record ArchitectureRule
     
     // "...to Target matching..." part
     public required NodeQuery Target { get; init; }
+    
+    /// <summary>
+    /// When set, violations are suppressed if source and target share the same
+    /// namespace group prefix. The prefix is extracted by splitting on the separator
+    /// and taking the first N segments (depth).
+    /// Example: separator="::", depth=1 means "same workspace" exclusion.
+    ///          separator=".", depth=2 after "::" means "same domain" exclusion.
+    /// </summary>
+    public GroupExclusion? SameGroupExclusion { get; init; }
 }
 
 /// <summary>
@@ -58,3 +67,23 @@ public record RuleViolation(
     GraphNode Target,
     GraphEdge Edge
 );
+
+/// <summary>
+/// Defines how to extract a "group" from a namespace for same-group exclusion.
+/// The namespace is split on PrimarySeparator first, then the segment at SegmentIndex
+/// is further split on SecondarySeparator and the first Depth parts are taken as the group.
+/// </summary>
+public record GroupExclusion
+{
+    /// <summary>Primary separator (e.g. "::" for TypeScript workspaces).</summary>
+    public required string PrimarySeparator { get; init; }
+    
+    /// <summary>Which segment (after primary split) contains the group. 0=workspace, 1=subdir path.</summary>
+    public int SegmentIndex { get; init; } = 1;
+    
+    /// <summary>Secondary separator within the segment (e.g. "." for subdirectory levels).</summary>
+    public string SecondarySeparator { get; init; } = ".";
+    
+    /// <summary>Number of secondary segments to take as the group prefix.</summary>
+    public int Depth { get; init; } = 1;
+}

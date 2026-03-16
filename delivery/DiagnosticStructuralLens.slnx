@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/DiagnosticStructuralLens.Cli/DiagnosticStructuralLens.Cli.csproj" />
+    <Project Path="src/DiagnosticStructuralLens.Core/DiagnosticStructuralLens.Core.csproj" />
+    <Project Path="src/DiagnosticStructuralLens.Federation/DiagnosticStructuralLens.Federation.csproj" />
+    <Project Path="src/DiagnosticStructuralLens.Linker/DiagnosticStructuralLens.Linker.csproj" />
+    <Project Path="src/DiagnosticStructuralLens.Risk/DiagnosticStructuralLens.Risk.csproj" />
+    <Project Path="src/DiagnosticStructuralLens.Scanner.CSharp/DiagnosticStructuralLens.Scanner.CSharp.csproj" />
+    <Project Path="src/DiagnosticStructuralLens.Scanner.Sql/DiagnosticStructuralLens.Scanner.Sql.csproj" />
+    <Project Path="src/DiagnosticStructuralLens.Scanner.TypeScript/DiagnosticStructuralLens.Scanner.TypeScript.csproj" />
+  </Folder>
+</Solution>

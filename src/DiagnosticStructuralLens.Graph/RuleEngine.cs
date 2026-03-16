@@ -50,15 +50,47 @@ public class RuleEngine
                 if (targetNode == null) continue;
 
                 // 3. Check Target constraints
-                if (MatchesQuery(targetNode, rule.Target, targetNameRegex, targetNamespaceRegex))
+                if (!MatchesQuery(targetNode, rule.Target, targetNameRegex, targetNamespaceRegex))
+                    continue;
+
+                // 4. Apply SameGroupExclusion — skip if source and target are in the same group
+                if (rule.SameGroupExclusion != null)
                 {
-                    // Violation found!
-                    violations.Add(new RuleViolation(rule, sourceNode, targetNode, edge));
+                    var sourceNs = sourceNode.Properties.GetValueOrDefault("Namespace") as string ?? "";
+                    var targetNs = targetNode.Properties.GetValueOrDefault("Namespace") as string ?? "";
+                    var sourceGroup = ExtractGroup(sourceNs, rule.SameGroupExclusion);
+                    var targetGroup = ExtractGroup(targetNs, rule.SameGroupExclusion);
+                    
+                    if (!string.IsNullOrEmpty(sourceGroup) && sourceGroup == targetGroup)
+                        continue; // Same group — not a violation
                 }
+
+                // Violation found!
+                violations.Add(new RuleViolation(rule, sourceNode, targetNode, edge));
             }
         }
 
         return violations;
+    }
+
+    /// <summary>
+    /// Extracts a group identifier from a namespace string using the exclusion configuration.
+    /// Example: "semantic-operating-model::domains.governance.utils" with PrimarySep="::", SegmentIndex=1, SecondarySep=".", Depth=2
+    ///   → primary split: ["semantic-operating-model", "domains.governance.utils"]
+    ///   → segment[1]: "domains.governance.utils"
+    ///   → secondary split + take 2: "domains.governance"
+    /// </summary>
+    private static string ExtractGroup(string ns, GroupExclusion exclusion)
+    {
+        var primaryParts = ns.Split(exclusion.PrimarySeparator);
+        if (primaryParts.Length <= exclusion.SegmentIndex)
+            return ""; // Namespace doesn't have enough segments
+        
+        var segment = primaryParts[exclusion.SegmentIndex];
+        var secondaryParts = segment.Split(exclusion.SecondarySeparator);
+        var depth = Math.Min(exclusion.Depth, secondaryParts.Length);
+        
+        return string.Join(exclusion.SecondarySeparator, secondaryParts.Take(depth));
     }
 
     private bool MatchesQuery(GraphNode node, NodeQuery query, Regex? nameRegex, Regex? nsRegex)

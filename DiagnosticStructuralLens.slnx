@@ -8,6 +8,7 @@
     <Project Path="src/DiagnosticStructuralLens.Risk/DiagnosticStructuralLens.Risk.csproj" />
     <Project Path="src/DiagnosticStructuralLens.Scanner.CSharp/DiagnosticStructuralLens.Scanner.CSharp.csproj" />
     <Project Path="src/DiagnosticStructuralLens.Scanner.Sql/DiagnosticStructuralLens.Scanner.Sql.csproj" />
+    <Project Path="src/DiagnosticStructuralLens.Scanner.TypeScript/DiagnosticStructuralLens.Scanner.TypeScript.csproj" />
     <Project Path="src/DiagnosticStructuralLens.Graph/DiagnosticStructuralLens.Graph.csproj" />
   </Folder>
   <Folder Name="/tests/">

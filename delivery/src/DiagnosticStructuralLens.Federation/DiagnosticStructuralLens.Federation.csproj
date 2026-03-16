@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- TargetFramework inherited from Directory.Build.props -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DiagnosticStructuralLens.Core\DiagnosticStructuralLens.Core.csproj" />
+    <ProjectReference Include="..\DiagnosticStructuralLens.Linker\DiagnosticStructuralLens.Linker.csproj" />
+  </ItemGroup>
+</Project>

@@ -31,11 +31,23 @@ builder.Services
     .AddSorting()
     .AddProjections();
 
+// Database is optional — only register if connection string is configured
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var hasDatabase = !string.IsNullOrEmpty(connectionString);
 
-
-// Add Database
-builder.Services.AddDbContext<DslDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+if (hasDatabase)
+{
+    builder.Services.AddDbContext<DslDbContext>(options =>
+        options.UseNpgsql(connectionString));
+}
+else
+{
+    // Register a no-op DbContext with in-memory provider so DI doesn't break
+    builder.Services.AddDbContext<DslDbContext>(options =>
+        options.UseInMemoryDatabase("dsl-fallback"));
+    Console.WriteLine("ℹ️  No database configured — running in file-only mode.");
+    Console.WriteLine("   Use --snapshots-dir <path> to load snapshots from a folder.");
+}
 
 // Add data services
 builder.Services.AddSingleton<DiagnosticStructuralLensDataService>(); // Keep state between requests
@@ -45,16 +57,17 @@ builder.Services.AddSingleton<SemanticLinker>();
 
 var app = builder.Build();
 
+// Shared JSON options
+var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+jsonOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
 
-
-// Ensure Database Created
-using (var scope = app.Services.CreateScope())
+// Ensure Database Created (only if real DB configured)
+if (hasDatabase)
 {
+    using var scope = app.Services.CreateScope();
     var db = scope.ServiceProvider.GetRequiredService<DslDbContext>();
-    try 
+    try
     {
-        // Simple strategy for now: EnsureCreated. 
-        // In prod we would use Migrations.
         db.Database.EnsureCreated();
         Console.WriteLine("✅ Database ensured.");
     }
@@ -73,79 +86,84 @@ app.MapGet("/health", () => "OK");
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-// Load snapshot endpoint
+// Load snapshot endpoint — works with or without DB
 app.MapPost("/load", async (HttpRequest request, DiagnosticStructuralLensDataService dataService, DslDbContext db) =>
 {
-    try 
+    try
     {
         using var reader = new StreamReader(request.Body);
         var json = await reader.ReadToEndAsync();
-        
-        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-        options.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
-        
-        var snapshot = JsonSerializer.Deserialize<Snapshot>(json, options);
+
+        var snapshot = JsonSerializer.Deserialize<Snapshot>(json, jsonOptions);
         if (snapshot == null) return Results.BadRequest("Invalid snapshot JSON");
-        
-        // Persist to DB
-        var entity = await db.Snapshots.FindAsync(snapshot.Id);
-        if (entity == null)
+
+        // Persist to DB if available
+        if (hasDatabase)
         {
-            entity = new SnapshotEntity 
-            { 
-                Id = snapshot.Id, 
-                Repository = snapshot.Repository,
-                CreatedAt = snapshot.ScannedAt,
-                Data = json 
-            };
-            db.Snapshots.Add(entity);
+            var entity = await db.Snapshots.FindAsync(snapshot.Id);
+            if (entity == null)
+            {
+                entity = new SnapshotEntity
+                {
+                    Id = snapshot.Id,
+                    Repository = snapshot.Repository,
+                    CreatedAt = snapshot.ScannedAt,
+                    Data = json
+                };
+                db.Snapshots.Add(entity);
+            }
+            else
+            {
+                entity.Data = json;
+                entity.CreatedAt = snapshot.ScannedAt;
+            }
+            await db.SaveChangesAsync();
+            Console.WriteLine($"💾 Persisted snapshot {snapshot.Id} to DB.");
+
+            // Federate ALL snapshots from DB
+            var allSnapshotsEntities = await db.Snapshots
+                .GroupBy(s => s.Repository)
+                .Select(g => g.OrderByDescending(s => s.CreatedAt).FirstOrDefault())
+                .ToListAsync();
+
+            var snapshots = new List<Snapshot>();
+            foreach (var s in allSnapshotsEntities)
+            {
+                if (s == null) continue;
+                var snap = JsonSerializer.Deserialize<Snapshot>(s.Data, jsonOptions);
+                if (snap != null) snapshots.Add(snap);
+            }
+
+            Console.WriteLine($"🔄 Federating {snapshots.Count} snapshots for graph...");
+            NormalizeRepoNames(snapshots);
+
+            var engine = new FederationEngine();
+            var federated = engine.Merge(snapshots);
+            dataService.LoadFederation(federated);
+
+            return Results.Ok(new {
+                message = "Loaded and Persisted",
+                repositories = snapshots.Count,
+                totalCodeAtoms = federated.Stats.TotalCodeAtoms,
+                totalLinks = federated.Stats.TotalLinks
+            });
         }
         else
         {
-            // Update existing
-            entity.Data = json;
-            entity.CreatedAt = snapshot.ScannedAt;
-        }
-        await db.SaveChangesAsync();
-        Console.WriteLine($"💾 Persisted snapshot {snapshot.Id} to DB.");
-        
-        // Federate ALL snapshots (Incremental Graph)
-        // 1. Get latest snapshot for each repository
-        var allSnapshotsEntities = await db.Snapshots
-            .GroupBy(s => s.Repository)
-            .Select(g => g.OrderByDescending(s => s.CreatedAt).FirstOrDefault())
-            .ToListAsync();
-            
-        var snapshots = new List<Snapshot>();
-        foreach (var s in allSnapshotsEntities)
-        {
-            if (s == null) continue;
-            var snap = JsonSerializer.Deserialize<Snapshot>(s.Data, options);
-            if (snap != null) snapshots.Add(snap);
-        }
-        
-        Console.WriteLine($"🔄 Federating {snapshots.Count} snapshots for graph...");
+            // No DB — just load this single snapshot into the in-memory graph
+            NormalizeRepoNames([snapshot]);
+            var engine = new FederationEngine();
+            var federated = engine.Merge([snapshot]);
+            dataService.LoadFederation(federated);
+            Console.WriteLine($"📂 Loaded snapshot in-memory: {snapshot.CodeAtoms.Count} atoms");
 
-        // Normalize legacy full-path repository names to just the directory name
-        foreach (var snap in snapshots)
-        {
-            if (snap.Repository.Contains('/') || snap.Repository.Contains('\\'))
-            {
-                snap.Repository = System.IO.Path.GetFileName(snap.Repository.TrimEnd('/', '\\'));
-            }
+            return Results.Ok(new {
+                message = "Loaded (in-memory only, no database)",
+                repositories = 1,
+                totalCodeAtoms = federated.Stats.TotalCodeAtoms,
+                totalLinks = federated.Stats.TotalLinks
+            });
         }
-
-        // 2. Federate
-        var engine = new FederationEngine();
-        var federated = engine.Merge(snapshots);
-        dataService.LoadFederation(federated);
-        
-        return Results.Ok(new { 
-            message = "Loaded and Persisted", 
-            repositories = snapshots.Count,
-            totalCodeAtoms = federated.Stats.TotalCodeAtoms,
-            totalLinks = federated.Stats.TotalLinks
-        });
     }
     catch (Exception ex)
     {
@@ -154,13 +172,78 @@ app.MapPost("/load", async (HttpRequest request, DiagnosticStructuralLensDataSer
     }
 });
 
-// Hydrate from DB on startup if CLI args empty
-// Load latest from EACH repo
-using (var scope = app.Services.CreateScope())
+// --- Startup data loading ---
+// Priority: --snapshots-dir > single .json arg > DB hydration
+
+// Support both CLI args and environment variable
+var snapshotsDir = GetArgValue(args, "--snapshots-dir")
+    ?? Environment.GetEnvironmentVariable("DSL_SNAPSHOTS_DIR")
+    ?? app.Configuration["SnapshotsDir"];
+var snapshotPath = args.FirstOrDefault(a => a.EndsWith(".json"));
+
+if (!string.IsNullOrEmpty(snapshotsDir) && Directory.Exists(snapshotsDir))
 {
+    // Load all .json files from the directory and federate them
+    var files = Directory.GetFiles(snapshotsDir, "*.json");
+    if (files.Length > 0)
+    {
+        Console.WriteLine($"📂 Loading {files.Length} snapshot(s) from: {snapshotsDir}");
+        var snapshots = new List<Snapshot>();
+        foreach (var file in files)
+        {
+            try
+            {
+                var json = await File.ReadAllTextAsync(file);
+                var snapshot = JsonSerializer.Deserialize<Snapshot>(json, jsonOptions);
+                if (snapshot != null)
+                {
+                    snapshots.Add(snapshot);
+                    Console.WriteLine($"   ✅ {System.IO.Path.GetFileName(file)}: {snapshot.CodeAtoms.Count} code atoms, {snapshot.SqlAtoms.Count} SQL atoms");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"   ⚠️ Skipping {System.IO.Path.GetFileName(file)}: {ex.Message}");
+            }
+        }
+
+        if (snapshots.Count > 0)
+        {
+            NormalizeRepoNames(snapshots);
+            var engine = new FederationEngine();
+            var federated = engine.Merge(snapshots);
+            var dataService = app.Services.GetRequiredService<DiagnosticStructuralLensDataService>();
+            dataService.LoadFederation(federated);
+            Console.WriteLine($"   🗺️ Federated: {federated.Stats.TotalCodeAtoms} atoms across {federated.Stats.TotalRepos} repos, {federated.Stats.TotalLinks} links");
+        }
+    }
+    else
+    {
+        Console.WriteLine($"⚠️ No .json files found in: {snapshotsDir}");
+    }
+}
+else if (!string.IsNullOrEmpty(snapshotPath) && File.Exists(snapshotPath))
+{
+    // Load a single snapshot file
+    Console.WriteLine($"📂 Loading snapshot from CLI arg: {snapshotPath}");
+    var json = await File.ReadAllTextAsync(snapshotPath);
+    var snapshot = JsonSerializer.Deserialize<Snapshot>(json, jsonOptions);
+    if (snapshot != null)
+    {
+        var dataService = app.Services.GetRequiredService<DiagnosticStructuralLensDataService>();
+        var engine = new FederationEngine();
+        var federated = engine.Merge([snapshot]);
+        dataService.LoadFederation(federated);
+        Console.WriteLine($"   ✅ Loaded {snapshot.CodeAtoms.Count} atoms, {snapshot.Links.Count} links");
+    }
+}
+else if (hasDatabase)
+{
+    // Hydrate from DB on startup
+    using var scope = app.Services.CreateScope();
     var db = scope.ServiceProvider.GetRequiredService<DslDbContext>();
     var dataService = scope.ServiceProvider.GetRequiredService<DiagnosticStructuralLensDataService>();
-    
+
     try
     {
         var allSnapshotsEntities = await db.Snapshots
@@ -171,28 +254,18 @@ using (var scope = app.Services.CreateScope())
         if (allSnapshotsEntities.Any())
         {
             Console.WriteLine($"🔄 Hydrating graph from {allSnapshotsEntities.Count} repositories...");
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            options.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
-            
+
             var snapshots = new List<Snapshot>();
             foreach (var s in allSnapshotsEntities)
             {
                 if (s == null) continue;
-                var snap = JsonSerializer.Deserialize<Snapshot>(s.Data, options);
+                var snap = JsonSerializer.Deserialize<Snapshot>(s.Data, jsonOptions);
                 if (snap != null) snapshots.Add(snap);
             }
 
             if (snapshots.Count > 0)
             {
-                // Normalize legacy full-path repository names
-                foreach (var snap in snapshots)
-                {
-                    if (snap.Repository.Contains('/') || snap.Repository.Contains('\\'))
-                    {
-                        snap.Repository = System.IO.Path.GetFileName(snap.Repository.TrimEnd('/', '\\'));
-                    }
-                }
-
+                NormalizeRepoNames(snapshots);
                 var engine = new FederationEngine();
                 var federated = engine.Merge(snapshots);
                 dataService.LoadFederation(federated);
@@ -206,31 +279,31 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// Auto-load snapshot from command line if provided (overrides DB)
-var snapshotPath = args.FirstOrDefault(a => a.EndsWith(".json"));
-if (!string.IsNullOrEmpty(snapshotPath) && File.Exists(snapshotPath))
-{
-    Console.WriteLine($"📂 Loading snapshot from CLI arg: {snapshotPath}");
-    var json = await File.ReadAllTextAsync(snapshotPath);
-    var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-    options.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
-    var snapshot = JsonSerializer.Deserialize<Snapshot>(json, options);
-    if (snapshot != null)
-    {
-        var dataService = app.Services.GetRequiredService<DiagnosticStructuralLensDataService>();
-        // Just load this one for CLI mode
-        
-        var engine = new FederationEngine();
-        var federated = engine.Merge([snapshot]);
-        dataService.LoadFederation(federated);
-        Console.WriteLine($"   ✅ Loaded {snapshot.CodeAtoms.Count} atoms, {snapshot.Links.Count} links");
-    }
-}
-
 app.MapFallbackToFile("index.html");
 
 
 app.Run();
 
-public partial class Program { }
+// --- Helper functions ---
 
+static void NormalizeRepoNames(List<Snapshot> snapshots)
+{
+    foreach (var snap in snapshots)
+    {
+        if (snap.Repository.Contains('/') || snap.Repository.Contains('\\'))
+        {
+            snap.Repository = System.IO.Path.GetFileName(snap.Repository.TrimEnd('/', '\\'));
+        }
+    }
+}
+
+static string? GetArgValue(string[] args, string flag)
+{
+    for (int i = 0; i < args.Length - 1; i++)
+    {
+        if (args[i] == flag) return args[i + 1];
+    }
+    return null;
+}
+
+public partial class Program { }

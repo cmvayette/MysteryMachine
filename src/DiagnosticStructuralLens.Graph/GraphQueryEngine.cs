@@ -236,4 +236,215 @@ public class GraphQueryEngine : IGraphQueryEngine
         var detector = new PatternDetector();
         return detector.Detect(_graph, scopeNamespace);
     }
+
+    /// <summary>
+    /// Calculate Robert C. Martin's Package Metrics per namespace.
+    /// Computes Instability (I), Abstractness (A), and Distance from Main Sequence (D).
+    /// </summary>
+    public IReadOnlyList<NamespaceMetrics> CalculatePackageMetrics()
+    {
+        var results = new List<NamespaceMetrics>();
+        var namespaces = _graph.Nodes
+            .Where(n => n.Namespace != null)
+            .GroupBy(n => n.Namespace!);
+
+        foreach (var nsGroup in namespaces)
+        {
+            var ns = nsGroup.Key;
+            var types = nsGroup.Where(n => IsTypeNode(n.Type)).ToList();
+            var abstractions = types.Count(n =>
+                n.Type is NodeType.Interface or NodeType.Enum or NodeType.TypeAlias);
+
+            // Ca: edges coming INTO this namespace from outside
+            int ca = nsGroup.Sum(n => n.InboundEdges
+                .Count(e => e.Source?.Namespace != null && e.Source.Namespace != ns));
+
+            // Ce: edges going OUT of this namespace to outside
+            int ce = nsGroup.Sum(n => n.OutboundEdges
+                .Count(e => e.Target?.Namespace != null && e.Target.Namespace != ns));
+
+            double instability = (ca + ce) > 0 ? (double)ce / (ca + ce) : 0;
+            double abstractness = types.Count > 0
+                ? (double)abstractions / types.Count : 0;
+            double distance = Math.Abs(abstractness + instability - 1);
+
+            string zone = distance < 0.3 ? "Ideal"
+                : (instability < 0.5 && abstractness < 0.5) ? "Pain"
+                : "Uselessness";
+
+            results.Add(new NamespaceMetrics
+            {
+                Namespace = ns,
+                TotalTypes = types.Count,
+                AbstractTypes = abstractions,
+                AfferentCoupling = ca,
+                EfferentCoupling = ce,
+                Instability = Math.Round(instability, 3),
+                Abstractness = Math.Round(abstractness, 3),
+                DistanceFromMainSequence = Math.Round(distance, 3),
+                Zone = zone
+            });
+        }
+        return results;
+    }
+
+    private static bool IsTypeNode(NodeType type) =>
+        type is NodeType.Class or NodeType.Interface or NodeType.Struct
+            or NodeType.Record or NodeType.Enum or NodeType.Delegate
+            or NodeType.TypeAlias;
+
+    /// <summary>
+    /// BFS shortest path between two nodes.
+    /// Returns null if no path exists.
+    /// </summary>
+    public PathResult? FindShortestPath(string fromId, string toId)
+    {
+        var startNode = _graph.GetNodeById(fromId);
+        var endNode = _graph.GetNodeById(toId);
+        if (startNode == null || endNode == null) return null;
+
+        var visited = new HashSet<string> { fromId };
+        var queue = new Queue<(GraphNode Node, List<PathStep> Path)>();
+        queue.Enqueue((startNode, new List<PathStep>()));
+
+        while (queue.Count > 0)
+        {
+            var (current, path) = queue.Dequeue();
+            foreach (var edge in current.OutboundEdges)
+            {
+                if (edge.Target == null) continue;
+                var step = new PathStep(current, edge.Target, edge);
+                var newPath = new List<PathStep>(path) { step };
+
+                if (edge.Target.Id == toId)
+                    return new PathResult(newPath, newPath.Count);
+
+                if (visited.Add(edge.Target.Id))
+                    queue.Enqueue((edge.Target, newPath));
+            }
+        }
+        return null; // No path exists
+    }
+
+    /// <summary>
+    /// Analyze internal cohesion of a namespace.
+    /// Uses connected-component detection on internal edges only.
+    /// Multiple components suggest the namespace could be split.
+    /// </summary>
+    public CohesionResult AnalyzeCohesion(string ns)
+    {
+        var nodes = _graph.GetNodesByNamespace(ns);
+        if (nodes.Count == 0) return new CohesionResult(ns, 0, 0, 1.0, new());
+
+        var nodeIds = nodes.Select(n => n.Id).ToHashSet();
+
+        // Count internal vs external edges
+        int internalEdges = nodes.Sum(n =>
+            n.OutboundEdges.Count(e => nodeIds.Contains(e.TargetId)));
+        int externalEdges = nodes.Sum(n =>
+            n.OutboundEdges.Count(e => !nodeIds.Contains(e.TargetId)));
+
+        // Connected components via union-find
+        var parent = nodes.ToDictionary(n => n.Id, n => n.Id);
+        string Find(string x)
+        {
+            while (parent[x] != x) { parent[x] = parent[parent[x]]; x = parent[x]; }
+            return x;
+        }
+
+        foreach (var n in nodes)
+        {
+            foreach (var e in n.OutboundEdges.Concat(n.InboundEdges))
+            {
+                if (nodeIds.Contains(e.SourceId) && nodeIds.Contains(e.TargetId))
+                {
+                    var rx = Find(e.SourceId);
+                    var ry = Find(e.TargetId);
+                    if (rx != ry) parent[rx] = ry;
+                }
+            }
+        }
+
+        var components = nodes.GroupBy(n => Find(n.Id))
+            .Select(g => g.Select(n => n.Name).ToList()).ToList();
+
+        double cohesion = (internalEdges + externalEdges) > 0
+            ? (double)internalEdges / (internalEdges + externalEdges) : 1.0;
+
+        return new CohesionResult(ns, internalEdges, externalEdges,
+            Math.Round(cohesion, 3), components);
+    }
+
+    /// <summary>
+    /// Simulate moving nodes to a different namespace and report
+    /// which existing edges would become cross-boundary violations.
+    /// </summary>
+    public SimulationResult SimulateMove(
+        IEnumerable<string> nodeIds, string targetNamespace)
+    {
+        var movingIds = nodeIds.ToHashSet();
+        var brokenEdges = new List<GraphEdge>();
+        var newCrossings = new List<GraphEdge>();
+
+        foreach (var nodeId in movingIds)
+        {
+            var node = _graph.GetNodeById(nodeId);
+            if (node == null) continue;
+
+            // Check inbound: consumers that expect the old namespace
+            foreach (var edge in node.InboundEdges)
+            {
+                if (edge.Source != null && !movingIds.Contains(edge.Source.Id)
+                    && edge.Source.Namespace != targetNamespace)
+                    brokenEdges.Add(edge);
+            }
+            // Check outbound: existing internal edges that would become external
+            foreach (var edge in node.OutboundEdges)
+            {
+                if (edge.Target != null && !movingIds.Contains(edge.Target.Id)
+                    && edge.Target.Namespace != targetNamespace
+                    && edge.Target.Namespace == node.Namespace)
+                    newCrossings.Add(edge);
+            }
+        }
+        return new SimulationResult(brokenEdges.Count, newCrossings.Count,
+            brokenEdges, newCrossings);
+    }
+
+    /// <summary>
+    /// Cross-reference GQL resolver atoms with their service call edges.
+    /// Identifies resolvers with no backing service and services with no API exposure.
+    /// </summary>
+    public ApiSurfaceAnalysis AnalyzeApiSurface()
+    {
+        var resolvers = _graph.Nodes
+            .Where(n => n.Name.StartsWith("GQL.")).ToList();
+
+        var resolversWithCalls = resolvers
+            .Where(r => r.OutboundEdges.Any(e => e.Type == EdgeType.Calls))
+            .Select(r => r.Name).ToHashSet();
+
+        var unbacked = resolvers
+            .Where(r => !resolversWithCalls.Contains(r.Name))
+            .Select(r => r.Name).ToList();
+
+        // Domain services: classes ending in Manager or Service
+        var services = _graph.Nodes
+            .Where(n => n.Type == NodeType.Class &&
+                (n.Name.EndsWith("Manager") || n.Name.EndsWith("Service")))
+            .ToList();
+
+        var calledServices = resolvers
+            .SelectMany(r => r.OutboundEdges)
+            .Where(e => e.Type == EdgeType.Calls && e.Target != null)
+            .Select(e => e.Target!.Name).ToHashSet();
+
+        var unexposed = services
+            .Where(s => !calledServices.Contains(s.Name))
+            .Select(s => s.Name).ToList();
+
+        return new ApiSurfaceAnalysis(
+            resolvers.Count, unbacked, services.Count, unexposed);
+    }
 }
+

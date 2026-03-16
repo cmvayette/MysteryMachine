@@ -190,6 +190,9 @@ public class GraphBuilder
         AtomType.Field => NodeType.Field,
         AtomType.Dto => NodeType.Class, // DTOs are classes with a marker
         AtomType.Unknown => NodeType.Class, // Default fallback
+        AtomType.TypeAlias => NodeType.TypeAlias,
+        AtomType.Module => NodeType.Module,
+        AtomType.Component => NodeType.Class, // Components are rendered as classes
         _ => NodeType.Class
     };
     
@@ -219,6 +222,9 @@ public class GraphBuilder
         LinkType.PropertyMatch => EdgeType.NameMatch,
         LinkType.PackageDependency => EdgeType.UsesPackage,
         LinkType.ProjectReference => EdgeType.References,
+        LinkType.Imports => EdgeType.Imports,
+        LinkType.ReExports => EdgeType.ReExports,
+        LinkType.WorkspaceDependency => EdgeType.WorkspaceDep,
         _ => EdgeType.DependsOn
     };
 }

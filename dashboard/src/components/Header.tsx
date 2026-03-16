@@ -37,7 +37,7 @@ export function Header({
         
         {/* Navigation Tabs */}
         <div className="flex bg-[#18191f] rounded-[3px] p-1 border border-slate-700">
-           {['Explorer', 'Architecture', 'Governance'].map(tab => (
+           {['Explorer', 'Reports', 'Governance'].map(tab => (
               <button
                 key={tab}
                 onClick={() => onTabChange(tab)}

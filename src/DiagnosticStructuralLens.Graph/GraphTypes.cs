@@ -31,7 +31,12 @@ public enum NodeType
     Table,
     StoredProcedure,
     View,
-    Column
+    Column,
+    
+    // TypeScript elements
+    TypeAlias,
+    Module,
+    Workspace
 }
 
 /// <summary>
@@ -70,7 +75,16 @@ public enum EdgeType
     AttributeBinding,
     
     /// <summary>Query trace relationship</summary>
-    QueryTrace
+    QueryTrace,
+    
+    /// <summary>ES module import</summary>
+    Imports,
+    
+    /// <summary>Barrel re-export</summary>
+    ReExports,
+    
+    /// <summary>npm workspace cross-dependency</summary>
+    WorkspaceDep
 }
 
 // ── Layout Hint Records (Phase 6) ───────────────────────────────────────────

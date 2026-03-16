@@ -1,0 +1,96 @@
+###############################################################################
+# DSL Governance Rules — Demo Configuration
+#
+# These rules demonstrate how to enforce architectural boundaries across
+# systems that share common data sources. Adapt the namespace patterns
+# to match your own codebase conventions.
+#
+# Rule types:
+#   forbidden   — Block specific dependency paths
+#   layering    — Enforce top-down layer ordering
+#   visibility  — Restrict who can consume sensitive components
+###############################################################################
+
+version: "1.0"
+
+definitions:
+  # --- Layer definitions (adapt namespaces to your org) ---
+  api-layer:
+    namespace: "*.Api.*"
+  web-layer:
+    namespace: "*.Web.*"
+  service-layer:
+    namespace: "*.Services.*"
+  domain-layer:
+    namespace: "*.Domain.*"
+    type: "Class"
+  infrastructure-layer:
+    namespace: "*.Infrastructure.*"
+  data-layer:
+    namespace: "*.Data.*"
+
+  # --- Cross-cutting concerns ---
+  controllers:
+    namespace: "*.Controllers.*"
+    type: "Class"
+  repositories:
+    namespace: "*.Repositories.*"
+    type: "Class"
+  entities:
+    namespace: "*.Entities.*"
+    type: "Class"
+  dtos:
+    type: "DTO"
+
+rules:
+  # ─── LAYERING ─────────────────────────────────────────────────────────
+  # Enforce that dependencies flow downward: API → Service → Domain → Data
+  # "strict" means no skipping layers (API cannot call Data directly)
+  - id: LAYER-001
+    type: layering
+    mode: strict
+    severity: error
+    message: "Layering violation: dependencies must flow API → Service → Domain → Infrastructure"
+    layers:
+      - "@api-layer"
+      - "@service-layer"
+      - "@domain-layer"
+      - "@infrastructure-layer"
+
+  # ─── FORBIDDEN DEPENDENCIES ───────────────────────────────────────────
+  # Domain must not reference infrastructure (DDD inversion principle)
+  - id: FORBID-001
+    type: forbidden
+    severity: error
+    message: "Domain layer must not depend on Infrastructure — use interfaces and dependency injection"
+    source: "@domain-layer"
+    target: "@infrastructure-layer"
+
+  # Controllers should not directly access repositories (go through services)
+  - id: FORBID-002
+    type: forbidden
+    severity: warning
+    message: "Controllers should not access repositories directly — use a service layer"
+    source: "@controllers"
+    target: "@repositories"
+
+  # DTOs should not leak into the domain layer
+  - id: FORBID-003
+    type: forbidden
+    severity: warning
+    message: "DTOs should not be referenced from the Domain layer — map at the service boundary"
+    source: "@domain-layer"
+    target: "@dtos"
+
+  # ─── VISIBILITY ───────────────────────────────────────────────────────
+  # Entity classes should only be consumed by repositories and services
+  - id: VIS-001
+    type: visibility
+    severity: warning
+    message: "Entity classes should only be accessed by Services and Repositories — not directly from API/Web layer"
+    target: "@entities"
+    allowed_consumers:
+      - "@service-layer"
+      - "@repositories"
+      - "@domain-layer"
+      - "@infrastructure-layer"

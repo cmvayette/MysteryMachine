@@ -1,0 +1,33 @@
+# dsl-policy.yaml — Architecture Quality Gates
+# Place this file in your repository root.
+# The DSL CLI will evaluate these thresholds during `dsl report --ci`.
+# If any gate is exceeded, the pipeline returns exit code 1.
+
+version: 1
+
+gates:
+  # Migration blockers — zero tolerance for critical patterns
+  migration:
+    max_critical: 0          # e.g., System.Web, WCF, WebForms, Remoting
+    max_high: 10             # e.g., ConfigurationManager, Session state
+
+  # Architecture quality
+  architecture:
+    max_critical: 0
+    max_high: 5
+    max_god_classes: 0       # Classes with 30+ methods
+
+  # Risk scoring (from structural analysis)
+  risk:
+    max_critical_components: 3
+    max_high_components: 10
+
+  # Governance rule violations
+  governance:
+    max_violations: 0
+
+# Suppress specific rules you're tracking separately.
+# Use rule IDs from the analyzer catalog (see README.md).
+suppress:
+  # - MIG-014   # packages.config conversion tracked in backlog
+  # - MOD-005   # OutputCache migration deferred to Phase 2

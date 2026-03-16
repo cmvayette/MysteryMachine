@@ -25,6 +25,7 @@ export interface NavigationState {
   // Actions
   drillDown: (target: string) => void;
   drillUp: () => void;
+  navigateTo: (level: C4Level, path: string[]) => void;
   selectAtom: (atomId: string | null) => void;
   toggleBlastRadiusMode: () => void;
   toggleDiffMode: () => void;
@@ -73,6 +74,8 @@ export const useNavigationStore = create<NavigationState>((set) => ({
   }),
 
   selectAtom: (atomId) => set({ selectedAtomId: atomId }),
+
+  navigateTo: (level, path) => set({ level, path, selectedAtomId: null }),
   
   toggleBlastRadiusMode: () => set((state) => ({ 
     blastRadiusMode: !state.blastRadiusMode 

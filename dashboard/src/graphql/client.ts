@@ -208,3 +208,100 @@ export const LAYOUT_HINT_QUERY = gql`
     }
   }
 `;
+
+// === Reports Tab Queries ===
+
+export const PACKAGE_METRICS_QUERY = gql`
+  query GetPackageMetrics {
+    packageMetrics {
+      namespace
+      totalTypes
+      abstractTypes
+      afferentCoupling
+      efferentCoupling
+      instability
+      abstractness
+      distanceFromMainSequence
+      zone
+    }
+  }
+`;
+
+export const CENTRALITY_QUERY = gql`
+  query GetCentrality {
+    centrality {
+      node { name type namespace }
+      inDegree
+      outDegree
+      totalDegree
+    }
+  }
+`;
+
+export const ORPHANS_QUERY = gql`
+  query GetOrphans {
+    orphans {
+      id
+      name
+      type
+      namespace
+      outboundCount
+    }
+  }
+`;
+
+export const API_SURFACE_QUERY = gql`
+  query GetApiSurface {
+    apiSurface {
+      totalResolvers
+      totalDomainServices
+      unbackedResolvers
+      unexposedServices
+    }
+  }
+`;
+
+export const NAMESPACE_SUMMARIES_QUERY = gql`
+  query GetNamespaceSummaries($pattern: String) {
+    namespaceSummaries(pattern: $pattern) {
+      namespace
+      atomCount
+      instability
+      abstractness
+      distance
+      zone
+      ca
+      ce
+    }
+  }
+`;
+
+export const SNAPSHOT_COMPARISON_QUERY = gql`
+  query GetSnapshotComparison($repoId: String) {
+    snapshotComparison(repoId: $repoId) {
+      baselineId
+      currentId
+      baselineDate
+      currentDate
+      repository
+      baselineAtomCount
+      currentAtomCount
+      baselineNamespaceCount
+      currentNamespaceCount
+      painZoneDelta
+      idealZoneDelta
+      uselessZoneDelta
+      avgDistanceDelta
+      totalCouplingDelta
+      namespaceDeltas {
+        namespace
+        status
+        oldZone
+        newZone
+        distanceDelta
+        typesDelta
+        couplingDelta
+      }
+    }
+  }
+`;

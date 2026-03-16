@@ -60,7 +60,7 @@ test.describe('Context Layer — Repository Grouping', () => {
   });
 
   test('double-click a system node drills into L2 container view', async ({ page }) => {
-    const initialNodeCount = await page.locator('.react-flow__node').count();
+    await page.locator('.react-flow__node').first(); // wait for nodes to exist
 
     // Double-click first system node to drill into it
     await page.locator('.react-flow__node').first().dblclick({ force: true });

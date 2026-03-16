@@ -1,0 +1,26 @@
+# Build outputs
+bin/
+obj/
+out/
+
+# NuGet
+nupkg/
+*.nupkg
+# Allow the pre-built tool package
+!tools/*.nupkg
+
+# IDE
+.vs/
+.vscode/
+*.user
+*.suo
+
+# macOS
+.DS_Store
+
+# Reports (generated)
+dsl-report.md
+dsl-results.json
+
+# Rider
+.idea/

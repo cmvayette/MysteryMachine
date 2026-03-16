@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- TargetFramework inherited from Directory.Build.props -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SqlServer.TransactSql.ScriptDom" Version="161.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DiagnosticStructuralLens.Core\DiagnosticStructuralLens.Core.csproj" />
+  </ItemGroup>
+</Project>

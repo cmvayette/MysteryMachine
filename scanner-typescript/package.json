@@ -1,0 +1,25 @@
+{
+  "name": "dsl-scanner-typescript",
+  "version": "0.1.0",
+  "description": "TypeScript scanner for Diagnostic Structural Lens — extracts CodeAtoms from TypeScript/JavaScript monorepos",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "dsl-scanner-ts": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "tsx src/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "ts-morph": "^25.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "tsx": "^4.21.0",
+    "vitest": "^4.0.0",
+    "@types/node": "^22.0.0"
+  }
+}

@@ -607,4 +607,76 @@ public class MemberInfo
     public bool IsPublic { get; set; }
 }
 
+public class OrphanNode
+{
+    public required string Id { get; set; }
+    public required string Name { get; set; }
+    public required string Type { get; set; }
+    public string? Namespace { get; set; }
+    public int OutboundCount { get; set; }
+}
+
+// Phase 3: Structural Graph Query view models
+
+public class PathStepView
+{
+    public required string FromId { get; set; }
+    public required string FromName { get; set; }
+    public required string ToId { get; set; }
+    public required string ToName { get; set; }
+    public required string EdgeType { get; set; }
+}
+
+public class PathResultView
+{
+    public int Length { get; set; }
+    public List<PathStepView> Steps { get; set; } = [];
+}
+
+public class CohesionView
+{
+    public required string Namespace { get; set; }
+    public int InternalEdges { get; set; }
+    public int ExternalEdges { get; set; }
+    public double CohesionRatio { get; set; }
+    public int ComponentCount { get; set; }
+    public List<List<string>> Components { get; set; } = [];
+}
+
+public class NamespaceSummary
+{
+    public required string Namespace { get; set; }
+    public int AtomCount { get; set; }
+    public double Instability { get; set; }
+    public double Abstractness { get; set; }
+    public double Distance { get; set; }
+    public required string Zone { get; set; }
+    public int Ca { get; set; }
+    public int Ce { get; set; }
+}
+
+// Phase 4: Simulation & API Surface view models
+
+public class SimulationResultView
+{
+    public int BrokenEdgeCount { get; set; }
+    public int NewCrossingCount { get; set; }
+    public List<SimulatedBreak> BrokenEdges { get; set; } = [];
+}
+
+public class SimulatedBreak
+{
+    public required string SourceName { get; set; }
+    public required string TargetName { get; set; }
+    public required string EdgeType { get; set; }
+}
+
+public class ApiSurfaceView
+{
+    public int TotalResolvers { get; set; }
+    public int TotalDomainServices { get; set; }
+    public List<string> UnbackedResolvers { get; set; } = [];
+    public List<string> UnexposedServices { get; set; } = [];
+}
+
 #endregion

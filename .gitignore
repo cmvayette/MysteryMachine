@@ -44,3 +44,13 @@ this.jpeg
 
 # Playwright test results
 dashboard/test-results/
+
+scanner-typescript/node_modules/
+
+# Demo snapshots (large JSON files, regenerated from validation repos)
+delivery/demo/snapshots/
+delivery/demo/reports/
+
+# Root-level generated report
+dsl-report.md
+

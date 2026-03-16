@@ -1,0 +1,95 @@
+# This pipeline runs the DSL architecture report when creating or updating a
+# PR to a release branch, providing a quality gate before production deployment.
+# For teams with single-developer workflows (no peer review), this provides
+# automated architecture review at the point that matters — release time.
+#
+# Prerequisites:
+# 1. Build the NuGet package: dotnet pack src/DiagnosticStructuralLens.Cli -c Release -o ./tools
+# 2. Copy dsl-policy.yaml.example to dsl-policy.yaml in your target repo
+# 3. Add this pipeline YAML to your target repo (or reference it from a central location)
+
+trigger: none
+
+pr:
+  branches:
+    include:
+      - main
+      - 'release/*'
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+  # Install .NET 8 SDK
+  - task: UseDotNet@2
+    displayName: 'Install .NET 8'
+    inputs:
+      version: '8.x'
+
+  # Install DSL CLI as a global tool
+  # Option A: From a local NuGet package checked into the repo
+  - script: dotnet tool install --global DiagnosticStructuralLens.Cli --add-source $(Build.SourcesDirectory)/tools
+    displayName: 'Install DSL CLI'
+
+  # Option B: From an Azure Artifacts NuGet feed (uncomment and configure)
+  # - script: dotnet tool install --global DiagnosticStructuralLens.Cli --add-source https://pkgs.dev.azure.com/YOUR_ORG/_packaging/YOUR_FEED/nuget/v3/index.json
+  #   displayName: 'Install DSL CLI'
+
+  # Run architecture analysis with policy gating
+  - script: >
+      dsl report
+      --repo $(Build.SourcesDirectory)
+      --ci
+      --policy $(Build.SourcesDirectory)/dsl-policy.yaml
+      --output $(Build.ArtifactStagingDirectory)/dsl-report.md
+      --output-json $(Build.ArtifactStagingDirectory)/dsl-results.json
+    displayName: 'Architecture Quality Gate'
+    continueOnError: false
+
+  # Always publish the report, even if the gate failed
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Architecture Report'
+    condition: always()
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/dsl-report.md'
+      ArtifactName: 'architecture-report'
+
+  # Publish JSON results as build artifact
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish JSON Results'
+    condition: always()
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/dsl-results.json'
+      ArtifactName: 'architecture-results'
+
+
+# ---- Optional: Weekly Deep Scan ----
+# Uncomment the section below to add a scheduled weekly scan on main.
+#
+# schedules:
+#   - cron: '0 6 * * 1'
+#     displayName: 'Weekly Monday 6am scan'
+#     branches:
+#       include:
+#         - main
+#     always: true
+#
+# Add a second job that runs without --ci (no gating, just reporting):
+#
+# - job: WeeklyScan
+#   condition: eq(variables['Build.Reason'], 'Schedule')
+#   steps:
+#     - task: UseDotNet@2
+#       inputs:
+#         version: '8.x'
+#     - script: dotnet tool install --global DiagnosticStructuralLens.Cli --add-source $(Build.SourcesDirectory)/tools
+#     - script: >
+#         dsl report
+#         --repo $(Build.SourcesDirectory)
+#         --output $(Build.ArtifactStagingDirectory)/weekly-report.md
+#         --output-json $(Build.ArtifactStagingDirectory)/weekly-results.json
+#       displayName: 'Weekly Architecture Scan'
+#     - task: PublishBuildArtifacts@1
+#       inputs:
+#         PathtoPublish: '$(Build.ArtifactStagingDirectory)/weekly-report.md'
+#         ArtifactName: 'weekly-architecture-report'

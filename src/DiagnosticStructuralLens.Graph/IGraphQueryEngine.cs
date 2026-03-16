@@ -40,4 +40,29 @@ public interface IGraphQueryEngine
     /// <param name="scopeNamespace">Optional namespace to scope detection to.</param>
     /// <returns>Layout hint with pattern, confidence, and metadata.</returns>
     LayoutHint DetectTopology(string? scopeNamespace = null);
+
+    /// <summary>
+    /// Calculate Robert C. Martin's Package Metrics per namespace.
+    /// </summary>
+    IReadOnlyList<NamespaceMetrics> CalculatePackageMetrics();
+
+    /// <summary>
+    /// BFS shortest path between two nodes.
+    /// </summary>
+    PathResult? FindShortestPath(string fromId, string toId);
+
+    /// <summary>
+    /// Analyze internal cohesion of a namespace using connected-component detection.
+    /// </summary>
+    CohesionResult AnalyzeCohesion(string ns);
+
+    /// <summary>
+    /// Simulate moving nodes to a different namespace, reporting broken edges.
+    /// </summary>
+    SimulationResult SimulateMove(IEnumerable<string> nodeIds, string targetNamespace);
+
+    /// <summary>
+    /// Cross-reference GQL resolver atoms with domain service calls.
+    /// </summary>
+    ApiSurfaceAnalysis AnalyzeApiSurface();
 }
